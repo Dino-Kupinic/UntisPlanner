@@ -1,0 +1,11 @@
+version: '3'
+services:
+  untisplanner:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "0.0.0.0:6450:3000"
+      - "0.0.0.0:24678:24678"
+    volumes:
+      - .:/app
