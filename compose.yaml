@@ -1,6 +1,7 @@
 version: '3'
 services:
   untisplanner:
+    command: sh -c "npm rebuild rollup && npm run dev"
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -9,3 +10,4 @@ services:
       - "0.0.0.0:24678:24678"
     volumes:
       - .:/app
+    stdin_open: true
