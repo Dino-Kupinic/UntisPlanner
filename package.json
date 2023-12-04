@@ -28,8 +28,5 @@
     "@pinia/nuxt": "^0.5.1",
     "@vueuse/nuxt": "^10.6.1",
     "dotenv": "^16.3.1"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-arm64-gnu": "latest"
   }
 }
