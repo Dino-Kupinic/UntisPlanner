@@ -1,75 +1,41 @@
-# Nuxt 3 Minimal Starter
+# UntisPlanner
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+> Intuitive untis planner.
 
-## Setup
+## 🥳 Installation and Configuration
 
-Make sure to install the dependencies:
-
+### Installation
+1. clone the repository:
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+git clone https://github.com/Dino-Kupinic/UntisPlanner.git
 ```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
+2. `npm install` 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+npm i
 ```
+`⚠️ Important: you need to have docker installed!`
 
-## Production
-
-Build the application for production:
-
+3. run `compose.yaml`
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+docker compose up --build
 ```
+Continue with the configuration below!
+   
+## 👌 Authors
 
-Locally preview production build:
+- [@Dino Kupinic](https://www.github.com/Dino-Kupinic)
+- [@Michael Ploier](https://www.github.com/MPloier)
+- [@Jannick Angerer](https://www.github.com/Neuery17Alt)
+- [@Daniel Samhaber](https://www.github.com/dsamhabe)
 
-```bash
-# npm
-npm run preview
+## 🛠️ Tech Stack
 
-# pnpm
-pnpm run preview
+**Client:** Nuxt.js (Vue.js)
 
-# yarn
-yarn preview
+**Libraries:** NuxtUI, VueUse, PWA, VCalendar, Vitest
 
-# bun
-bun run preview
-```
+## 🍿 License
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+[GNU](https://choosealicense.com/licenses/gpl-3.0/)
+
+
