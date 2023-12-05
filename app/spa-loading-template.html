@@ -1,0 +1,40 @@
+<div class="loader"></div>
+<style>
+    .loader {
+        display: block;
+        position: fixed;
+        z-index: 1031;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 18px;
+        height: 18px;
+        box-sizing: border-box;
+        border: 2px solid #000;
+        border-right-color: #efefef;
+        border-bottom-color: #efefef;
+        border-radius: 50%;
+        -webkit-animation: loader 1000ms linear infinite;
+        animation: loader 1000ms linear infinite;
+    }
+
+    \@-webkit-keyframes loader {
+        0% {
+            -webkit-transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+
+    \@keyframes loader {
+        0% {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        100% {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+</style>
