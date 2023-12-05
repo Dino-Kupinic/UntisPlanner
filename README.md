@@ -19,7 +19,8 @@ npm i
 ```bash
 docker compose up --build
 ```
-Continue with the configuration below!
+
+4. Head to http://localhost:6500/
    
 ## 👌 Authors
 
