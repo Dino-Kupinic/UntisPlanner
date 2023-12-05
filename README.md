@@ -2,7 +2,7 @@
 
 > Intuitive untis planner.
 
-## 🥳 Installation and Configuration
+## 😮‍💨 Installation and Configuration
 
 ### Installation
 1. clone the repository:
@@ -22,20 +22,20 @@ docker compose up --build
 
 4. Head to http://localhost:6500/
    
-## 👌 Authors
+## 🤠 Authors
 
 - [@Dino Kupinic](https://www.github.com/Dino-Kupinic)
 - [@Michael Ploier](https://www.github.com/MPloier)
 - [@Jannick Angerer](https://www.github.com/Neuery17Alt)
 - [@Daniel Samhaber](https://www.github.com/dsamhabe)
 
-## 🛠️ Tech Stack
+## 🕺 Tech Stack
 
 **Client:** Nuxt.js (Vue.js)
 
 **Libraries:** NuxtUI, VueUse, PWA, VCalendar, Vitest
 
-## 🍿 License
+## 🦋 License
 
 [GNU](https://choosealicense.com/licenses/gpl-3.0/)
 
