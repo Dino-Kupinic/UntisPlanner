@@ -1,9 +1,9 @@
 version: '3'
 services:
-  untisplanner:
+  untisplanner_dev:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_dev
     ports:
        - "6500:3000"
        - "24678:24678"
