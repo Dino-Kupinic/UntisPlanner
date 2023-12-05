@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "nuxt-vitest",
     "@samk-dev/nuxt-vcalendar",
+    "@pinia/nuxt",
   ],
   pwa: {
     /* PWA options */
