@@ -11,7 +11,7 @@ git clone https://github.com/Dino-Kupinic/UntisPlanner.git
 ```
 2. install packages
 ```bash
-npm i
+npm i -f
 ```
 `⚠️ Important: you need to have docker installed and the deamon has to be running!`
 
