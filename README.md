@@ -9,11 +9,11 @@
 ```bash
 git clone https://github.com/Dino-Kupinic/UntisPlanner.git
 ```
-2. `npm install` 
+2. install packages
 ```bash
 npm i
 ```
-`⚠️ Important: you need to have docker installed!`
+`⚠️ Important: you need to have docker installed and the deamon has to be running!`
 
 3. run docker
 ```bash

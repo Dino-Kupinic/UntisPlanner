@@ -27,11 +27,14 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@vite-pwa/nuxt",
     "@nuxt/ui",
-    "nuxt-vitest",
     "@samk-dev/nuxt-vcalendar",
     "@pinia/nuxt",
+    "nuxt-vitest",
     ...(isDevelopment) ? [] : ["nuxt-security"],
   ],
+  alias: {
+    pinia: "/node_modules/@pinia/nuxt/node_modules/pinia/dist/pinia.mjs"
+  },
   sourcemap: isDevelopment,
   pwa: {
     manifest: {
