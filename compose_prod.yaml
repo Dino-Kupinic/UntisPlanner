@@ -1,8 +1,0 @@
-version: "3"
-services:
-  untisplanner_prod:
-    build:
-      context: .
-      dockerfile: ./Dockerfile_prod
-    ports:
-      - "0.0.0.0:3000:3000"

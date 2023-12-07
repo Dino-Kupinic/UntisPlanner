@@ -2,14 +2,29 @@
 import {isDevelopment} from "std-env"
 
 export default defineNuxtConfig({
+  app: {
+    head: {
+      title: "UntisPlanner",
+    },
+  },
   devtools: {
     enabled: true,
+
+    timeline: {
+      enabled: true,
+    },
   },
+  imports: {
+    autoImport: true,
+  },
+  ssr: false,
   vue: {
     defineModel: true,
     propsDestructure: true,
   },
-  ssr: false,
+  devServer: {
+    port: 3001,
+  },
   nitro: {
     esbuild: {
       options: {
@@ -20,8 +35,10 @@ export default defineNuxtConfig({
       routes: ["/"],
     },
   },
-  imports: {
-    autoImport: true,
+  colorMode: {
+    classSuffix: "",
+    preference: "system",
+    fallback: "light",
   },
   modules: [
     "@vueuse/nuxt",
@@ -29,7 +46,7 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@samk-dev/nuxt-vcalendar",
     "nuxt-vitest",
-    ...(isDevelopment) ? [] : ["nuxt-security"],
+    ...(isDevelopment ? [] : ["nuxt-security"]),
   ],
   sourcemap: isDevelopment,
   pwa: {
@@ -39,17 +56,12 @@ export default defineNuxtConfig({
       theme_color: "#ffffff",
       icons: [
         {
-          src: "pwa-192x192.png",
+          src: "untisplanner-icon-192.png",
           sizes: "192x192",
           type: "image/png",
         },
         {
-          src: "pwa-512x512.png",
-          sizes: "512x512",
-          type: "image/png",
-        },
-        {
-          src: "pwa-512x512.png",
+          src: "untisplanner-icon-512.png",
           sizes: "512x512",
           type: "image/png",
         },
@@ -65,5 +77,9 @@ export default defineNuxtConfig({
       navigateFallbackAllowlist: [/^\/$/],
       type: "module",
     },
+  },
+  typescript: {
+    typeCheck: true,
+    strict: true
   },
 })
