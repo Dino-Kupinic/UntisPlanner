@@ -15,9 +15,9 @@ npm i
 ```
 `⚠️ Important: you need to have docker installed!`
 
-3. run `compose.yaml`
+3. run docker
 ```bash
-docker compose up --build
+docker compose -f compose_prod.yaml -f compose_dev.yaml up --build
 ```
 
 4. Head to http://localhost:6500/
