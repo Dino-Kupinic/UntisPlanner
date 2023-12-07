@@ -3,7 +3,7 @@
 </script>
 
 <template>
-<h1>Index</h1>
+<Calendar></Calendar>
 </template>
 
 <style scoped>
