@@ -4,23 +4,21 @@
 
 ## 😮‍💨 Installation and Configuration
 
-### Installation
+### Installation for Development
 1. clone the repository:
 ```bash
 git clone https://github.com/Dino-Kupinic/UntisPlanner.git
 ```
-2. install packages
+2. install packages (```-f``` might be needed)
 ```bash
-npm i -f
+npm i 
 ```
-`⚠️ Important: you need to have docker installed and the deamon has to be running!`
-
-3. run docker
+3. run dev server
 ```bash
-docker compose -f compose_prod.yaml -f compose_dev.yaml up --build
+npm run dev
 ```
 
-4. Head to http://localhost:6500/
+4. Head to http://localhost:3001/ 
    
 ## 🤠 Authors
 
