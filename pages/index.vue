@@ -5,7 +5,3 @@
 <template>
 <Calendar></Calendar>
 </template>
-
-<style scoped>
-
-</style>

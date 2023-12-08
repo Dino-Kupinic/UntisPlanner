@@ -22,6 +22,12 @@ export default defineNuxtConfig({
     defineModel: true,
     propsDestructure: true,
   },
+  components: [
+    {
+      path: "~/components",
+      pathPrefix: false,
+    },
+  ],
   devServer: {
     port: 3001,
   },
@@ -80,6 +86,6 @@ export default defineNuxtConfig({
   },
   typescript: {
     typeCheck: true,
-    strict: true
+    strict: true,
   },
 })
