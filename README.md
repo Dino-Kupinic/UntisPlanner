@@ -13,12 +13,15 @@ git clone https://github.com/Dino-Kupinic/UntisPlanner.git
 ```bash
 npm i 
 ```
-3. run dev server
+3. install playwright browsers for testing
+```bash
+npx playwright install
+```
+4. run dev server
 ```bash
 npm run dev
 ```
-
-4. Head to http://localhost:3001/ 
+5. Head to http://localhost:3001/ 
    
 ## 🤠 Authors
 
