@@ -1,5 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import {isDevelopment} from "std-env"
+import {execaSync} from "execa"
+import { version as versionVue } from "vue"
+import { version as versionNuxt } from "nuxt/package.json"
 
 export default defineNuxtConfig({
   app: {
@@ -29,6 +32,14 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+  runtimeConfig: {
+    public: {
+      buildTime: Date.now(),
+      gitHeadSha: execaSync("git", ["rev-parse", "HEAD"]).stdout.trim(),
+      versionVue,
+      versionNuxt,
+    },
+  },
   devServer: {
     port: 3001,
   },
@@ -52,6 +63,7 @@ export default defineNuxtConfig({
     "@vite-pwa/nuxt",
     "@nuxt/ui",
     "@samk-dev/nuxt-vcalendar",
+    "floating-vue/nuxt",
     "nuxt-vitest",
     ...(isDevelopment ? [] : ["nuxt-security"]),
   ],
