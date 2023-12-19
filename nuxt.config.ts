@@ -1,8 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import {isDevelopment} from "std-env"
 import {execaSync} from "execa"
-import { version as versionVue } from "vue"
-import { version as versionNuxt } from "nuxt/package.json"
 
 export default defineNuxtConfig({
   app: {
@@ -36,8 +34,6 @@ export default defineNuxtConfig({
     public: {
       buildTime: Date.now(),
       gitHeadSha: execaSync("git", ["rev-parse", "HEAD"]).stdout.trim(),
-      versionVue,
-      versionNuxt,
     },
   },
   devServer: {

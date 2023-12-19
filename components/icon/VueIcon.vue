@@ -1,7 +1,7 @@
 <script setup lang="ts">
 interface Props {
-  width: string
-  height: string
+  width?: string
+  height?: string
 }
 
 withDefaults(defineProps<Props>(), {
