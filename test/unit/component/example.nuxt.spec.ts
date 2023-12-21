@@ -1,5 +1,5 @@
 import {it, expect} from "vitest"
-import {mountSuspended} from "vitest-environment-nuxt/utils"
+import {mountSuspended} from "@nuxt/test-utils/runtime"
 import {Example} from "#components"
 
 it("can mount some component", async () => {
