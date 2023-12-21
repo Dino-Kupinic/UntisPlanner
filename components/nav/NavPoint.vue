@@ -7,6 +7,8 @@ const props = defineProps<{
 </script>
 
 <template>
-  <UIcon :name="props.icon" />
-  <span>{{props.text}}</span>
+  <div>
+    <UIcon :name="props.icon" />
+    <span class="">{{props.text}}</span>
+  </div>
 </template>
