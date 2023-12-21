@@ -9,7 +9,7 @@ export interface Props{
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: "lg"
+  size: "xl"
 })
 </script>
 
