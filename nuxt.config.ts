@@ -1,5 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import {isDevelopment} from "std-env"
+import pkg from "./package.json"
+import {execaSync} from "execa"
 
 export default defineNuxtConfig({
   app: {
@@ -29,6 +31,11 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+  runtimeConfig: {
+    public: {
+      clientVersion: pkg.version,
+    },
+  },
   devServer: {
     port: 3001,
   },

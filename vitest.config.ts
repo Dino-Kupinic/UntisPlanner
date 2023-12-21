@@ -1,5 +1,16 @@
-import { defineVitestConfig } from '@nuxt/test-utils/config'
+import {defineVitestConfig} from "@nuxt/test-utils/config"
+import {fileURLToPath} from "node:url"
 
 export default defineVitestConfig({
-  // any custom Vitest config you require
+  test: {
+    environment: "nuxt",
+    environmentOptions: {
+      nuxt: {
+        rootDir: fileURLToPath(new URL(".", import.meta.url)),
+        overrides: {
+          // other Nuxt config you want to pass
+        },
+      },
+    },
+  },
 })
