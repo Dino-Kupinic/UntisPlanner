@@ -3,7 +3,9 @@
 </script>
 
 <template>
-  <UContainer class="flex align-center w-full h-16 border-b border-neutral-300 dark:bg-gray-900 dark:border-gray-800">
-    <NavBarThemeToggle />
+  <UContainer class="flex space-x-6 align-center">
+    <NavPoint icon="i-heroicons-cog-6-tooth" label="Settings"></NavPoint>
+    <NavPoint icon="i-heroicons-calendar-days" label="Untis Planner"></NavPoint>
+    <NavBarThemeToggle/>
   </UContainer>
 </template>

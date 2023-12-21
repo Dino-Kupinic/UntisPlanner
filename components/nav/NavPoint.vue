@@ -1,14 +1,19 @@
 <script setup lang="ts">
 const props = defineProps<{
-  icon: string
-  text: string
-  path: string
+  icon: string,
+  label?: string,
+  path?: string
 }>()
 </script>
 
 <template>
-  <div>
-    <UIcon :name="props.icon" />
-    <span class="">{{props.text}}</span>
-  </div>
+  <UButton
+      :icon="props.icon"
+      size="sm"
+      color="primary"
+      variant="ghost"
+      :label="props.label"
+      :trailing="false"
+      :to="props.path"
+  />
 </template>
