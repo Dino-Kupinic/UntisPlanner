@@ -15,10 +15,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 <template>
   <UButton
+      padded
       :icon="props.icon"
       :size="props.size"
       color="primary"
-      variant="ghost"
+      variant="soft"
       :label="props.label"
       :trailing="false"
       :to="props.path"
