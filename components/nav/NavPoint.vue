@@ -1,19 +1,27 @@
 <script setup lang="ts">
-const props = defineProps<{
+import type {ButtonSize} from "#ui/types";
+
+export interface Props{
   icon: string,
   label?: string,
+  size?: ButtonSize,
   path?: string
-}>()
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: "lg"
+})
 </script>
 
 <template>
   <UButton
       :icon="props.icon"
-      size="sm"
+      :size="props.size"
       color="primary"
       variant="ghost"
       :label="props.label"
       :trailing="false"
       :to="props.path"
+      target="_blank"
   />
 </template>
