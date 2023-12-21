@@ -22,6 +22,6 @@ const props = withDefaults(defineProps<Props>(), {
       :label="props.label"
       :trailing="false"
       :to="props.path"
-      target="_blank"
+      target="_self"
   />
 </template>

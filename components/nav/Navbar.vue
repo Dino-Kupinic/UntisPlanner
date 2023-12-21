@@ -5,7 +5,7 @@
 <template>
   <UContainer class="flex underline-offset-1">
     <UContainer class="flex-1">
-      <NavPoint size="xl" icon="i-heroicons-calendar-days" label="Untis Planner" path="https://htl-steyr.ac.at"></NavPoint>
+      <NavPoint size="3xl" icon="i-heroicons-calendar-days" label="Untis Planner" path="https://htl-steyr.ac.at"></NavPoint>
     </UContainer>
     <UContainer class="space-x-4">
       <NavBarThemeToggle class="self-center"/>
