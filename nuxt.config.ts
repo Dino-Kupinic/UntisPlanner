@@ -59,7 +59,7 @@ export default defineNuxtConfig({
     "@vite-pwa/nuxt",
     "@nuxt/ui",
     "@samk-dev/nuxt-vcalendar",
-    "nuxt-vitest",
+    "@nuxt/test-utils/module",
     ...(isDevelopment ? [] : ["nuxt-security"]),
   ],
   sourcemap: isDevelopment,
