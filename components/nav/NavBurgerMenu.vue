@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 let lightMode = false;
 const iconSun = "i-heroicons-sun-16-solid";
 const iconMoon = "i-heroicons-moon-16-solid";
@@ -18,7 +19,7 @@ const items = [
     }
   }], [{
     label: 'Toggle Color Mode',
-    icon: 'iconToggle',
+    icon: iconToggle,
     click: () => {
       if (lightMode) {
         iconToggle = iconMoon;
