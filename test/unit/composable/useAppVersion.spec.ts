@@ -1,4 +1,4 @@
-import {describe, test, it, beforeEach, afterEach, afterAll, beforeAll, expect} from "vitest"
+import {describe, test, it, beforeAll, expect} from "vitest"
 import pkg from "~/package.json"
 
 describe("useAppVersion", () => {
