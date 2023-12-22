@@ -33,6 +33,8 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     public: {
+      buildTime: Date.now(),
+      gitHeadSha: execaSync("git", ["rev-parse", "HEAD"]).stdout.trim(),
       clientVersion: pkg.version,
     },
   },
@@ -60,6 +62,7 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@samk-dev/nuxt-vcalendar",
     "@nuxt/test-utils/module",
+    "floating-vue/nuxt",
     ...(isDevelopment ? [] : ["nuxt-security"]),
   ],
   sourcemap: isDevelopment,
