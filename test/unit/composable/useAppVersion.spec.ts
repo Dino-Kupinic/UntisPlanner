@@ -2,11 +2,7 @@ import {describe, test, it, beforeAll, expect} from "vitest"
 import pkg from "~/package.json"
 
 describe("useAppVersion", () => {
-  let appVersion = ""
-
-  beforeAll(() => {
-    appVersion = pkg.version
-  })
+  const appVersion = pkg.version
 
   test("it returns a value", async () => {
     expect(useAppVersion()).toBeDefined()

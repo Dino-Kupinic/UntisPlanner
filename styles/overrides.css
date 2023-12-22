@@ -1,5 +1,13 @@
-/* TODO: Fix styling */
+.dark .v-popper--theme-dropdown .v-popper__inner {
+    color: theme('colors.gray.200');
+    background-color: theme('colors.gray.900');
+    border-color: theme('colors.gray.800');
+}
 
-.v-popper__popper .v-popper__arrow-outer .v-popper__arrow-inner {
-    background-color: #0ea5e9;
+.dark .v-popper__popper .v-popper__arrow-outer {
+    border-color: theme('colors.gray.800');
+}
+
+.dark .v-popper__popper .v-popper__arrow-inner {
+    border-color: theme('colors.gray.900');
 }
