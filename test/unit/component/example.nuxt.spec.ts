@@ -5,6 +5,6 @@ import {Example} from "#components"
 describe("Example Component", () => {
   it("can mount some component", async () => {
     const component = await mountSuspended(Example)
-    expect(component.html()).toMatchSnapshot("<p>Example</p>")
+    expect(component.html()).toMatchSnapshot()
   })
 })
