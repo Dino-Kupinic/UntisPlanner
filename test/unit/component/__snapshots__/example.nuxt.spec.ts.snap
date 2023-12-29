@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Example Component > can mount some component > <p>Example</p> 1`] = `"<p>Example</p>"`;
-
-exports[`Example Component > can mount some component 1`] = `"<p>Example</p>"`;
-
-exports[`can mount some component > <p>Example</p> 1`] = `"<p>Example</p>"`;
+exports[`Example Component > can mount some component 1`] = `
+"<p>Example</p>
+<p>count: 0</p>
+<button>increment</button>"
+`;
