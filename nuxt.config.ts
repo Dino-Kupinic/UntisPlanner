@@ -62,9 +62,16 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@samk-dev/nuxt-vcalendar",
     "@nuxt/test-utils/module",
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+    "@nuxtjs/i18n",
     "floating-vue/nuxt",
-    ...(isDevelopment ? [] : ["nuxt-security"]),
+    "nuxt-viewport",
+     ...(isDevelopment ? [] : ["nuxt-security"]),
   ],
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
   sourcemap: isDevelopment,
   pwa: {
     manifest: {
