@@ -67,10 +67,11 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "floating-vue/nuxt",
     "nuxt-viewport",
-     ...(isDevelopment ? [] : ["nuxt-security"]),
+    "nuxt-icon",
+    ...(isDevelopment ? [] : ["nuxt-security"]),
   ],
   pinia: {
-    storesDirs: ['./stores/**'],
+    storesDirs: ["./stores/**"],
   },
   sourcemap: isDevelopment,
   pwa: {
