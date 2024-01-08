@@ -1,10 +1,5 @@
 <script setup lang="ts">
 
-let lightMode = false;
-const iconSun = "i-heroicons-sun-16-solid";
-const iconMoon = "i-heroicons-moon-16-solid";
-let iconToggle = iconMoon;
-
 const items = [
   [{
     label: 'Settings',
@@ -18,23 +13,18 @@ const items = [
       console.log('Hier wird eine Info stehen!')
     }
   }], [{
-    label: 'Toggle Color Mode',
-    icon: iconToggle,
-    click: () => {
-      if (lightMode) {
-        iconToggle = iconMoon;
-        lightMode = false;
-      } else {
-        iconToggle = iconSun;
-        lightMode = true;
-      }
-    }
+    label: 'Color Mode',
+    slot: 'colorMode',
+    shortcuts: ['C']
   }]
 ]
 </script>
 
 <template>
   <UDropdown :items="items" mode="hover">
+    <template #colorMode>
+      <NavBarThemeToggle class="self-center"></NavBarThemeToggle>
+    </template>
     <NavPoint icon="i-heroicons-bars-3-solid"></NavPoint>
   </UDropdown>
 </template>
