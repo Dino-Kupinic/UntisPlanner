@@ -47,6 +47,11 @@ export default defineNuxtConfig({
         target: "esnext",
       },
     },
+    prerender: {
+      crawlLinks: true,
+      failOnError: false,
+      routes: ["/"],
+    },
   },
   colorMode: {
     classSuffix: "",
