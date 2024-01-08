@@ -1,5 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import {isDevelopment} from "std-env"
+import pkg from "./package.json"
+import {execaSync} from "execa"
 
 export default defineNuxtConfig({
   app: {
@@ -29,6 +31,13 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+  runtimeConfig: {
+    public: {
+      buildTime: Date.now(),
+      gitHeadSha: execaSync("git", ["rev-parse", "HEAD"]).stdout.trim(),
+      clientVersion: pkg.version,
+    },
+  },
   devServer: {
     port: 3001,
   },
@@ -52,9 +61,17 @@ export default defineNuxtConfig({
     "@vite-pwa/nuxt",
     "@nuxt/ui",
     "@samk-dev/nuxt-vcalendar",
-    "nuxt-vitest",
-    ...(isDevelopment ? [] : ["nuxt-security"]),
+    "@nuxt/test-utils/module",
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+    "@nuxtjs/i18n",
+    "floating-vue/nuxt",
+    "nuxt-viewport",
+     ...(isDevelopment ? [] : ["nuxt-security"]),
   ],
+  pinia: {
+    storesDirs: ['./stores/**'],
+  },
   sourcemap: isDevelopment,
   pwa: {
     manifest: {
