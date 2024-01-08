@@ -48,8 +48,6 @@ export default defineNuxtConfig({
       },
     },
     prerender: {
-      crawlLinks: true,
-      failOnError: false,
       routes: ["/"],
     },
   },
