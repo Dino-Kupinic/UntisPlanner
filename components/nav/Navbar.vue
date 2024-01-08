@@ -1,6 +1,7 @@
 <script setup lang="ts">
-
 import NavBurgerMenu from "~/components/nav/NavBurgerMenu.vue";
+
+//TODO: add animation, maybe with https://www.impressivewebs.com/animate-display-block-none/
 </script>
 
 <template>
@@ -13,7 +14,7 @@ import NavBurgerMenu from "~/components/nav/NavBurgerMenu.vue";
       <NavPoint icon="i-heroicons-cog-6-tooth" label="Settings" path="/settings"></NavPoint>
       <NavPoint icon="i-heroicons-question-mark-circle-20-solid" label="Info"></NavPoint>
     </UContainer>
-    <UContainer class="space-x-5 min-[775px]:hidden">
+    <UContainer class="space-x-5 min-[775px]:hidden animate-pulse">
       <NavBurgerMenu></NavBurgerMenu>
     </UContainer>
   </UContainer>
