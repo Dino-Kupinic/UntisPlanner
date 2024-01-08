@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   imports: {
     autoImport: true,
   },
-  ssr: true,
+  ssr: false,
   spaLoadingTemplate: true,
   vue: {
     defineModel: true,
