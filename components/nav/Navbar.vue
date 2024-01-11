@@ -12,7 +12,7 @@ import NavBurgerMenu from "~/components/nav/NavBurgerMenu.vue";
     <UContainer class="space-x-5 max-[775px]:hidden">
       <NavBarThemeToggle class="self-center"/>
       <NavPoint icon="i-heroicons-cog-6-tooth" label="Settings" path="/settings"></NavPoint>
-      <NavPoint icon="i-heroicons-question-mark-circle-20-solid" label="Info"></NavPoint>
+      <CalendarInfoButton />
     </UContainer>
     <UContainer class="space-x-5 min-[775px]:hidden animate-pulse">
       <NavBurgerMenu></NavBurgerMenu>

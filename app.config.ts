@@ -18,5 +18,12 @@ export default defineAppConfig({
         "3xl": "text-3xl"
       }
     }
+  },
+  nuxtIcon: {
+    size: '24px', // default <Icon> size applied
+    class: 'icon', // default <Icon> class applied
+    aliases: {
+      'nuxt': 'logos:nuxt-icon',
+    }
   }
 })
