@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
-const teacher = [
+import type {Teacher} from "~/model/teacher"
+
+const teachers : Teacher[] = [
   {
     id: 1,
     user: "romo",
@@ -38,7 +40,7 @@ const selected = ref([])
     <UTable
         v-model="selected"
         class=""
-        :rows="teacher"
+        :rows="teachers"
         :columns="columns"
         :ui="{
           'td':{
