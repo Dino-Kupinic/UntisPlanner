@@ -1,0 +1,50 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ExportTable > Display data correctly 1`] = `
+"<div class="flex justify-around mr-3 ml-3 rounded">
+  <div class="relative overflow-x-auto">
+    <table class="min-w-full table-fixed divide-y divide-gray-300 dark:divide-gray-700">
+      <thead class="">
+        <tr class="">
+          <th scope="col" class="ps-4">
+            <div class="relative flex items-start">
+              <div class="flex items-center h-5"><input type="checkbox" class="h-4 w-4 dark:checked:bg-current dark:checked:border-transparent dark:indeterminate:bg-current dark:indeterminate:border-transparent disabled:opacity-50 disabled:cursor-not-allowed focus:ring-0 focus:ring-transparent focus:ring-offset-transparent form-checkbox rounded bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900 text-primary-500 dark:text-primary-400" aria-label="Select all" id="nuid-0"></div>
+              <!--v-if-->
+            </div>
+          </th>
+          <th scope="col" class="text-left rtl:text-right px-3 py-3.5 text-gray-900 dark:text-white font-semibold text-sm"><span>Id</span></th>
+          <th scope="col" class="text-left rtl:text-right px-3 py-3.5 text-gray-900 dark:text-white font-semibold text-sm"><span>User</span></th>
+          <th scope="col" class="text-left rtl:text-right px-3 py-3.5 text-gray-900 dark:text-white font-semibold text-sm w-1/2"><span>From</span></th>
+          <th scope="col" class="text-left rtl:text-right px-3 py-3.5 text-gray-900 dark:text-white font-semibold text-sm"><span>To</span></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+        <tr class="">
+          <td class="ps-4">
+            <div class="relative flex items-start">
+              <div class="flex items-center h-5"><input type="checkbox" class="h-4 w-4 dark:checked:bg-current dark:checked:border-transparent dark:indeterminate:bg-current dark:indeterminate:border-transparent disabled:opacity-50 disabled:cursor-not-allowed focus:ring-0 focus:ring-transparent focus:ring-offset-transparent form-checkbox rounded bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900 text-primary-500 dark:text-primary-400" aria-label="Select row" id="nuid-1" value="[object Object]"></div>
+              <!--v-if-->
+            </div>
+          </td>
+          <td class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm">1</td>
+          <td class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm">romo</td>
+          <td class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm">20230925,20231127,20240115,20240212,20240318,20240415,20240513,</td>
+          <td class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm">20231015,20231224,20240204,20240310,20240331,20240505,20240609,</td>
+        </tr>
+        <tr class="">
+          <td class="ps-4">
+            <div class="relative flex items-start">
+              <div class="flex items-center h-5"><input type="checkbox" class="h-4 w-4 dark:checked:bg-current dark:checked:border-transparent dark:indeterminate:bg-current dark:indeterminate:border-transparent disabled:opacity-50 disabled:cursor-not-allowed focus:ring-0 focus:ring-transparent focus:ring-offset-transparent form-checkbox rounded bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900 text-primary-500 dark:text-primary-400" aria-label="Select row" id="nuid-2" value="[object Object]"></div>
+              <!--v-if-->
+            </div>
+          </td>
+          <td class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm">2</td>
+          <td class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm">heinz</td>
+          <td class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm">20230925,20231023,20231204,20240129,20240304,20240408,20240506,</td>
+          <td class="whitespace-nowrap px-3 py-4 text-gray-500 dark:text-gray-400 text-sm">20231015,20231126,20240114,20240225,20240331,20240428,20240609,</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>"
+`;
