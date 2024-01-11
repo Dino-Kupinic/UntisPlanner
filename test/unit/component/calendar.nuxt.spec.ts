@@ -6,7 +6,7 @@ describe("Calendar", async () => {
   const component = await mountSuspended(Calendar)
 
   it("is mounted properly", async () => {
-    expect(component.text()).toMatchSnapshot()
+    expect(component.html()).toMatchSnapshot()
   })
 })
 
