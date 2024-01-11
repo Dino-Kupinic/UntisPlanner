@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+import HeartIcon from "~/components/icon/HeartIcon.vue"
+import {useAppVersion} from "~/composables/useAppVersion"
+const appVersion = useAppVersion();
 </script>
 
 <template>
@@ -20,7 +22,7 @@
 
       <div class="basis-1/3 text-sm text-center">
         <p>GNU General Public License v3.0</p>
-        <p>v0.1.23</p>
+        <p>v{{appVersion}}</p>
       </div>
     </div>
   </footer>
