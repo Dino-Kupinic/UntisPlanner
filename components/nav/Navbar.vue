@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import NavBurgerMenu from "~/components/nav/NavBurgerMenu.vue";
+import CalendarInfoButton from "~/components/calendar/CalendarInfoButton.vue";
 
 //TODO: add animation, maybe with https://www.impressivewebs.com/animate-display-block-none/
 </script>
