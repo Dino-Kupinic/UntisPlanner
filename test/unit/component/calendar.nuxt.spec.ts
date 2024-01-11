@@ -1,12 +1,17 @@
 import {describe, expect, it} from "vitest"
 import {Calendar} from "#components"
 import {mountSuspended} from "@nuxt/test-utils/runtime"
+import {before} from "node:test"
 
-describe("Calendar", async () => {
-  const component = await mountSuspended(Calendar)
+let component = "";
 
-  it("is mounted properly", async () => {
-    expect(component.html()).toMatchSnapshot()
-  })
-})
+describe('Calendar', () => {
+  before(async () => {
+    component = await mountSuspended(Calendar);
+  });
+
+  it('is mounted properly', () => {
+    expect(component).toMatchSnapshot();
+  });
+});
 
