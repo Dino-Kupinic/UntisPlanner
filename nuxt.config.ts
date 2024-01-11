@@ -2,6 +2,7 @@
 import {isDevelopment} from "std-env"
 
 export default defineNuxtConfig({
+  css: ['~/assets/main.css'],
   app: {
     head: {
       title: "UntisPlanner",
