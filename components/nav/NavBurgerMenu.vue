@@ -3,28 +3,31 @@
 const items = [
   [{
     label: 'Settings',
-    icon: "i-heroicons-cog-6-tooth",
-    shortcuts: ['S']
+    slot: "settings"
   }], [{
     label: 'Info',
-    icon: 'i-heroicons-question-mark-circle-20-solid',
-    shortcuts: ['I'],
-    click: () => {
-      console.log('Hier wird eine Info stehen!')
-    }
+    slot: "info"
   }], [{
     label: 'Color Mode',
-    slot: 'colorMode',
-    shortcuts: ['C']
+    slot: 'colorMode'
   }]
 ]
 </script>
 
 <template>
-  <UDropdown :items="items" mode="hover">
+  <UDropdown :items="items" mode="click">
+    <template #settings>
+      <NavPoint icon="i-heroicons-cog-6-tooth" size="xs" label="Settings"/>
+    </template>
+
+    <template #info>
+      <CalendarInfoBurgerMenu />
+    </template>
+
     <template #colorMode>
       <NavBarThemeToggle class="self-center"></NavBarThemeToggle>
     </template>
+
     <NavPoint icon="i-heroicons-bars-3-solid"></NavPoint>
   </UDropdown>
 </template>

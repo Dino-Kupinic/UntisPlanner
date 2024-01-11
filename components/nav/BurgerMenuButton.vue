@@ -5,13 +5,11 @@ export interface Props{
   icon: string,
   label?: string,
   size?: ButtonSize,
-  path?: string,
-  color?: string
+  path?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: "xl",
-  color: "primary"
+  size: "sm"
 })
 </script>
 
@@ -20,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
       padded
       :icon="props.icon"
       :size="props.size"
-      :color="props.color"
+      color="gray"
       variant="soft"
       :label="props.label"
       :trailing="false"

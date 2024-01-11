@@ -15,7 +15,7 @@ import CalendarInfoButton from "~/components/calendar/CalendarInfoButton.vue";
       <NavPoint icon="i-heroicons-cog-6-tooth" label="Settings" path="/settings"></NavPoint>
       <CalendarInfoButton />
     </UContainer>
-    <UContainer class="space-x-5 min-[775px]:hidden animate-pulse">
+    <UContainer class="space-x-5 min-[775px]:hidden">
       <NavBurgerMenu></NavBurgerMenu>
     </UContainer>
   </UContainer>
