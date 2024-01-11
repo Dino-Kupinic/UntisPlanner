@@ -10,7 +10,7 @@ import CalendarInfoButton from "~/components/calendar/CalendarInfoButton.vue";
     <UContainer class="flex-1">
       <NavPoint size="3xl" icon="i-heroicons-calendar-days" label="Untis Planner" path="/"></NavPoint>
     </UContainer>
-    <UContainer class="space-x-5 max-[775px]:hidden">
+    <UContainer class="flex space-x-5 max-[775px]:hidden">
       <NavBarThemeToggle class="self-center"/>
       <NavPoint icon="i-heroicons-cog-6-tooth" label="Settings" path="/settings"></NavPoint>
       <CalendarInfoButton />
