@@ -17,7 +17,7 @@ const items = [
 <template>
   <UDropdown :items="items" mode="click">
     <template #settings>
-      <NavPoint icon="i-heroicons-cog-6-tooth" size="xs" label="Settings"/>
+      <NavItem icon="i-heroicons-cog-6-tooth" size="xs" label="Settings"/>
     </template>
 
     <template #info>
@@ -28,6 +28,6 @@ const items = [
       <NavBarThemeToggle class="self-center"></NavBarThemeToggle>
     </template>
 
-    <NavPoint icon="i-heroicons-bars-3-solid"></NavPoint>
+    <NavItem icon="i-heroicons-bars-3-solid"></NavItem>
   </UDropdown>
 </template>

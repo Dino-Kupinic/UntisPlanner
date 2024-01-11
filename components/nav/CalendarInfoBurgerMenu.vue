@@ -16,7 +16,7 @@ const nuxtVersion = versionNuxt
 
 <template>
   <VDropdown :distance="5" :triggers="['hover']">
-    <NavItem icon="i-heroicons-question-mark-circle-20-solid" label="Info"/>
+    <NavItem icon="i-heroicons-question-mark-circle-20-solid" label="Info" size="xs"/>
     <template #popper>
       <div class="p-3 grid gap-y-3 gap-x-2 grid-cols-[max-content_1fr] items-center">
         <UIcon class="w-5 h-5" name="i-heroicons-cube-20-solid"></UIcon>
