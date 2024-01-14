@@ -3,6 +3,6 @@
 </script>
 
 <template>
-  <Calendar></Calendar>
-  <Example></Example>
+<!--  <Calendar></Calendar>-->
+<!--  <Example></Example>-->
 </template>
