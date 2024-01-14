@@ -41,16 +41,16 @@ export default defineNuxtConfig({
   devServer: {
     port: 3001,
   },
-  // nitro: {
-  //   esbuild: {
-  //     options: {
-  //       target: "esnext",
-  //     },
-  //   },
-  //   prerender: {
-  //     routes: ["/"],
-  //   },
-  // },
+  nitro: {
+    esbuild: {
+      options: {
+        target: "esnext",
+      },
+    },
+    prerender: {
+      routes: ["/"],
+    },
+  },
   colorMode: {
     classSuffix: "",
     preference: "system",
