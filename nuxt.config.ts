@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   imports: {
     autoImport: true,
   },
-  ssr: true,
+  ssr: false,
   spaLoadingTemplate: true,
   vue: {
     defineModel: true,
@@ -58,7 +58,7 @@ export default defineNuxtConfig({
   },
   modules: [
     "@vueuse/nuxt",
-    "@vite-pwa/nuxt",
+    // "@vite-pwa/nuxt",
     "@nuxt/ui",
     "@samk-dev/nuxt-vcalendar",
     "@nuxt/test-utils/module",
