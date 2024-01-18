@@ -12,7 +12,7 @@
       <NavItem icon="i-heroicons-cog-6-tooth" label="Settings" path="/settings"></NavItem>
       <CalendarInfoButton />
     </UContainer>
-    <UContainer class="space-x-5 min-[775px]:hidden">
+    <UContainer id="BurgerMenuContainer" class="space-x-5 min-[775px]:hidden">
       <NavBurgerMenu></NavBurgerMenu>
     </UContainer>
   </UContainer>
