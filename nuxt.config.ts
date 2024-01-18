@@ -4,7 +4,6 @@ import pkg from "./package.json"
 import {execaSync} from "execa"
 
 export default defineNuxtConfig({
-  css: ['~/assets/main.css'],
   app: {
     head: {
       title: "UntisPlanner",

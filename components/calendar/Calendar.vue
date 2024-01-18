@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {ref, computed} from "vue"
 import {useScreens} from "vue-screen-utils"
 
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
@@ -7,6 +6,7 @@ const columns = mapCurrent({lg: 6}, 1)
 const date = ref(new Date())
 const colorMode = useColorMode()
 const attrs = ref([{}])
+
 const holidays = ref([
   {name: "Semester Holidays", start: new Date(0, 2, 12), end: new Date(0, 2, 18)},
   {name: "Easter Holidays", start: new Date(0, 3, 23), end: new Date(0, 4, 1)},
@@ -16,11 +16,11 @@ const holidays = ref([
   {name: "Christmas Holidays", start: new Date(0, 12, 24), end: new Date(0, 1, 6)},
 ])
 
-addHolidaysToList()
-setWeekendMarked()
+onMounted(() => {
+  addHolidaysToList()
+  setWeekendMarked()
 
-let year = new Date(2024,11,4).getDay()
-
+})
 
 function setWeekendMarked() {
   const weekendAttributes = {
@@ -29,7 +29,7 @@ function setWeekendMarked() {
       fillMode: "light",
       style: {
         background: "transparent",
-        border: "2px solid darkgreen"
+        border: "2px solid darkgreen",
       },
     },
     popover: {
@@ -40,7 +40,7 @@ function setWeekendMarked() {
       {
         repeat: {
           every: "week",
-          on: {weekdays: [7,1]} // Saturday
+          on: {weekdays: [7, 1]}, // Saturday & Sunday
         },
       },
     ],
@@ -57,8 +57,8 @@ function addHolidaysToList() {
         fillMode: "light",
         style: {
           background: "seagreen",
-          color: "black"
-        }
+          color: "black",
+        },
       },
       popover: {
         label: holiday.name,
@@ -78,9 +78,7 @@ function addHolidaysToList() {
   })
 }
 
-function isTwentyThirdDecHolliday () {
 
-}
 
 const isDark = computed(() => {
   return colorMode.value !== "light"
@@ -88,7 +86,7 @@ const isDark = computed(() => {
 </script>
 
 <template>
-  <div id="calendar-conatiner">
+  <div class="flex flex-wrap justify-center mt-2">
     <ClientOnly fallback-tag="span" fallback="Loading Calendar...">
       <!-- @vue-ignore TODO: Fix type issues with attributes -->
       <VCalendar
@@ -103,12 +101,3 @@ const isDark = computed(() => {
     </ClientOnly>
   </div>
 </template>
-
-<style>
-#calendar-conatiner {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 2%;
-}
-</style>
