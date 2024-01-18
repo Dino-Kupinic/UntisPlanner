@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NavItem > it can mount properly 1`] = `""`;
+
+exports[`NavPoint > it can mount properly 1`] = `""`;
