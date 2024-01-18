@@ -21,7 +21,7 @@ const items = [
     </template>
 
     <template #info>
-      <CalendarInfoBurgerMenu />
+      <CalendarInfoButton button-size="xs"/>
     </template>
 
     <template #colorMode>

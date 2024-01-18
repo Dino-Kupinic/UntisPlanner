@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import {version as versionVue} from "vue"
 import {version as versionNuxt} from "nuxt/package.json"
+import type {ButtonSize} from "#ui/types";
+
+export interface Props{
+  buttonSize?: ButtonSize
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  buttonSize: "xl"
+})
 
 const runtime = useRuntimeConfig()
 const appVersion = useAppVersion()
@@ -16,7 +25,7 @@ const nuxtVersion = versionNuxt
 
 <template>
   <VDropdown :distance="5" :triggers="['hover']">
-    <NavItem icon="i-heroicons-question-mark-circle-20-solid" label="Info" size="xs"/>
+    <NavItem icon="i-heroicons-question-mark-circle-20-solid" label="Info" :size="props.buttonSize" />
     <template #popper>
       <div class="p-3 grid gap-y-3 gap-x-2 grid-cols-[max-content_1fr] items-center">
         <UIcon class="w-5 h-5" name="i-heroicons-cube-20-solid"></UIcon>
