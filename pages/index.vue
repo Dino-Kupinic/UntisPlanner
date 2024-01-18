@@ -4,6 +4,6 @@
 
 <template>
   <h1>Hi</h1>
-<!--  <Calendar></Calendar>-->
+  <Calendar></Calendar>
 <!--  <Example></Example>-->
 </template>
