@@ -2,7 +2,7 @@
 import {useScreens} from "vue-screen-utils"
 
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
-const columns = mapCurrent({lg: 6}, 1)
+const columns = mapCurrent({lg: 4}, 1)
 const date = ref(new Date())
 const colorMode = useColorMode()
 const attrs = ref([{}])
@@ -86,7 +86,7 @@ const isDark = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-wrap justify-center mt-2">
+  <div class="flex flex-wrap justify-center mt-6">
     <ClientOnly fallback-tag="span" fallback="Loading Calendar...">
       <!-- @vue-ignore TODO: Fix type issues with attributes -->
       <VCalendar
@@ -95,7 +95,7 @@ const isDark = computed(() => {
         :attributes="attrs"
         :is-dark="isDark"
         :columns="columns"
-        :rows="3"
+        :rows="2"
         id="calendar"
       ></VCalendar>
     </ClientOnly>

@@ -1,16 +1,19 @@
 <script setup lang="ts">
+import type {DropdownItem} from "#ui/types"
 
-const items = [
+const items: DropdownItem[][] = [
   [{
-    label: 'Settings',
-    slot: "settings"
-  }], [{
-    label: 'Info',
-    slot: "info"
-  }], [{
-    label: 'Color Mode',
-    slot: 'colorMode'
-  }]
+    label: "Settings",
+    slot: "settings",
+  }],
+  [{
+    label: "Info",
+    slot: "info",
+  }],
+  [{
+    label: "Color Mode",
+    slot: "colorMode",
+  }],
 ]
 </script>
 
