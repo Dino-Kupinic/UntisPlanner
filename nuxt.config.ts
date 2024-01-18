@@ -58,7 +58,7 @@ export default defineNuxtConfig({
   },
   modules: [
     "@vueuse/nuxt",
-    "@vite-pwa/nuxt",
+    // "@vite-pwa/nuxt",
     "@nuxt/ui",
     "@samk-dev/nuxt-vcalendar",
     "@nuxt/test-utils/module",
@@ -74,35 +74,35 @@ export default defineNuxtConfig({
     storesDirs: ["./stores/**"],
   },
   sourcemap: isDevelopment,
-  pwa: {
-    manifest: {
-      name: "UntisPlanner",
-      description: "Intuitive Untis Planner",
-      theme_color: "#ffffff",
-      icons: [
-        {
-          src: "untisplanner-icon-192.png",
-          sizes: "192x192",
-          type: "image/png",
-        },
-        {
-          src: "untisplanner-icon-512.png",
-          sizes: "512x512",
-          type: "image/png",
-        },
-      ],
-    },
-    registerType: "autoUpdate",
-    workbox: {
-      navigateFallback: "/",
-    },
-    devOptions: {
-      enabled: true,
-      suppressWarnings: true,
-      navigateFallbackAllowlist: [/^\/$/],
-      type: "module",
-    },
-  },
+  // pwa: {
+  //   manifest: {
+  //     name: "UntisPlanner",
+  //     description: "Intuitive Untis Planner",
+  //     theme_color: "#ffffff",
+  //     icons: [
+  //       {
+  //         src: "untisplanner-icon-192.png",
+  //         sizes: "192x192",
+  //         type: "image/png",
+  //       },
+  //       {
+  //         src: "untisplanner-icon-512.png",
+  //         sizes: "512x512",
+  //         type: "image/png",
+  //       },
+  //     ],
+  //   },
+  //   registerType: "autoUpdate",
+  //   workbox: {
+  //     navigateFallback: "/",
+  //   },
+  //   devOptions: {
+  //     enabled: true,
+  //     suppressWarnings: true,
+  //     navigateFallbackAllowlist: [/^\/$/],
+  //     type: "module",
+  //   },
+  // },
   typescript: {
     typeCheck: true,
     strict: true,
