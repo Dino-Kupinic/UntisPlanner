@@ -3,7 +3,5 @@
 </script>
 
 <template>
-  <Calendar />
-  <ExportTable />
-  <ExportTableButton />
+  <h1 class="text text-2xl text-primary">UntisPlanner</h1>
 </template>
