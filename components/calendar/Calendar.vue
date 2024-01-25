@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {useScreens} from "vue-screen-utils"
+import {atRule} from "postcss";
 
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
 const columns = mapCurrent({lg: 4}, 1)
@@ -20,6 +21,10 @@ onMounted(() => {
   addHolidaysToList()
   setWeekendMarked()
 
+  const durationInWeeks = 5;
+  const weekday = 1;
+
+  markTeachingLessons(weekday, durationInWeeks)
 })
 
 function setWeekendMarked() {
@@ -76,6 +81,43 @@ function addHolidaysToList() {
       ],
     })
   })
+}
+
+function markTeachingLessons(weekday: number, durationInWeeks: number) {
+  let start = new Date(2023, 9 - 1, 11);
+  let end = new Date(2024, 7 - 1, 15);
+
+  let dayToCheck = new Date(start);
+
+  attrs.value.forEach((elem) => {
+    console.log(elem.dates);
+  })
+
+  while (dayToCheck <= end) {
+    let oneDayAfter = dayToCheck.setDate(dayToCheck.getDate() + 1);
+    dayToCheck = new Date(oneDayAfter);
+
+
+    if (!attrs.value.includes(dayToCheck) && dayToCheck.getDay() === weekday) {
+      attrs.value.push({
+        key: "Unterrichtseinheit",
+        highlight: {
+          fillMode: "light",
+          style: {
+            background: "red",
+            color: "black",
+          },
+        },
+        popover: {
+          label: "SEW - Mit Samegmüller",
+          visibility: "hover",
+        },
+        dates: [
+            dayToCheck
+        ],
+      })
+    }
+  }
 }
 
 
