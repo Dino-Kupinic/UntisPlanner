@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import type {Teacher} from "~/model/teacher"
 import type {DropdownItem} from "#ui/types"
-import type {Ref} from "vue"
 
-const supportedFileFormate = [
+const supportedFileFormate: string[] = [
   "JSON",
-  "CSV"
+  "CSV",
 ]
-let selectedItem : DropdownItem = {label: ""}
-const items : DropdownItem[][] = []
-supportedFileFormate.forEach((format, index) =>{
+
+let selectedItem: DropdownItem = {label: ""}
+const items: DropdownItem[][] = []
+
+supportedFileFormate.forEach((format, index) => {
   items.push([
     {
       label: format,
@@ -17,8 +18,8 @@ supportedFileFormate.forEach((format, index) =>{
       disabled: (index == 0),
       icon: (index == 0) ? "i-heroicons-check-16-solid" : "",
       class: "opacity-100",
-      click: () => selectFormat(format, index)
-    }
+      click: () => selectFormat(format, index),
+    },
   ])
   if (index == 0) selectedItem = items[index][0]
 })
@@ -38,8 +39,7 @@ const teachers: Teacher[] = [
   },
 ]
 
-function selectFormat(lable:String, index:number) : void
-{
+function selectFormat(index: number): void {
   selectedItem.disabled = false
   selectedItem.icon = ""
 
@@ -53,8 +53,8 @@ function selectFormat(lable:String, index:number) : void
 
 <template>
   <div class="flex justify-center mt-3 mr-3 ml-3 rounded">
-    <UDropdown :items = "items">
-      <UButton color="white" label="Options" />
+    <UDropdown :items="items">
+      <UButton color="white" label="Options"/>
     </UDropdown>
     <UButton class="ml-3">Generate</UButton>
   </div>
