@@ -1,8 +1,6 @@
 <script setup lang="ts">
 
-import type {Teacher} from "~/model/teacher"
-
-const teachers : Teacher[] = [
+const teacher = [
   {
     id: 1,
     user: "romo",
@@ -37,10 +35,11 @@ const selected = ref([])
 
 <template>
   <div class="flex justify-around mr-3 ml-3 rounded">
+
     <UTable
         v-model="selected"
         class=""
-        :rows="teachers"
+        :rows="teacher"
         :columns="columns"
         :ui="{
           'td':{

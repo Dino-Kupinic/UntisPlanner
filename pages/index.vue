@@ -5,4 +5,6 @@
 <template>
   <Calendar></Calendar>
   <Example></Example>
+  <ExportTable/>
+  <ExportTableButton/>
 </template>
