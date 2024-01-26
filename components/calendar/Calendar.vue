@@ -1,11 +1,27 @@
 <script setup lang="ts">
 import {useScreens} from "vue-screen-utils"
-import {atRule} from "postcss";
 
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
 const columns = mapCurrent({lg: 4}, 1)
 const date = ref(new Date())
 const colorMode = useColorMode()
+interface attrsObject {
+  key: string;
+  highlight: {
+    fillMode: string;
+    style: {
+      background: string;
+      color: string;
+      border: string;
+    };
+  };
+  popover: {
+    label: string;
+    visibility: string;
+  };
+  dates: Date[];
+}
+// const attrs = ref<attrsObject[]>([])
 const attrs = ref([{}])
 
 const holidays = ref([
@@ -22,7 +38,7 @@ onMounted(() => {
   setWeekendMarked()
 
   const durationInWeeks = 5;
-  const weekday = 1;
+  const weekday = 2;
 
   markTeachingLessons(weekday, durationInWeeks)
 })
@@ -89,14 +105,12 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
 
   let dayToCheck = new Date(start);
 
-  attrs.value.forEach((elem) => {
-    console.log(elem.dates);
-  })
 
   while (dayToCheck <= end) {
     let oneDayAfter = dayToCheck.setDate(dayToCheck.getDate() + 1);
     dayToCheck = new Date(oneDayAfter);
 
+    // const isDatePresent = attrs.value.some(obj => obj.dates.includes(dayToCheck));
 
     if (!attrs.value.includes(dayToCheck) && dayToCheck.getDay() === weekday) {
       attrs.value.push({
