@@ -1,7 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`Example Component > can mount some component 1`] = `
-"<p>Example</p>
-<p>count: 0</p>
-<button>increment</button>"
-`;
