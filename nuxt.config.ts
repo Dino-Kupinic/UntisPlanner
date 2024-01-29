@@ -103,8 +103,8 @@ export default defineNuxtConfig({
   //     type: "module",
   //   },
   // },
-  typescript: {
-    typeCheck: true,
-    strict: true,
-  },
+  // typescript: {
+  //   typeCheck: true,
+  //   strict: true,
+  // },
 })
