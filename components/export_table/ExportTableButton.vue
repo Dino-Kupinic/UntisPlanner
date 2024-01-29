@@ -3,28 +3,26 @@ import type {Teacher} from "~/model/teacher"
 import type {DropdownItem} from "#ui/types"
 import {useTableExportStore} from "~/stores/tableExportStore"
 
-
 const tableExportStore = useTableExportStore()
-const supportedFileFormate: string[] = [
+const supportedFileFormats: string[] = [
   "CSV",
   "JSON",
 ]
 
-let selectedItem: DropdownItem = {label: ""}
+const selectedItem: Ref<DropdownItem> = ref({label: ""})
 const items: DropdownItem[][] = []
 
-supportedFileFormate.forEach((format, index) => {
+supportedFileFormats.forEach((format, index) => {
   items.push([
     {
       label: format,
       shortcuts: ["" + (index + 1)],
       disabled: (index == 0),
       icon: (index == 0) ? "i-heroicons-check-16-solid" : "",
-      class: "opacity-100",
       click: () => selectFormat(index),
     },
   ])
-  if (index == 0) selectedItem = items[index][0]
+  if (index == 0) selectedItem.value = items[index][0]
 })
 
 function download() {
@@ -46,19 +44,22 @@ function download() {
 }
 
 function createFile(teachers: Teacher[]): File | null {
-  if (selectedItem.label == "CSV") {
-    return new File([jsonToCsv(teachers)], "untisPlanner.csv", {
-      type: "text/csv",
-    })
-  } else if (selectedItem.label == "JSON") {
-    const blob = new Blob([JSON.stringify(teachers, null, 2)], {
-      type: "application/json",
-    })
+  switch (selectedItem.value.label) {
+    case "CSV":
+      return new File([jsonToCsv(teachers)], "untisPlanner.csv", {
+        type: "text/csv",
+      })
+    case "JSON":
+      const blob = new Blob([JSON.stringify(teachers, null, 2)], {
+        type: "application/json",
+      })
 
-    return new File([blob], "untisPlanner.json", {
-      type: "application/json",
-    })
-  } else return null
+      return new File([blob], "untisPlanner.json", {
+        type: "application/json",
+      })
+    default:
+      return null
+  }
 }
 
 function jsonToCsv(items: any) {
@@ -67,23 +68,22 @@ function jsonToCsv(items: any) {
   // handle null or undefined values here
   const replacer = (key: any, value: any) => value ?? ""
   const rowItems = items.map((row: any) =>
-      header
-          .map((fieldName) => JSON.stringify(row[fieldName], replacer))
-          .join(","),
+    header
+      .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+      .join(","),
   )
   // join header and body, and break into separate lines
-  const csv = [headerString, ...rowItems].join("\r\n")
-  return csv
+  return [headerString, ...rowItems].join("\r\n")
 }
 
 function selectFormat(index: number): void {
-  selectedItem.disabled = false
-  selectedItem.icon = ""
+  selectedItem.value.disabled = false
+  selectedItem.value.icon = ""
 
   items[index][0].disabled = true
   items[index][0].icon = "i-heroicons-check-16-solid"
 
-  selectedItem = items[index][0]
+  selectedItem.value = items[index][0]
 }
 
 </script>
