@@ -1,28 +1,14 @@
 <script setup lang="ts">
 import {useScreens} from "vue-screen-utils"
+import type {AttributeConfig} from "v-calendar/src/utils/attribute"
 
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
 const columns = mapCurrent({lg: 4}, 1)
 const date = ref(new Date())
 const colorMode = useColorMode()
-interface attrsObject {
-  key: string;
-  highlight: {
-    fillMode: string;
-    style: {
-      background: string;
-      color: string;
-      border: string;
-    };
-  };
-  popover: {
-    label: string;
-    visibility: string;
-  };
-  dates: Date[];
-}
-// const attrs = ref<attrsObject[]>([])
-const attrs = ref([{}])
+
+// API: https://vcalendar.io/calendar/api.html TODO: Remove later
+const attrs = ref<AttributeConfig[]>([])
 
 const holidays = ref([
   {name: "Semester Holidays", start: new Date(0, 2, 12), end: new Date(0, 2, 18)},
@@ -37,14 +23,14 @@ onMounted(() => {
   addHolidaysToList()
   setWeekendMarked()
 
-  const durationInWeeks = 5;
-  const weekday = 2;
+  const durationInWeeks = 5
+  const weekday = 2
 
   markTeachingLessons(weekday, durationInWeeks)
 })
 
 function setWeekendMarked() {
-  const weekendAttributes = {
+  const weekendAttributes: AttributeConfig = {
     key: "Weekend",
     highlight: {
       fillMode: "light",
@@ -95,20 +81,20 @@ function addHolidaysToList() {
           },
         },
       ],
-    })
+    } as AttributeConfig)
   })
 }
 
 function markTeachingLessons(weekday: number, durationInWeeks: number) {
-  let start = new Date(2023, 9 - 1, 11);
-  let end = new Date(2024, 7 - 1, 15);
+  let start = new Date(2023, 9 - 1, 11)
+  let end = new Date(2024, 7 - 1, 15)
 
-  let dayToCheck = new Date(start);
+  let dayToCheck = new Date(start)
 
 
   while (dayToCheck <= end) {
-    let oneDayAfter = dayToCheck.setDate(dayToCheck.getDate() + 1);
-    dayToCheck = new Date(oneDayAfter);
+    let oneDayAfter = dayToCheck.setDate(dayToCheck.getDate() + 1)
+    dayToCheck = new Date(oneDayAfter)
 
     // const isDatePresent = attrs.value.some(obj => obj.dates.includes(dayToCheck));
 
@@ -127,13 +113,12 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
           visibility: "hover",
         },
         dates: [
-            dayToCheck
+          dayToCheck,
         ],
-      })
+      } as AttributeConfig)
     }
   }
 }
-
 
 
 const isDark = computed(() => {
@@ -144,7 +129,6 @@ const isDark = computed(() => {
 <template>
   <div class="flex flex-wrap justify-center mt-6">
     <ClientOnly fallback-tag="span" fallback="Loading Calendar...">
-      <!-- @vue-ignore TODO: Fix type issues with attributes -->
       <VCalendar
         show-weeknumbers
         v-model="date"
