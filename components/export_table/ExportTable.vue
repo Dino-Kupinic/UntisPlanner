@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import {useTableExportStore} from "~/stores/tableExportStore"
 
+const tableExportStore = useTableExportStore()
 const teacher = [
   {
     id: 1,
@@ -14,6 +16,11 @@ const teacher = [
     to: "20231015,20231126,20240114,20240225,20240331,20240428,20240609,",
   },
 ]
+const selected = ref([])
+watch(selected, () => {
+  tableExportStore.teachers = selected.value
+})
+
 
 const columns = [{
   key: "id",
@@ -30,7 +37,7 @@ const columns = [{
   label: "To",
 }]
 
-const selected = ref([])
+
 </script>
 
 <template>
