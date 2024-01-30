@@ -1,52 +1,89 @@
 <script setup lang="ts">
 import type {Teacher} from "~/model/teacher"
 import type {DropdownItem} from "#ui/types"
+import {useTableExportStore} from "~/stores/tableExportStore"
 
-const supportedFileFormate: string[] = [
-  "JSON",
+const tableExportStore = useTableExportStore()
+const supportedFileFormats: string[] = [
   "CSV",
+  "JSON",
 ]
 
-let selectedItem: DropdownItem = {label: ""}
+const selectedItem: Ref<DropdownItem> = ref({label: ""})
 const items: DropdownItem[][] = []
 
-supportedFileFormate.forEach((format, index) => {
+supportedFileFormats.forEach((format, index) => {
   items.push([
     {
       label: format,
       shortcuts: ["" + (index + 1)],
       disabled: (index == 0),
       icon: (index == 0) ? "i-heroicons-check-16-solid" : "",
-      class: "opacity-100",
-      click: () => selectFormat(format, index),
+      click: () => selectFormat(index),
     },
   ])
-  if (index == 0) selectedItem = items[index][0]
+  if (index == 0) selectedItem.value = items[index][0]
 })
 
-const teachers: Teacher[] = [
-  {
-    id: 1,
-    user: "romo",
-    from: "20230925,20231127,20240115,20240212,20240318,20240415,20240513,",
-    to: "20231015,20231224,20240204,20240310,20240331,20240505,20240609,",
-  },
-  {
-    id: 2,
-    user: "heinz",
-    from: "20230925,20231023,20231204,20240129,20240304,20240408,20240506,",
-    to: "20231015,20231126,20240114,20240225,20240331,20240428,20240609,",
-  },
-]
+function download() {
+  const teachers: Teacher[] = tableExportStore.teachers
+  const file = createFile(teachers)
+
+  if (file != null) {
+    const link = document.createElement("a")
+    const url = URL.createObjectURL(file)
+
+    link.href = url
+    link.download = file.name
+    document.body.appendChild(link)
+    link.click()
+
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
+  }
+}
+
+function createFile(teachers: Teacher[]): File | null {
+  switch (selectedItem.value.label) {
+    case "CSV":
+      return new File([jsonToCsv(teachers)], "untisPlanner.csv", {
+        type: "text/csv",
+      })
+    case "JSON":
+      const blob = new Blob([JSON.stringify(teachers, null, 2)], {
+        type: "application/json",
+      })
+
+      return new File([blob], "untisPlanner.json", {
+        type: "application/json",
+      })
+    default:
+      return null
+  }
+}
+
+function jsonToCsv(items: any) {
+  const header = Object.keys(items[0])
+  const headerString = header.join(",")
+  // handle null or undefined values here
+  const replacer = (key: any, value: any) => value ?? ""
+  const rowItems = items.map((row: any) =>
+      header
+          .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+          .join(","),
+  )
+  // join header and body, and break into separate lines
+  return [headerString, ...rowItems].join("\r\n")
+}
 
 function selectFormat(index: number): void {
-  selectedItem.disabled = false
-  selectedItem.icon = ""
+  selectedItem.value.disabled = false
+  selectedItem.value.icon = ""
 
   items[index][0].disabled = true
   items[index][0].icon = "i-heroicons-check-16-solid"
 
-  selectedItem = items[index][0]
+  selectedItem.value = items[index][0]
 }
 
 </script>
@@ -56,6 +93,6 @@ function selectFormat(index: number): void {
     <UDropdown :items="items">
       <UButton color="white" label="Options"/>
     </UDropdown>
-    <UButton class="ml-3">Generate</UButton>
+    <UButton class="ml-3" @click="download()">Generate</UButton>
   </div>
 </template>
