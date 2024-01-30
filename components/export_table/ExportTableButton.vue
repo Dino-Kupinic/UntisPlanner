@@ -68,9 +68,9 @@ function jsonToCsv(items: any) {
   // handle null or undefined values here
   const replacer = (key: any, value: any) => value ?? ""
   const rowItems = items.map((row: any) =>
-    header
-      .map((fieldName) => JSON.stringify(row[fieldName], replacer))
-      .join(","),
+      header
+          .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+          .join(","),
   )
   // join header and body, and break into separate lines
   return [headerString, ...rowItems].join("\r\n")

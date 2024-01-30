@@ -43,11 +43,11 @@ const columns = [{
 <template>
   <div class="flex justify-around mr-3 ml-3 rounded">
     <UTable
-      v-model="selected"
-      class=""
-      :rows="teacher"
-      :columns="columns"
-      :ui="{
+        v-model="selected"
+        class=""
+        :rows="teacher"
+        :columns="columns"
+        :ui="{
           'td':{
             'width': '20%'
           }
