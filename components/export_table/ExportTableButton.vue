@@ -107,19 +107,30 @@ function openDownloadPrompt() {
                      @click="isOpen = false"/>
           </div>
         </template>
-        <div class="flex flex-row">
+        <div class="flex flex-row justify-evenly">
           <UButton icon="i-heroicons-arrow-down-circle" label="Download directly"/>
-
           <UButton variant="outline" icon="i-heroicons-clipboard" label="Copy to clipboard"/>
         </div>
         <template #footer>
-          <Placeholder class="h-8"/>
+          <div class="flex flex-col gap-2 ">
+            <p class="text text-base font-semibold">Output</p>
+            <p class="text text-sm">JSON</p>
+            <UTextarea>
+
+            </UTextarea>
+            <p class="text text-sm">CSV</p>
+            <UTextarea>
+
+            </UTextarea>
+          </div>
+          <p class="text text-sm mb-2 mt-2">Download Options</p>
+          <UDropdown :items="items">
+            <UButton color="white" label="File Type"/>
+          </UDropdown>
         </template>
       </UCard>
     </UModal>
-    <UDropdown :items="items">
-      <UButton color="white" label="Options"/>
-    </UDropdown>
-    <UButton class="ml-3" @click="openDownloadPrompt()">Generate</UButton>
+
+    <UButton class="ml-3" @click="openDownloadPrompt()">Download</UButton>
   </div>
 </template>
