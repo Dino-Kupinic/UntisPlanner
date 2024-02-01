@@ -3,8 +3,6 @@ import {useScreens} from "vue-screen-utils"
 import type {AttributeConfig} from "v-calendar/src/utils/attribute"
 import type {DateRangeSource} from "v-calendar/src/utils/date/range";
 
-type DateRangeDate = Date | string | number | null;
-
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
 const columns = mapCurrent({lg: 4}, 1)
 const date = ref(new Date())
@@ -88,71 +86,56 @@ function addHolidaysToList() {
 }
 
 function markTeachingLessons(weekday: number, durationInWeeks: number) {
-  let start = new Date(2023, 9 - 1, 11)
-  let end = new Date(2024, 7 - 1, 15)
+  const start = new Date(2023, 9 - 1, 11)
+  const end = new Date(2024, 7 - 1, 15)
 
   let dayToCheck = new Date(start)
 
-
   while (dayToCheck <= end) {
+    let running = true
+
+    if (dayToCheck.getDay() === weekday) {
+
+      attrs.value.forEach((elem: AttributeConfig) => {
+        const dateArrayFromDates = elem.dates
+
+        dateArrayFromDates.forEach((dateRangeFromDates: DateRangeSource) => {
+          let startDate = dateRangeFromDates.start
+          let endDate = dateRangeFromDates.end
+
+          if (startDate <= dayToCheck <= endDate) {
+            while (startDate <= endDate && running) {
+              if (dayToCheck !== startDate) {
+                attrs.value.push({
+                  key: "Unterrichtseinheit",
+                  highlight: {
+                    fillMode: "light",
+                    style: {
+                      background: "red",
+                      color: "black",
+                    },
+                  },
+                  popover: {
+                    label: "SEW - Mit Samegmüller",
+                    visibility: "hover",
+                  },
+                  dates: [
+                    dayToCheck,
+                  ],
+                } as AttributeConfig)
+                running = false
+              }
+
+              let oneDayAfter = startDate.setDate(dayToCheck.getDate() + 1)
+              startDate = new Date(oneDayAfter)
+            }
+          }
+        })
+      })
+    }
+
     let oneDayAfter = dayToCheck.setDate(dayToCheck.getDate() + 1)
     dayToCheck = new Date(oneDayAfter)
-
-    // attrs.value.forEach((elem: AttributeConfig) => {
-    //   elem.dates?.forEach((dateAsRangeSource: DateRangeSource) => {
-    //     const dateRangeDateExample: DateRangeDate = new Date()
-    //
-    //     if (dateAsRangeSource !== null && typeof dateAsRangeSource === typeof dateRangeDateExample) {
-    //       const dateAsDateRangeDate: Date = dateAsRangeSource
-    //
-    //       if (dayToCheck.getDay() === weekday && !(dayToCheck === dateAsDateRangeDate)) {
-    //         attrs.value.push({
-    //           key: "Unterrichtseinheit",
-    //           highlight: {
-    //             fillMode: "light",
-    //             style: {
-    //               background: "red",
-    //               color: "black",
-    //             },
-    //           },
-    //           popover: {
-    //             label: "SEW - Mit Samegmüller",
-    //             visibility: "hover",
-    //           },
-    //           dates: [
-    //             dayToCheck,
-    //           ],
-    //         } as AttributeConfig)
-    //       }
-    //     }
-    //   })
-    // })
-    attrs.value.forEach((elem: AttributeConfig) => {
-
-      const dateAsDateRangeDate = elem.dates
-      console.log(dateAsDateRangeDate);
-      console.log(typeof dateAsDateRangeDate);
-
-      if (dayToCheck.getDay() === weekday /*&& !(dayToCheck === dateAsDateRangeDate)*/) {
-        attrs.value.push({
-          key: "Unterrichtseinheit",
-          highlight: {
-            fillMode: "light",
-            style: {
-              background: "red",
-              color: "black",
-            },
-          },
-          popover: {
-            label: "SEW - Mit Samegmüller",
-            visibility: "hover",
-          },
-          dates: [
-            dayToCheck,
-          ],
-        } as AttributeConfig)
-      }
-    })
   }
 }
 
