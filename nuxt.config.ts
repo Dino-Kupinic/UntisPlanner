@@ -1,5 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import {isDevelopment} from "std-env"
+import pkg from "./package.json"
+import {execaSync} from "execa"
 
 export default defineNuxtConfig({
   app: {
@@ -20,7 +22,6 @@ export default defineNuxtConfig({
   ssr: false,
   spaLoadingTemplate: true,
   vue: {
-    defineModel: true,
     propsDestructure: true,
   },
   components: [
@@ -29,6 +30,13 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+  runtimeConfig: {
+    public: {
+      buildTime: Date.now(),
+      gitHeadSha: execaSync("git", ["rev-parse", "HEAD"]).stdout.trim(),
+      clientVersion: pkg.version,
+    },
+  },
   devServer: {
     port: 3001,
   },
@@ -49,42 +57,51 @@ export default defineNuxtConfig({
   },
   modules: [
     "@vueuse/nuxt",
-    "@vite-pwa/nuxt",
+    // "@vite-pwa/nuxt",
     "@nuxt/ui",
     "@samk-dev/nuxt-vcalendar",
-    "nuxt-vitest",
+    "@nuxt/test-utils/module",
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
+    "@nuxtjs/i18n",
+    "floating-vue/nuxt",
+    "nuxt-viewport",
+    "nuxt-icon",
     ...(isDevelopment ? [] : ["nuxt-security"]),
   ],
-  sourcemap: isDevelopment,
-  pwa: {
-    manifest: {
-      name: "UntisPlanner",
-      description: "Intuitive Untis Planner",
-      theme_color: "#ffffff",
-      icons: [
-        {
-          src: "untisplanner-icon-192.png",
-          sizes: "192x192",
-          type: "image/png",
-        },
-        {
-          src: "untisplanner-icon-512.png",
-          sizes: "512x512",
-          type: "image/png",
-        },
-      ],
-    },
-    registerType: "autoUpdate",
-    workbox: {
-      navigateFallback: "/",
-    },
-    devOptions: {
-      enabled: true,
-      suppressWarnings: true,
-      navigateFallbackAllowlist: [/^\/$/],
-      type: "module",
-    },
+  pinia: {
+    storesDirs: ["./stores/**"],
   },
+  sourcemap: isDevelopment,
+  // pwa: {
+  //   manifest: {
+  //     name: "UntisPlanner",
+  //     description: "Intuitive Untis Planner",
+  //     theme_color: "#ffffff",
+  //     icons: [
+  //       {
+  //         src: "untisplanner-icon-192.png",
+  //         sizes: "192x192",
+  //         type: "image/png",
+  //       },
+  //       {
+  //         src: "untisplanner-icon-512.png",
+  //         sizes: "512x512",
+  //         type: "image/png",
+  //       },
+  //     ],
+  //   },
+  //   registerType: "autoUpdate",
+  //   workbox: {
+  //     navigateFallback: "/",
+  //   },
+  //   devOptions: {
+  //     enabled: true,
+  //     suppressWarnings: true,
+  //     navigateFallbackAllowlist: [/^\/$/],
+  //     type: "module",
+  //   },
+  // },
   typescript: {
     typeCheck: true,
     strict: true,
