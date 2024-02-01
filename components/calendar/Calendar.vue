@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import {useScreens} from "vue-screen-utils"
 import type {AttributeConfig} from "v-calendar/src/utils/attribute"
+import type {DateRangeSource} from "v-calendar/src/utils/date/range";
+
+type DateRangeDate = Date | string | number | null;
 
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
 const columns = mapCurrent({lg: 4}, 1)
 const date = ref(new Date())
 const colorMode = useColorMode()
 
-// API: https://vcalendar.io/calendar/api.html TODO: Remove later
 const attrs = ref<AttributeConfig[]>([])
 
 const holidays = ref([
@@ -96,27 +98,61 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
     let oneDayAfter = dayToCheck.setDate(dayToCheck.getDate() + 1)
     dayToCheck = new Date(oneDayAfter)
 
-    // const isDatePresent = attrs.value.some(obj => obj.dates.includes(dayToCheck));
+    // attrs.value.forEach((elem: AttributeConfig) => {
+    //   elem.dates?.forEach((dateAsRangeSource: DateRangeSource) => {
+    //     const dateRangeDateExample: DateRangeDate = new Date()
+    //
+    //     if (dateAsRangeSource !== null && typeof dateAsRangeSource === typeof dateRangeDateExample) {
+    //       const dateAsDateRangeDate: Date = dateAsRangeSource
+    //
+    //       if (dayToCheck.getDay() === weekday && !(dayToCheck === dateAsDateRangeDate)) {
+    //         attrs.value.push({
+    //           key: "Unterrichtseinheit",
+    //           highlight: {
+    //             fillMode: "light",
+    //             style: {
+    //               background: "red",
+    //               color: "black",
+    //             },
+    //           },
+    //           popover: {
+    //             label: "SEW - Mit Samegmüller",
+    //             visibility: "hover",
+    //           },
+    //           dates: [
+    //             dayToCheck,
+    //           ],
+    //         } as AttributeConfig)
+    //       }
+    //     }
+    //   })
+    // })
+    attrs.value.forEach((elem: AttributeConfig) => {
 
-    if (!attrs.value.includes(dayToCheck) && dayToCheck.getDay() === weekday) {
-      attrs.value.push({
-        key: "Unterrichtseinheit",
-        highlight: {
-          fillMode: "light",
-          style: {
-            background: "red",
-            color: "black",
+      const dateAsDateRangeDate = elem.dates
+      console.log(dateAsDateRangeDate);
+      console.log(typeof dateAsDateRangeDate);
+
+      if (dayToCheck.getDay() === weekday /*&& !(dayToCheck === dateAsDateRangeDate)*/) {
+        attrs.value.push({
+          key: "Unterrichtseinheit",
+          highlight: {
+            fillMode: "light",
+            style: {
+              background: "red",
+              color: "black",
+            },
           },
-        },
-        popover: {
-          label: "SEW - Mit Samegmüller",
-          visibility: "hover",
-        },
-        dates: [
-          dayToCheck,
-        ],
-      } as AttributeConfig)
-    }
+          popover: {
+            label: "SEW - Mit Samegmüller",
+            visibility: "hover",
+          },
+          dates: [
+            dayToCheck,
+          ],
+        } as AttributeConfig)
+      }
+    })
   }
 }
 
@@ -129,6 +165,7 @@ const isDark = computed(() => {
 <template>
   <div class="flex flex-wrap justify-center mt-6">
     <ClientOnly fallback-tag="span" fallback="Loading Calendar...">
+      <!--@vue-ignore-->
       <VCalendar
         show-weeknumbers
         v-model="date"
