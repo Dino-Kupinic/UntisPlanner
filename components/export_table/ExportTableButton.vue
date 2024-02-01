@@ -68,9 +68,9 @@ function jsonToCsv(items: any) {
   // handle null or undefined values here
   const replacer = (key: any, value: any) => value ?? ""
   const rowItems = items.map((row: any) =>
-      header
-          .map((fieldName) => JSON.stringify(row[fieldName], replacer))
-          .join(","),
+    header
+      .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+      .join(","),
   )
   // join header and body, and break into separate lines
   return [headerString, ...rowItems].join("\r\n")
@@ -86,13 +86,40 @@ function selectFormat(index: number): void {
   selectedItem.value = items[index][0]
 }
 
+const isOpen = ref<boolean>(false)
+
+function openDownloadPrompt() {
+  isOpen.value = true
+  // download()
+}
 </script>
 
 <template>
   <div class="flex justify-center mt-3 mr-3 ml-3 rounded">
+    <UModal v-model="isOpen">
+      <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+        <template #header>
+          <div class="flex items-center justify-between">
+            <p class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+              How would you like to have your data?
+            </p>
+            <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+                     @click="isOpen = false"/>
+          </div>
+        </template>
+        <div class="flex flex-row">
+          <UButton icon="i-heroicons-arrow-down-circle" label="Download directly"/>
+
+          <UButton variant="outline" icon="i-heroicons-clipboard" label="Copy to clipboard"/>
+        </div>
+        <template #footer>
+          <Placeholder class="h-8"/>
+        </template>
+      </UCard>
+    </UModal>
     <UDropdown :items="items">
       <UButton color="white" label="Options"/>
     </UDropdown>
-    <UButton class="ml-3" @click="download()">Generate</UButton>
+    <UButton class="ml-3" @click="openDownloadPrompt()">Generate</UButton>
   </div>
 </template>
