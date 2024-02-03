@@ -7,4 +7,6 @@ describe("ExportTableButton", () => {
     const component = await mountSuspended(ExportTableButton)
     expect(component.html()).toMatchSnapshot()
   })
+
+  // TODO: Test modal
 })
