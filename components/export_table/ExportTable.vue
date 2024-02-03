@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useTableExportStore} from "~/stores/tableExportStore"
 
-const tableExportStore = useTableExportStore()
+const {teachers} = storeToRefs(useTableExportStore())
 const teacher = [
   {
     id: 1,
@@ -15,12 +15,24 @@ const teacher = [
     from: "20230925,20231023,20231204,20240129,20240304,20240408,20240506,",
     to: "20231015,20231126,20240114,20240225,20240331,20240428,20240609,",
   },
+  {
+    id: 3,
+    user: "ratp",
+    from: "20230925,20231023,20231204,20240129,20240304,20240408,20240506,",
+    to: "20231015,20231126,20240114,20240225,20240331,20240428,20240609,",
+  },
+  {
+    id: 4,
+    user: "prag",
+    from: "20230925,20231023,20231204,20240129,20240304,20240408,20240506,",
+    to: "20231015,20231126,20240114,20240225,20240331,20240428,20240609,",
+  },
 ]
-const selected = ref([])
-watch(selected, () => {
-  tableExportStore.teachers = selected.value
-})
 
+const selected = ref([teacher[0]])
+watch(selected, () => {
+  teachers.value = selected.value
+})
 
 const columns = [{
   key: "id",
@@ -37,21 +49,31 @@ const columns = [{
   label: "To",
 }]
 
+function select(row: any) {
+  const index = selected.value.findIndex((item) => item.id === row.id)
+  if (index === -1) {
+    selected.value.push(row)
+  } else {
+    selected.value.splice(index, 1)
+  }
+}
 
 </script>
 
 <template>
-  <div class="flex justify-around mr-3 ml-3 rounded">
+  <div class="flex justify-around mr-3 ml-3">
     <UTable
-        v-model="selected"
-        class=""
-        :rows="teacher"
-        :columns="columns"
-        :ui="{
+      @select="select"
+      v-model="selected"
+      class=""
+      :rows="teacher"
+      :columns="columns"
+      :ui="{
           'td':{
             'width': '20%'
           }
-      }">
+        }"
+    >
     </UTable>
   </div>
 </template>

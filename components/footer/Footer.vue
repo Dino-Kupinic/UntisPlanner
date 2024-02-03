@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import HeartIcon from "~/components/icon/HeartIcon.vue"
 import {useAppVersion} from "~/composables/useAppVersion"
-const appVersion = useAppVersion();
+
+const appVersion = useAppVersion()
 </script>
 
 <template>
   <footer>
     <br>
-    <div class="flex items-center max-sm:space-y-3 max-sm:flex-col max-sm:flex-wrap max-sm:content-center max-sm:items-center">
-      <div class="basis-1/3">
+    <div
+      class="flex items-center max-sm:space-y-3 max-sm:flex-col max-sm:flex-wrap max-sm:content-center max-sm:items-center border-t border-neutral-300 dark:bg-gray-900 dark:border-gray-800 pt-3 pb-5">
+      <div class="basis-1/3 ">
 
         <GithubIcon class="m-auto" width="30" height="30"/>
 
@@ -22,7 +24,7 @@ const appVersion = useAppVersion();
 
       <div class="basis-1/3 text-sm text-center">
         <p>GNU General Public License v3.0</p>
-        <p>v{{appVersion}}</p>
+        <p>v{{ appVersion }}</p>
       </div>
     </div>
   </footer>
