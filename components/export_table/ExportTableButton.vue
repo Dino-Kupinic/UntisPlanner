@@ -102,8 +102,8 @@ const {copy: copyCSV, copied: copiedCSV} = useClipboard({csvContent})
 
 function copyToClipboard() {
   showClipboardOutput.value = true
-  jsonContent.value = jsonToCSV(teachers.value)
-  csvContent.value = JSON.stringify(teachers.value, null, 2)
+  csvContent.value = jsonToCSV(teachers.value)
+  jsonContent.value = JSON.stringify(teachers.value, null, 2)
 }
 </script>
 
@@ -129,17 +129,13 @@ function copyToClipboard() {
             <template v-if="isSupported">
               <p class="text text-base font-semibold">Output</p>
               <p class="text text-sm">JSON</p>
-              <UTextarea v-model="jsonContent">
-
-              </UTextarea>
+              <UTextarea v-model="jsonContent" :rows="6"/>
               <UButton @click="copyJSON(jsonContent)" variant="ghost" icon="i-heroicons-clipboard" class="w-24">
                 <span v-if="!copiedJSON">Copy</span>
                 <span v-else>Copied!</span>
               </UButton>
               <p class="text text-sm">CSV</p>
-              <UTextarea v-model="csvContent">
-
-              </UTextarea>
+              <UTextarea v-model="csvContent" :rows="6"/>
               <UButton @click="copyCSV(csvContent)" variant="ghost" icon="i-heroicons-clipboard" class="w-24">
                 <span v-if="!copiedCSV">Copy</span>
                 <span v-else>Copied!</span>
@@ -153,9 +149,11 @@ function copyToClipboard() {
         </template>
       </UCard>
     </UModal>
-    <UButton label="Export Data" class="ml-3" @click="isOpen = true">
+  </div>
+  <div class="flex justify-center m-3">
+    <UButton label="Export Data" @click="isOpen = true">
       <template #trailing>
-        <UIcon name="i-heroicons-arrow-right"/>
+        <UIcon class="w-5 h-5" name="i-material-symbols-export-notes"/>
       </template>
     </UButton>
   </div>
