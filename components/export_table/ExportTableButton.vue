@@ -3,13 +3,15 @@ import type {Teacher} from "~/model/teacher"
 import type {DropdownItem} from "#ui/types"
 import {useTableExportStore} from "~/stores/tableExportStore"
 
-const tableExportStore = useTableExportStore()
+const {teachers} = storeToRefs(useTableExportStore())
 const supportedFileFormats: string[] = [
   "CSV",
   "JSON",
 ]
 
-const selectedItem: Ref<DropdownItem> = ref({label: ""})
+const selectedItem: Ref<DropdownItem> = ref({
+  label: "",
+})
 const items: DropdownItem[][] = []
 
 supportedFileFormats.forEach((format, index) => {
@@ -26,8 +28,7 @@ supportedFileFormats.forEach((format, index) => {
 })
 
 function download() {
-  const teachers: Teacher[] = tableExportStore.teachers
-  const file = createFile(teachers)
+  const file = createFile(teachers.value)
 
   if (file != null) {
     const link = document.createElement("a")
@@ -46,7 +47,7 @@ function download() {
 function createFile(teachers: Teacher[]): File | null {
   switch (selectedItem.value.label) {
     case "CSV":
-      return new File([jsonToCsv(teachers)], "untisPlanner.csv", {
+      return new File([jsonToCSV(teachers)], "untisPlanner.csv", {
         type: "text/csv",
       })
     case "JSON":
@@ -62,19 +63,18 @@ function createFile(teachers: Teacher[]): File | null {
   }
 }
 
-function jsonToCsv(items: any) {
+function jsonToCSV(items: any) {
   const header = Object.keys(items[0])
   const headerString = header.join(",")
-  // handle null or undefined values here
   const replacer = (key: any, value: any) => value ?? ""
   const rowItems = items.map((row: any) =>
     header
       .map((fieldName) => JSON.stringify(row[fieldName], replacer))
       .join(","),
   )
-  // join header and body, and break into separate lines
   return [headerString, ...rowItems].join("\r\n")
 }
+
 
 function selectFormat(index: number): void {
   selectedItem.value.disabled = false
@@ -87,10 +87,23 @@ function selectFormat(index: number): void {
 }
 
 const isOpen = ref<boolean>(false)
+const showClipboardOutput = ref<boolean>(false)
+watch(isOpen, (newIsOpen) => {
+  if (!newIsOpen) showClipboardOutput.value = false
+})
 
-function openDownloadPrompt() {
-  isOpen.value = true
-  // download()
+const jsonContent = ref<string>("")
+const csvContent = ref<string>("")
+const {isSupported} = useClipboard()
+// @ts-ignore
+const {copy: copyJSON, copied: copiedJSON} = useClipboard({jsonContent})
+// @ts-ignore
+const {copy: copyCSV, copied: copiedCSV} = useClipboard({csvContent})
+
+function copyToClipboard() {
+  showClipboardOutput.value = true
+  jsonContent.value = jsonToCSV(teachers.value)
+  csvContent.value = JSON.stringify(teachers.value, null, 2)
 }
 </script>
 
@@ -108,20 +121,30 @@ function openDownloadPrompt() {
           </div>
         </template>
         <div class="flex flex-row justify-evenly">
-          <UButton icon="i-heroicons-arrow-down-circle" label="Download directly"/>
-          <UButton variant="outline" icon="i-heroicons-clipboard" label="Copy to clipboard"/>
+          <UButton @click="download()" icon="i-heroicons-arrow-down-circle" label="Download directly"/>
+          <UButton @click="copyToClipboard()" variant="outline" icon="i-heroicons-clipboard" label="Copy to clipboard"/>
         </div>
         <template #footer>
-          <div class="flex flex-col gap-2 ">
-            <p class="text text-base font-semibold">Output</p>
-            <p class="text text-sm">JSON</p>
-            <UTextarea>
+          <div v-if="showClipboardOutput" class="flex flex-col gap-2">
+            <template v-if="isSupported">
+              <p class="text text-base font-semibold">Output</p>
+              <p class="text text-sm">JSON</p>
+              <UTextarea v-model="jsonContent">
 
-            </UTextarea>
-            <p class="text text-sm">CSV</p>
-            <UTextarea>
+              </UTextarea>
+              <UButton @click="copyJSON(jsonContent)" variant="ghost" icon="i-heroicons-clipboard" class="w-24">
+                <span v-if="!copiedJSON">Copy</span>
+                <span v-else>Copied!</span>
+              </UButton>
+              <p class="text text-sm">CSV</p>
+              <UTextarea v-model="csvContent">
 
-            </UTextarea>
+              </UTextarea>
+              <UButton @click="copyCSV(csvContent)" variant="ghost" icon="i-heroicons-clipboard" class="w-24">
+                <span v-if="!copiedCSV">Copy</span>
+                <span v-else>Copied!</span>
+              </UButton>
+            </template>
           </div>
           <p class="text text-sm mb-2 mt-2">Download Options</p>
           <UDropdown :items="items">
@@ -130,7 +153,10 @@ function openDownloadPrompt() {
         </template>
       </UCard>
     </UModal>
-
-    <UButton class="ml-3" @click="openDownloadPrompt()">Download</UButton>
+    <UButton label="Export Data" class="ml-3" @click="isOpen = true">
+      <template #trailing>
+        <UIcon name="i-heroicons-arrow-right"/>
+      </template>
+    </UButton>
   </div>
 </template>
