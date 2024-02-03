@@ -3,7 +3,9 @@
 </script>
 
 <template>
-  <NavBar />
-  <slot></slot>
-  <Footer />
+  <NavBar/>
+  <div class="h-screen">
+    <slot></slot>
+  </div>
+  <Footer/>
 </template>
