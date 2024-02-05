@@ -12,6 +12,8 @@ import {NavBarThemeToggle} from "#components"
 // })
 
 describe("NavBarThemeToggle", async () => {
+  test.todo("NavBarThemeToggle should work")
+
   // const component = await mountSuspended(NavBarThemeToggle)
   //
   // test("it can mount properly", async () => {
