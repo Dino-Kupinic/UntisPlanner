@@ -13,12 +13,14 @@ function generate() {
 </script>
 
 <template>
-  <Calendar/>
-  <div class="flex justify-center m-3">
-    <UButton :loading="isLoading" @click="generate()" icon="i-material-symbols-magic-button" label="Generate"/>
-  </div>
-  <div v-if="showTable">
-    <ExportTable/>
-    <ExportTableButton/>
-  </div>
+  <main class="h-screen">
+    <Calendar/>
+    <div class="flex justify-center m-3">
+      <UButton :loading="isLoading" @click="generate()" icon="i-material-symbols-magic-button" label="Generate"/>
+    </div>
+    <div v-if="showTable">
+      <ExportTable/>
+      <ExportTableButton/>
+    </div>
+  </main>
 </template>

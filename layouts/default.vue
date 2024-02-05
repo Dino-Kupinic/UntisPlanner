@@ -4,8 +4,6 @@
 
 <template>
   <NavBar/>
-  <div class="h-screen">
-    <slot></slot>
-  </div>
-  <Footer/>
+  <slot></slot>
+  <Footer class="mt-40"/>
 </template>
