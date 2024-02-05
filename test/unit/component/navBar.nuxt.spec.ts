@@ -24,6 +24,7 @@ import {NavBar} from "#components"
 
 
 describe("NavBar", async () => {
+  test.todo("NavBar should work")
   // TODO: fix
   // vi.resetModules()
   // mockNuxtImport("useColorMode", () => {
