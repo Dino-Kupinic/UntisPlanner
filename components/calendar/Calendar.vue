@@ -121,6 +121,7 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
 
       /* Calendar gets run through for each entry */
       attrs.value.forEach((elem: AttributeConfig) => {
+        let teachingUnitValid = true
         const dateArrayFromDates = elem.dates
 
         /* The start- and end-date for each holiday get extracted from .dates array */
@@ -133,27 +134,10 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
 
             /* Since the holidays get put into the calendar in a start-end form it runs through this range */
             while (holidayStart <= holidayEnd && running) {
-              // if (dayToCheck !== startDate) {
-              /* Checks if calendar already has entry for date from dayToCheck */
-              if (holidayStart.getDay() !== weekday) {
-                attrs.value.push({
-                  key: "Unterrichtseinheit",
-                  highlight: {
-                    fillMode: "light",
-                    style: {
-                      background: "red",
-                      color: "black",
-                    },
-                  },
-                  popover: {
-                    label: "SEW - Mit Samegmüller",
-                    visibility: "hover",
-                  },
-                  dates: [
-                    dayToCheck,
-                  ],
-                } as AttributeConfig)
 
+              /* Checks if calendar already has entry for date from dayToCheck */
+              if (holidayStart.getDay() === weekday) {
+                teachingUnitValid = false
                 /* Stops the loop early if a teaching unit has been put in to increase efficiency */
                 running = false
               }
@@ -161,6 +145,25 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
               /* Go on one day in the holiday check */
               let oneDayAfter = holidayStart.setDate(holidayStart.getDate() + 1)
               holidayStart = new Date(oneDayAfter)
+            }
+            if (teachingUnitValid) {
+              attrs.value.push({
+                key: "Unterrichtseinheit",
+                highlight: {
+                  fillMode: "light",
+                  style: {
+                    background: "red",
+                    color: "black",
+                  },
+                },
+                popover: {
+                  label: "SEW - Mit Samegmüller",
+                  visibility: "hover",
+                },
+                dates: [
+                  dayToCheck,
+                ],
+              } as AttributeConfig)
             }
           }
         })
