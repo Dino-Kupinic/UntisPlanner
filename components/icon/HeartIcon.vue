@@ -1,8 +1,7 @@
 <script setup lang="ts">
-
 interface Props {
-  width: string
-  height: string
+  width?: string
+  height?: string
 }
 
 withDefaults(defineProps<Props>(), {
@@ -10,9 +9,7 @@ withDefaults(defineProps<Props>(), {
   height: "20px",
 })
 
-
 </script>
-
 <template>
   <svg xmlns="http://www.w3.org/2000/svg" :width="width" :height="height" viewBox="0 0 24 24">
     <path fill="red" fill-opacity="0" d="M12 20L20.5 11V7L17 5.5L12 7L7 5.5L3.5 7V11L12 20Z">
