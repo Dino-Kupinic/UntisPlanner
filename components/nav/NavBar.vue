@@ -11,7 +11,7 @@
     </UContainer>
     <UContainer class="flex space-x-5 max-[775px]:hidden">
       <NavBarThemeToggle class="self-center"/>
-      <NavItem icon="i-heroicons-cog-6-tooth" label="Settings" path="/settings"></NavItem>
+      <NavItem icon="i-heroicons-cog-6-tooth" label="Settings" path="/settings" />
       <CalendarInfoButton/>
     </UContainer>
     <UContainer id="BurgerMenuContainer" class="space-x-5 min-[775px]:hidden">

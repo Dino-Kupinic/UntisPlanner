@@ -9,8 +9,7 @@ const customDay: InputHoliday = reactive({
   date: {start: sub(new Date(), {days: 0}), end: new Date()},
 })
 
-
-const exportHolidays = toRef(useHolidayExportStore())
+const {holidays} = storeToRefs(useHolidayExportStore())
 
 async function onSubmit(event: FormSubmitEvent<any>) {
   const temp: ExportHoliday = {
@@ -18,7 +17,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     start: customDay.date.start,
     end: customDay.date.end,
   }
-  exportHolidays.value.holidays.push(temp)
+  holidays.value.push(temp)
   customDay.name = ""
   customDay.date = {start: sub(new Date(), {days: 0}), end: new Date()}
 }
@@ -51,5 +50,5 @@ const validate = (state: any): FormError[] => {
     </UFormGroup>
     <UButton class="mt-3 w-full sm:w-24 justify-center" type="submit">Submit</UButton>
   </UForm>
-  <SchoolHolidayTable :holiday="exportHolidays.holidays" class="mt-3"/>
+  <SchoolHolidayTable class="mt-3"/>
 </template>

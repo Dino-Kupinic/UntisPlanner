@@ -1,26 +1,55 @@
 <script setup lang="ts">
 import {format} from "date-fns"
 import type {ExportHoliday, ViewHoliday} from "~/model/holiday"
+import {useHolidayExportStore} from "~/stores/holidayExportStore"
 
-const prop = defineProps<{
-  holiday: ExportHoliday[]
-}>()
+const {holidays} = storeToRefs(useHolidayExportStore())
 
 const viewHoliday = ref<ViewHoliday[]>([])
-watch(prop.holiday, () => {
+watch(holidays.value, () => {
   viewHoliday.value = []
-  prop.holiday.forEach((item) => {
-    const temp: ViewHoliday = {
-      name: item.name,
-      start: format(item.start, "dd.MM.yyyy"),
-      end: format(item.end, "dd.MM.yyyy"),
+  holidays.value.forEach((item: ExportHoliday) => {
+    try {
+      // TODO: Fix this
+      const temp: ViewHoliday = {
+        name: item.name,
+        start: format(item.start as string, "dd.MM.yyyy"),
+        end: format(item.end as string, "dd.MM.yyyy"),
+      };
+      viewHoliday.value.push(temp);
+    } catch (error) {
+      console.error("Error formatting date:", error);
     }
-    viewHoliday.value.push(temp)
   })
 })
 
+const columns = [{
+  key: "name",
+  label: "Name",
+}, {
+  key: "start",
+  label: "Start",
+}, {
+  key: "end",
+  label: "End",
+}, {
+  key: "actions",
+}]
+
+function remove(row: ViewHoliday) {
+  const index = viewHoliday.value.indexOf(row)
+  holidays.value.splice(index, 1)
+}
+
+watch(viewHoliday, () => {
+  console.log(viewHoliday.value)
+})
 </script>
 
 <template>
-  <UTable :rows="viewHoliday"/>
+  <UTable :rows="viewHoliday" :columns="columns">
+    <template #actions-data="{row}">
+      <UButton @click="remove(row)" variant="ghost" icon="i-heroicons-trash"/>
+    </template>
+  </UTable>
 </template>
