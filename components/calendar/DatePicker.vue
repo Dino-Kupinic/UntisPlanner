@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { DatePicker as VCalendarDatePicker } from 'v-calendar'
-import type { DatePickerDate, DatePickerRangeObject } from 'v-calendar/dist/types/src/use/datePicker'
 import 'v-calendar/dist/style.css'
+import type {PropType} from "vue"
+// @ts-ignore
+import type {DatePickerDate, DatePickerRangeObject} from "v-calendar/src/use/datePicker"
 
 const props = defineProps({
   modelValue: {
@@ -27,10 +29,20 @@ const attrs = {
   'is-dark': { selector: 'html', darkClass: 'dark' },
   'first-day-of-week': 2,
 }
+
+const viewport = useViewport()
+const columns = ref<number>(2)
+watch(viewport.breakpoint, (newBreakpoint, oldBreakpoint) => {
+  if (viewport.isGreaterThan('sm')) {
+    columns.value = 2
+  } else {
+    columns.value = 1
+  }
+})
 </script>
 
 <template>
-  <VCalendarDatePicker v-if="date && (typeof date === 'object')" v-model.range="date" :columns="2" v-bind="{ ...attrs, ...$attrs }" />
+  <VCalendarDatePicker v-if="date && (typeof date === 'object')" v-model.range="date" :columns="columns" v-bind="{ ...attrs, ...$attrs }" />
   <VCalendarDatePicker v-else v-model="date" v-bind="{ ...attrs, ...$attrs }" />
 </template>
 
