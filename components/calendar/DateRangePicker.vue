@@ -20,7 +20,7 @@ function selectRange (duration: Duration) {
 }
 </script>
 
-<template>
+<template >
   <UPopover :popper="{ placement: 'bottom-start' }">
     <UButton icon="i-heroicons-calendar-days-20-solid">
       {{ format(selected.start, 'd MMM, yyy') }} - {{ format(selected.end, 'd MMM, yyy') }}
@@ -30,14 +30,14 @@ function selectRange (duration: Duration) {
       <div class="flex items-center divide-x divide-gray-200 dark:divide-gray-800">
         <div class="flex flex-col py-4">
           <UButton
-            v-for="(range, index) in ranges"
-            :key="index"
-            :label="range.label"
-            color="gray"
-            variant="ghost"
-            class="rounded-none px-6"
-            :class="[isRangeSelected(range.duration) ? 'bg-gray-100 dark:bg-gray-800' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50']"
-            @click="selectRange(range.duration)"
+              v-for="(range, index) in ranges"
+              :key="index"
+              :label="range.label"
+              color="gray"
+              variant="ghost"
+              class="rounded-none px-6 ml-2 mr-2"
+              :class="[isRangeSelected(range.duration) ? 'bg-gray-100 dark:bg-gray-800' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50']"
+              @click="selectRange(range.duration)"
           />
         </div>
 

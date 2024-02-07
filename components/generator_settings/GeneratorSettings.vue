@@ -1,48 +1,67 @@
 <script setup lang="ts">
-import { sub, format, isSameDay, type Duration } from 'date-fns'
 
-const ranges = [
-  { label: 'Last 7 days', duration: { days: 7 } },
-  { label: 'Last 14 days', duration: { days: 14 } },
-  { label: 'Last 30 days', duration: { days: 30 } },
-  { label: 'Last 3 months', duration: { months: 3 } },
-  { label: 'Last 6 months', duration: { months: 6 } },
-  { label: 'Last year', duration: { years: 1 } }
-]
-const selected = ref({ start: sub(new Date(), { days: 14 }), end: new Date() })
+const federalStates = ref([
+  "Vienna",
+  "Carinthia",
+  "Styria",
+  "Upper Austria",
+  "Lower Austria",
+  "Burgenland",
+  "Tyrol",
+  "Vorarlberg",
+  "Salzburg",
+])
 
-function isRangeSelected (duration: Duration) {
-  return isSameDay(selected.value.start, sub(new Date(), duration)) && isSameDay(selected.value.end, new Date())
-}
+const weekdays = ref([
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+])
 
-function selectRange (duration: Duration) {
-  selected.value = { start: sub(new Date(), duration), end: new Date() }
-}
+const teachers = ref([
+  "SAMC",
+  "SCHH",
+  "WOLF",
+  "RATG",
+])
+
+const selectedWeekday = ref([])
+const selectedFederalState = ref()
+const selectedTeacher = ref()
+
+const query = ref('SAM')
+
 </script>
 
 <template>
-  <UPopover :popper="{ placement: 'bottom-start' }">
-    <UButton icon="i-heroicons-calendar-days-20-solid">
-      {{ format(selected.start, 'd MMM, yyy') }} - {{ format(selected.end, 'd MMM, yyy') }}
-    </UButton>
-
-    <template #panel="{ close }">
-      <div class="flex items-center divide-x divide-gray-200 dark:divide-gray-800">
-        <div class="flex flex-col py-4">
-          <UButton
-            v-for="(range, index) in ranges"
-            :key="index"
-            :label="range.label"
-            color="gray"
-            variant="ghost"
-            class="rounded-none px-6"
-            :class="[isRangeSelected(range.duration) ? 'bg-gray-100 dark:bg-gray-800' : 'hover:bg-gray-50 dark:hover:bg-gray-800/50']"
-            @click="selectRange(range.duration)"
-          />
-        </div>
-
-        <DatePicker v-model="selected" @close="close" />
-      </div>
-    </template>
-  </UPopover>
+  <div
+      class="flex flex-wrap place-content-center justify-center w-100 dark:bg-gray-900 border-b border-neutral-300 dark:border-gray-800 h-24">
+    <div class="ml-2 mr-2">
+      <p>Federal State</p>
+      <USelectMenu class="w-[20rem] mt-1" v-model="selectedFederalState" :options="federalStates"
+                   placeholder="Select federal state"/>
+    </div>
+    <div class="ml-2 mr-2">
+      <p>Period</p>
+      <UInput class="mt-1" placeholder="1"></UInput>
+    </div>
+    <div class="ml-2 mr-2">
+      <p>Lession-Days</p>
+      <USelectMenu class="w-[20rem] mt-1" v-model="selectedWeekday" :options="weekdays" multiple
+                   placeholder="Select Days">
+        <template #label>
+          <span v-if="selectedWeekday.length" class="truncate">{{ selectedWeekday.join(', ') }}</span>
+        </template>
+      </USelectMenu>
+    </div>
+    <div class="ml-2 mr-2">
+      <p>Teacher</p>
+      <USelectMenu class="w-40 mt-1" v-model="selectedTeacher" v-model:query="query" :options="teachers"
+                   placeholder="Select teacher" searchable></USelectMenu>
+    </div>
+  </div>
 </template>
