@@ -2,13 +2,15 @@
 import {sub, format} from "date-fns"
 import type {FormError, FormSubmitEvent} from "#ui/types"
 import type {ExportHoliday, InputHoliday} from "~/model/holiday"
+import {useHolidayExportStore} from "~/stores/holidayExportStore"
 
 const customDay: InputHoliday = reactive({
   name: "",
   date: {start: sub(new Date(), {days: 0}), end: new Date()},
 })
 
-const customHolidays = ref<ExportHoliday[]>([])
+
+const exportHolidays = toRef(useHolidayExportStore())
 
 async function onSubmit(event: FormSubmitEvent<any>) {
   const temp: ExportHoliday = {
@@ -16,7 +18,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     start: customDay.date.start,
     end: customDay.date.end,
   }
-  customHolidays.value.push(temp)
+  exportHolidays.value.holidays.push(temp)
   customDay.name = ""
   customDay.date = {start: sub(new Date(), {days: 0}), end: new Date()}
 }
@@ -49,5 +51,5 @@ const validate = (state: any): FormError[] => {
     </UFormGroup>
     <UButton class="mt-3 w-full sm:w-24 justify-center" type="submit">Submit</UButton>
   </UForm>
-  <SchoolHolidayTable :holiday="customHolidays"/>
+  <SchoolHolidayTable :holiday="exportHolidays.holidays" class="mt-3"/>
 </template>
