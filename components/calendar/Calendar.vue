@@ -94,6 +94,8 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
   const start = new Date(2023, 9 - 1, 11)
   const end = new Date(2024, 7 - 1, 15)
 
+  let teachingUnitValid: boolean
+
   /*
   * Here is the declaration of the day that gets checked.
   * The algorithm will be further explained by more comments but can be roughly explained with:
@@ -121,7 +123,7 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
 
       /* Calendar gets run through for each entry */
       attrs.value.forEach((elem: AttributeConfig) => {
-        let teachingUnitValid = true
+        teachingUnitValid = true
         const dateArrayFromDates = elem.dates
 
         /* The start- and end-date for each holiday get extracted from .dates array */
