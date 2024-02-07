@@ -86,26 +86,56 @@ function addHolidaysToList() {
 }
 
 function markTeachingLessons(weekday: number, durationInWeeks: number) {
+  /*
+  * Here is the start- and end-date for the function defined,
+  * in this case static for the school year 2023.
+  * This can easily be changed to dynamic (start- and end-date as parameters to function)
+  */
   const start = new Date(2023, 9 - 1, 11)
   const end = new Date(2024, 7 - 1, 15)
 
+  /*
+  * Here is the declaration of the day that gets checked.
+  * The algorithm will be further explained by more comments but can be roughly explained with:
+  * A loop runs through each day of the calendar from start- to end-date.
+  * Since it only needs to check dates with the specified weekday this is the first thing it checks.
+  * If the dayToCheck is not the correct weekday it skips all the following calculations.
+  *
+  * If the dayToCheck has the correct weekday it runs through the given calendar and checks all dates.
+  * Since the given calendar only contains dates where there can not be a teaching unit it does not have to
+  * check for a specific type of date, just if a date is registered in the calendar.
+  *
+  * If the calendar has an entry on the same date where there should be a teaching unit it does not put the
+  * teaching unit into the calendar and skips a week in the count to match the "lost" week.
+  *
+  * When the function is finished all teaching units should be put into the calendar with the right weekly rhythm.
+  * */
   let dayToCheck = new Date(start)
 
+  /* Here starts the loop that checks each day from start- to end-date */
   while (dayToCheck <= end) {
     let running = true
 
+    /* Check if dayToCheck is the correct weekday */
     if (dayToCheck.getDay() === weekday) {
 
+      /* Calendar gets run through for each entry */
       attrs.value.forEach((elem: AttributeConfig) => {
         const dateArrayFromDates = elem.dates
 
+        /* The start- and end-date for each holiday get extracted from .dates array */
         dateArrayFromDates.forEach((dateRangeFromDates: DateRangeSource) => {
-          let startDate = dateRangeFromDates.start
-          let endDate = dateRangeFromDates.end
+          let holidayStart = dateRangeFromDates.start
+          let holidayEnd = dateRangeFromDates.end
 
-          if (startDate <= dayToCheck <= endDate) {
-            while (startDate <= endDate && running) {
-              if (dayToCheck !== startDate) {
+          /* If the dayToCheck is in the range of this holiday it goes further into the checks */
+          if (holidayStart <= dayToCheck <= holidayEnd) {
+
+            /* Since the holidays get put into the calendar in a start-end form it runs through this range */
+            while (holidayStart <= holidayEnd && running) {
+              // if (dayToCheck !== startDate) {
+              /* Checks if calendar already has entry for date from dayToCheck */
+              if (holidayStart.getDay() !== weekday) {
                 attrs.value.push({
                   key: "Unterrichtseinheit",
                   highlight: {
@@ -123,17 +153,21 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
                     dayToCheck,
                   ],
                 } as AttributeConfig)
+
+                /* Stops the loop early if a teaching unit has been put in to increase efficiency */
                 running = false
               }
 
-              let oneDayAfter = startDate.setDate(dayToCheck.getDate() + 1)
-              startDate = new Date(oneDayAfter)
+              /* Go on one day in the holiday check */
+              let oneDayAfter = holidayStart.setDate(holidayStart.getDate() + 1)
+              holidayStart = new Date(oneDayAfter)
             }
           }
         })
       })
     }
 
+    /* Go on one day in the dayToCheck */
     let oneDayAfter = dayToCheck.setDate(dayToCheck.getDate() + 1)
     dayToCheck = new Date(oneDayAfter)
   }
