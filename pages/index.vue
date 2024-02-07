@@ -1,11 +1,27 @@
 <script setup lang="ts">
+const isLoading = ref<boolean>(false)
+const showTable = ref<boolean>(false)
 
-import GeneratorSettings from "~/components/generator_settings/GeneratorSettings.vue"
+function generate() {
+  isLoading.value = true
+  showTable.value = false
+  setTimeout(() => {
+    isLoading.value = false
+    showTable.value = true
+  }, 1000)
+}
 </script>
 
 <template>
-  <GeneratorSettings></GeneratorSettings>
-  <Calendar />
-  <ExportTable />
-  <ExportTableButton />
+  <main class="h-screen">
+    <GeneratorSettings></GeneratorSettings>
+    <Calendar/>
+    <div class="flex justify-center m-3">
+      <UButton :loading="isLoading" @click="generate()" icon="i-material-symbols-magic-button" label="Generate"/>
+    </div>
+    <div v-if="showTable">
+      <ExportTable/>
+      <ExportTableButton/>
+    </div>
+  </main>
 </template>

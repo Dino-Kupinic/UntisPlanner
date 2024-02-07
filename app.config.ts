@@ -17,6 +17,9 @@ export default defineAppConfig({
         "xl": "text-base",
         "3xl": "text-3xl"
       }
+    },
+    icons: {
+      dynamic: true
     }
   },
   nuxtIcon: {

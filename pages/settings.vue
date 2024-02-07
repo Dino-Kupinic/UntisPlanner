@@ -3,7 +3,5 @@
 </script>
 
 <template>
-  <NavBar/>
-  <slot></slot>
-  <Footer class="mt-40"/>
+
 </template>

@@ -8,8 +8,9 @@ describe("Footer", () => {
     expect(component.findComponent("GithubIcon")).toBeTruthy()
     expect(component.findComponent("HeartIcon")).toBeTruthy()
   })
+
   it("Display correct license text", async () => {
     const component = await mountSuspended(Footer)
-    expect(component.html()).toMatchSnapshot()
+    expect(component.html()).toContain("GNU General Public License v3.0")
   })
 })
