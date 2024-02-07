@@ -14,7 +14,7 @@ function generate() {
 
 <template>
   <main class="h-screen">
-    <GeneratorSettings></GeneratorSettings>
+    <GeneratorSettings/>
     <Calendar/>
     <div class="flex justify-center m-3">
       <UButton :loading="isLoading" @click="generate()" icon="i-material-symbols-magic-button" label="Generate"/>
