@@ -10,6 +10,11 @@ function generate() {
     showTable.value = true
   }, 1000)
 }
+
+const skeletonRows = computed(() => {
+  // TODO: Replace with actual number of rows
+  return 4
+})
 </script>
 
 <template>
@@ -17,6 +22,9 @@ function generate() {
     <Calendar/>
     <div class="flex justify-center m-3">
       <UButton :loading="isLoading" @click="generate()" icon="i-material-symbols-magic-button" label="Generate"/>
+    </div>
+    <div v-if="isLoading" class="flex flex-col justify-center mt-8">
+      <ExportTableSkeleton :rows="skeletonRows" />
     </div>
     <div v-if="showTable">
       <ExportTable/>
