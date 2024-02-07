@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { DatePicker as VCalendarDatePicker } from 'v-calendar'
 import 'v-calendar/dist/style.css'
-//@ts-ignore
-import type { DatePickerDate, DatePickerRangeObject } from 'v-calendar/dist/types/src/use/datePicker'
+import type {PropType} from "vue"
+// @ts-ignore
+import type {DatePickerDate, DatePickerRangeObject} from "v-calendar/src/use/datePicker"
 
 const props = defineProps({
   modelValue: {
