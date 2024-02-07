@@ -31,18 +31,10 @@ const attrs = {
 }
 
 const viewport = useViewport()
-const columns = ref<number>(2)
-watch(viewport.breakpoint, (newBreakpoint, oldBreakpoint) => {
-  if (viewport.isGreaterThan('sm')) {
-    columns.value = 2
-  } else {
-    columns.value = 1
-  }
-})
 </script>
 
 <template>
-  <VCalendarDatePicker v-if="date && (typeof date === 'object')" v-model.range="date" :columns="columns" v-bind="{ ...attrs, ...$attrs }" />
+  <VCalendarDatePicker v-if="date && (typeof date === 'object')" v-model.range="date" :columns="viewport.isLessThan('tablet') ? 1 : 2" v-bind="{ ...attrs, ...$attrs }" />
   <VCalendarDatePicker v-else v-model="date" v-bind="{ ...attrs, ...$attrs }" />
 </template>
 
