@@ -5,11 +5,13 @@
   <UContainer
     class="flex underline-offset-1 w-full h-30 border-b border-neutral-300 dark:bg-gray-900 dark:border-gray-800">
     <UContainer class="flex flex-1 items-center">
-      <Logo />
+      <ULink to="/">
+        <Logo/>
+      </ULink>
     </UContainer>
     <UContainer class="flex space-x-5 max-[775px]:hidden">
       <NavBarThemeToggle class="self-center"/>
-      <NavItem icon="i-heroicons-cog-6-tooth" label="Settings" path="/settings"></NavItem>
+      <NavItem icon="i-heroicons-cog-6-tooth" label="Settings" path="/settings" />
       <CalendarInfoButton/>
     </UContainer>
     <UContainer id="BurgerMenuContainer" class="space-x-5 min-[775px]:hidden">

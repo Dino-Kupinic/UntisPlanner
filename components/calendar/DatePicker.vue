@@ -28,10 +28,11 @@ const attrs = {
   'is-dark': { selector: 'html', darkClass: 'dark' },
   'first-day-of-week': 2,
 }
+const viewport = useViewport()
 </script>
 
 <template>
-  <VCalendarDatePicker v-if="date && (typeof date === 'object')" v-model.range="date" :columns="2" v-bind="{ ...attrs, ...$attrs }" />
+  <VCalendarDatePicker v-if="date && (typeof date === 'object')" v-model.range="date" :columns="viewport.isLessThan('tablet') ? 1 : 2" v-bind="{ ...attrs, ...$attrs }" />
   <VCalendarDatePicker v-else v-model="date" v-bind="{ ...attrs, ...$attrs }" />
 </template>
 
@@ -61,4 +62,5 @@ const attrs = {
   --vc-accent-800: rgb(var(--color-primary-800));
   --vc-accent-900: rgb(var(--color-primary-900));
 }
+
 </style>
