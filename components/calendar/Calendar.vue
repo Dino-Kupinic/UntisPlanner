@@ -26,7 +26,7 @@ onMounted(() => {
   const durationInWeeks = 5
   const weekday = 2
 
-  markTeachingLessons(weekday, durationInWeeks)
+  // markTeachingLessons(weekday, durationInWeeks)
 })
 
 function setWeekendMarked() {
@@ -91,8 +91,8 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
   * in this case static for the school year 2023.
   * This can easily be changed to dynamic (start- and end-date as parameters to function)
   */
-  const start = new Date(2023, 9 - 1, 11)
-  const end = new Date(2024, 7 - 1, 15)
+  const start = new Date(2024, 3 - 1, 18)
+  const end = new Date(2024, 3 - 1, 31)
 
   let teachingUnitValid: boolean
 
@@ -130,13 +130,13 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
         dateArrayFromDates.forEach((dateRangeFromDates: DateRangeSource) => {
           let holidayStart = dateRangeFromDates.start
           let holidayEnd = dateRangeFromDates.end
+          console.log(dateRangeFromDates)
 
           /* If the dayToCheck is in the range of this holiday it goes further into the checks */
           if (holidayStart <= dayToCheck <= holidayEnd) {
 
             /* Since the holidays get put into the calendar in a start-end form it runs through this range */
             while (holidayStart <= holidayEnd && running) {
-
               /* Checks if calendar already has entry for date from dayToCheck */
               if (holidayStart.getDay() === weekday) {
                 teachingUnitValid = false
@@ -148,27 +148,27 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
               let oneDayAfter = holidayStart.setDate(holidayStart.getDate() + 1)
               holidayStart = new Date(oneDayAfter)
             }
-            if (teachingUnitValid) {
-              attrs.value.push({
-                key: "Unterrichtseinheit",
-                highlight: {
-                  fillMode: "light",
-                  style: {
-                    background: "red",
-                    color: "black",
-                  },
-                },
-                popover: {
-                  label: "SEW - Mit Samegmüller",
-                  visibility: "hover",
-                },
-                dates: [
-                  dayToCheck,
-                ],
-              } as AttributeConfig)
-            }
           }
         })
+        // if (teachingUnitValid) {
+        //   attrs.value.push({
+        //     key: "Unterrichtseinheit",
+        //     highlight: {
+        //       fillMode: "light",
+        //       style: {
+        //         background: "red",
+        //         color: "black",
+        //       },
+        //     },
+        //     popover: {
+        //       label: "SEW - Mit Samegmüller",
+        //       visibility: "hover",
+        //     },
+        //     dates: [
+        //       dayToCheck,
+        //     ]
+        //   } as AttributeConfig)
+        // }
       })
     }
 
@@ -177,7 +177,6 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
     dayToCheck = new Date(oneDayAfter)
   }
 }
-
 
 const isDark = computed(() => {
   return colorMode.value !== "light"
