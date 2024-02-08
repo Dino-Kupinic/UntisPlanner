@@ -4,23 +4,11 @@ import type {ExportHoliday, ViewHoliday} from "~/model/holiday"
 import {useHolidayExportStore} from "~/stores/holidayExportStore"
 
 const {holidays} = storeToRefs(useHolidayExportStore())
-
 const viewHoliday = ref<ViewHoliday[]>([])
+
+onMounted(() => importData())
 watch(holidays.value, () => {
-  viewHoliday.value = []
-  holidays.value.forEach((item: ExportHoliday) => {
-    try {
-      // TODO: Fix this
-      const temp: ViewHoliday = {
-        name: item.name,
-        start: format(item.start as string, "dd.MM.yyyy"),
-        end: format(item.end as string, "dd.MM.yyyy"),
-      };
-      viewHoliday.value.push(temp);
-    } catch (error) {
-      console.error("Error formatting date:", error);
-    }
-  })
+  importData()
 })
 
 const columns = [{
@@ -41,9 +29,21 @@ function remove(row: ViewHoliday) {
   holidays.value.splice(index, 1)
 }
 
-watch(viewHoliday, () => {
-  console.log(viewHoliday.value)
-})
+function importData(): void {
+  viewHoliday.value = []
+  holidays.value.forEach((item: ExportHoliday) => {
+    try {
+      const temp: ViewHoliday = {
+        name: item.name,
+        start: format(new Date(item.start), "dd.MM.yyyy"),
+        end: format(new Date(item.end), "dd.MM.yyyy"),
+      }
+      viewHoliday.value.push(temp)
+    } catch (error) {
+      console.error("Error formatting date:", error)
+    }
+  })
+}
 </script>
 
 <template>
