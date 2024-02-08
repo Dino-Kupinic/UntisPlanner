@@ -9,8 +9,7 @@ const customDay: InputHoliday = reactive({
   date: {start: sub(new Date(), {days: 0}), end: new Date()},
 })
 
-
-const exportHolidays = toRef(useHolidayExportStore())
+const {holidays} = storeToRefs(useHolidayExportStore())
 
 async function onSubmit(event: FormSubmitEvent<any>) {
   const temp: ExportHoliday = {
@@ -18,7 +17,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     start: customDay.date.start,
     end: customDay.date.end,
   }
-  exportHolidays.value.holidays.push(temp)
+  holidays.value.push(temp)
   customDay.name = ""
   customDay.date = {start: sub(new Date(), {days: 0}), end: new Date()}
 }
@@ -29,19 +28,17 @@ const validate = (state: any): FormError[] => {
   if (!state.date) errors.push({path: "date", message: "Required"})
   return errors
 }
-
 </script>
 
 <template>
-  <h2>Add new custom holidays</h2>
-  <UForm :state="customDay" :validate="validate" @submit="onSubmit">
+  <p class="text-xl my-3">Add custom holidays</p>
+  <UForm :state="customDay" :validate="validate" @submit="onSubmit" class="mb-5">
     <UFormGroup label="Name" name="name">
       <UInput v-model="customDay.name" size="sm" color="primary" variant="outline" placeholder="Name of Holiday"/>
     </UFormGroup>
-
-    <UFormGroup label="Date" name="date">
+    <UFormGroup class="space-y-3 mt-3" label="Date" name="date">
       <UPopover :popper="{ placement: 'bottom-start' }" :open-delay="0">
-        <UButton icon="i-heroicons-calendar-days-20-solid">
+        <UButton icon="i-heroicons-calendar-days-20-solid" class="w-full sm:w-auto justify-center">
           {{ format(customDay.date.start, "d MMM, yyy") }} - {{ format(customDay.date.end, "d MMM, yyy") }}
         </UButton>
         <template #panel="{ close }">
@@ -51,9 +48,7 @@ const validate = (state: any): FormError[] => {
         </template>
       </UPopover>
     </UFormGroup>
-
-    <UButton class="mt-3" type="submit">Submit</UButton>
-
+    <UButton class="mt-3 w-full sm:w-24 justify-center" type="submit">Submit</UButton>
   </UForm>
-  <SchoolHolidayTable :holiday="exportHolidays.holidays" class="mt-3"/>
+  <SchoolHolidayTable class="mt-3"/>
 </template>

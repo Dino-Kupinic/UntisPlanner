@@ -1,13 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;700&display=swap');
+
 .dark .v-popper--theme-dropdown .v-popper__inner {
-    color: theme('colors.gray.200');
-    background-color: theme('colors.gray.900');
-    border-color: theme('colors.gray.800');
+  color: theme('colors.gray.200');
+  background-color: theme('colors.gray.900');
+  border-color: theme('colors.gray.800');
 }
 
 .dark .v-popper__popper .v-popper__arrow-outer {
-    border-color: theme('colors.gray.800');
+  border-color: theme('colors.gray.800');
 }
 
 .dark .v-popper__popper .v-popper__arrow-inner {
-    border-color: theme('colors.gray.900');
+  border-color: theme('colors.gray.900');
+}
+
+:root {
+  html {
+    font-family: -apple-system, "Inter", sans-serif;
+  }
 }

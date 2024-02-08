@@ -14,7 +14,7 @@
       :variant="color.value === selected.value ? 'solid' : 'ghost'"
       @click.stop.prevent="$emit('select')"
     >
-      <span class="inline-block w-3 h-3 rounded-full" :style="{ backgroundColor: color.hex }" />
+      <span class="inline-block w-4 h-4 rounded-full" :style="{ backgroundColor: color.hex }" />
     </UButton>
   </UTooltip>
 </template>
