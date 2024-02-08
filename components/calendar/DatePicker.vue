@@ -2,8 +2,7 @@
 import { DatePicker as VCalendarDatePicker } from 'v-calendar'
 import 'v-calendar/dist/style.css'
 import type {PropType} from "vue"
-// @ts-ignore
-import type {DatePickerDate, DatePickerRangeObject} from "v-calendar/src/use/datePicker"
+import type {DatePickerDate, DatePickerRangeObject} from "v-calendar/dist/types/src/use/datePicker.d.ts"
 
 const props = defineProps({
   modelValue: {
@@ -29,7 +28,6 @@ const attrs = {
   'is-dark': { selector: 'html', darkClass: 'dark' },
   'first-day-of-week': 2,
 }
-
 const viewport = useViewport()
 </script>
 
@@ -64,4 +62,5 @@ const viewport = useViewport()
   --vc-accent-800: rgb(var(--color-primary-800));
   --vc-accent-900: rgb(var(--color-primary-900));
 }
+
 </style>
