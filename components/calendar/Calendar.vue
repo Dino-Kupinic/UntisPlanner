@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useScreens} from "vue-screen-utils"
 import type {AttributeConfig} from "v-calendar/src/utils/attribute"
-import type {DateRangeSource} from "v-calendar/src/utils/date/range";
+import type {DateRangeSource} from "v-calendar/src/utils/date/range"
 
 type DateList = {
   name: string,
@@ -67,7 +67,7 @@ function pushAttributes(dateList: DateList) {
   const durationInWeeks = 5
   const weekday = 2
 
-  // markTeachingLessons(weekday, durationInWeeks)
+  markTeachingLessons(weekday, durationInWeeks)
 })
 
   if (dateList.repeat) {
@@ -186,8 +186,8 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
   * in this case static for the school year 2023.
   * This can easily be changed to dynamic (start- and end-date as parameters to function)
   */
-  const start = new Date(2024, 3 - 1, 18)
-  const end = new Date(2024, 3 - 1, 31)
+  const start = new Date(2024, 1 - 1, 18)
+  const end = new Date(2024, 7 - 1, 31)
 
   let teachingUnitValid: boolean
 
@@ -215,9 +215,10 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
 
     /* Check if dayToCheck is the correct weekday */
     if (dayToCheck.getDay() === weekday) {
-
+      const temp = attrs.value
+      console.log(temp)
       /* Calendar gets run through for each entry */
-      attrs.value.forEach((elem: AttributeConfig) => {
+      temp.forEach((elem: AttributeConfig) => {
         teachingUnitValid = true
         const dateArrayFromDates = elem.dates
 
@@ -225,7 +226,6 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
         dateArrayFromDates.forEach((dateRangeFromDates: DateRangeSource) => {
           let holidayStart = dateRangeFromDates.start
           let holidayEnd = dateRangeFromDates.end
-          console.log(dateRangeFromDates)
 
           /* If the dayToCheck is in the range of this holiday it goes further into the checks */
           if (holidayStart <= dayToCheck <= holidayEnd) {
