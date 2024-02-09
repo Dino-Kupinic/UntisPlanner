@@ -22,7 +22,6 @@ export default defineNuxtConfig({
   ssr: false,
   spaLoadingTemplate: true,
   vue: {
-    defineModel: true,
     propsDestructure: true,
   },
   components: [

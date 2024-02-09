@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ExportTable > Display data correctly 1`] = `
+exports[`ExportTableSkeleton > Display correctly 1`] = `
 "<div class="flex justify-around mr-3 ml-3">
   <div class="relative overflow-x-auto">
     <table class="min-w-full table-fixed divide-y divide-gray-300 dark:divide-gray-700">
