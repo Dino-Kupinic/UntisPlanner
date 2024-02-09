@@ -43,12 +43,17 @@ const federalStateHolidays = ref(
     "Kärnten",
   ])
 
+const durationInWeeks = 5
+const weekday = 2
+
 onMounted(() => {
   addHolidaysToList()
   setWeekendMarked()
   addFederalStateHolidays()
   addEasterRelatedHolidays()
   pushAttributes({name: "Hallo"})
+
+  markTeachingLessons(weekday, durationInWeeks)
 })
 
 function getListsCombined(listToExtend: {}[]): {}[] {
@@ -63,12 +68,6 @@ function pushAttributes(dateList: DateList) {
   dateList.startDate?.getDate() == dateList.enddate?.getDate() ?
     dateList.enddate = new Date(0, <number>dateList.startDate?.getMonth(), <number>dateList.startDate?.getDate() + 1) :
     dateList.enddate = dateList.startDate
-
-  const durationInWeeks = 5
-  const weekday = 2
-
-  markTeachingLessons(weekday, durationInWeeks)
-})
 
   if (dateList.repeat) {
     attrs.value.push({
@@ -271,6 +270,7 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
     dayToCheck = new Date(oneDayAfter)
   }
 }
+
 function calculateEasterSundayByYears(years: number) {
   const easterSundays: Date[] = []
   let currentYear = new Date().getFullYear() - 1
