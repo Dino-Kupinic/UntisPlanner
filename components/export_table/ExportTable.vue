@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import {useTableExportStore} from "~/stores/tableExportStore"
+import type {Teacher} from "~/model/teacher"
 
-const {teachers} = storeToRefs(useTableExportStore())
+const tableExportStore = useTableExportStore()
 const teacher = [
   {
     id: 1,
@@ -29,9 +30,10 @@ const teacher = [
   },
 ]
 
-const selected = ref([teacher[0]])
-watch(selected, () => {
-  teachers.value = selected.value
+const selected = ref<Teacher[]>([])
+
+watch(selected.value, () => {
+  tableExportStore.loadSelections(selected.value)
 })
 
 const columns = [{
@@ -65,7 +67,6 @@ function select(row: any) {
     <UTable
       @select="select"
       v-model="selected"
-      class=""
       :rows="teacher"
       :columns="columns"
       :ui="{
