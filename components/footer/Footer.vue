@@ -8,7 +8,7 @@ const appVersion = useAppVersion()
 <template>
   <footer>
     <div
-      class="flex w-full static items-center max-sm:space-y-3 max-sm:flex-col max-sm:flex-wrap max-sm:content-center max-sm:items-center border-t border-neutral-300 dark:bg-gray-900 dark:border-gray-800 pt-3 pb-5">
+      class="flex w-full no-underline static bottom-0 h-32 sm:h-24 items-center max-sm:space-y-3 max-sm:flex-col max-sm:flex-wrap max-sm:content-center max-sm:items-center border-t border-neutral-300 dark:bg-gray-900 dark:border-gray-800 pt-3 pb-5">
       <div class="flex basis-1/3 items-center justify-center">
         <div class="w-[30px] h-[30px]">
           <NuxtLink to="https://github.com/Dino-Kupinic/UntisPlanner" target="_blank">

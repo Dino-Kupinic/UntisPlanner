@@ -6,5 +6,5 @@ import {SpeedInsights} from "@vercel/speed-insights/vue"
   <SpeedInsights/>
   <NavBar/>
   <slot></slot>
-  <Footer class="mt-40"/>
+  <Footer/>
 </template>
