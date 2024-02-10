@@ -23,6 +23,6 @@ describe("CalendarInfoButton", async () => {
   })
 
   it("has the correct distance and trigger", async () => {
-    expect(component.findComponent("VDropdown").attributes()).toStrictEqual({distance: "5", triggers: "hover"})
+    expect(component.findComponent("VDropdown").attributes()).toStrictEqual({distance: "10", triggers: "hover"})
   })
 })

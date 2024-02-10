@@ -10,7 +10,7 @@ export interface Props{
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: "xl",
+  size: "lg",
   color: "primary"
 })
 </script>
