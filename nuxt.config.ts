@@ -67,12 +67,10 @@ export default defineNuxtConfig({
     "floating-vue/nuxt",
     "nuxt-viewport",
     "nuxt-icon",
-    ...(isDevelopment ? [] : ["nuxt-security"]),
   ],
   pinia: {
     storesDirs: ["./stores/**"],
   },
-  sourcemap: isDevelopment,
   // pwa: {
   //   manifest: {
   //     name: "UntisPlanner",
