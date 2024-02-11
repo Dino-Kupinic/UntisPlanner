@@ -18,7 +18,7 @@ const skeletonRows = computed(() => {
 </script>
 
 <template>
-  <main class="h-100 pb-24">
+  <main class="h-100 2xl:h-screen pb-24">
     <GeneratorSettings/>
     <Calendar/>
     <div class="flex justify-center m-5 w-100">
