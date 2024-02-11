@@ -3,7 +3,7 @@
 
 <template>
   <UContainer
-    class="flex underline-offset-1 w-full h-16 border-b border-neutral-300 dark:bg-gray-900 dark:border-gray-800">
+    class="flex underline-offset-1 w-full h-16 border-b border-neutral-300 dark:bg-gray-900 dark:border-gray-700">
     <UContainer class="flex flex-1 items-center">
       <ULink to="/">
         <UntisPlannerLogo />
