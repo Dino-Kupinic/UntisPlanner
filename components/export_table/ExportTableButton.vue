@@ -94,11 +94,11 @@ watch(isOpen, (newIsOpen) => {
 
 const jsonContent = ref<string>("")
 const csvContent = ref<string>("")
-const {isSupported} = useClipboard()
+const {isSupported} = useClipboard({legacy: true})
 // @ts-ignore
-const {copy: copyJSON, copied: copiedJSON} = useClipboard({jsonContent})
+const {copy: copyJSON, copied: copiedJSON} = useClipboard({jsonContent, legacy: true})
 // @ts-ignore
-const {copy: copyCSV, copied: copiedCSV} = useClipboard({csvContent})
+const {copy: copyCSV, copied: copiedCSV} = useClipboard({csvContent, legacy: true })
 
 function copyToClipboard() {
   showClipboardOutput.value = true

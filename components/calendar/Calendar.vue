@@ -13,7 +13,8 @@ type DateList = {
 }
 
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
-const columns = mapCurrent({lg: 4}, 1)
+const columns = mapCurrent({lg: 4, md: 3, sm: 2, xs: 1}, 1)
+const rows = mapCurrent({xs: 1}, 2)
 const date = ref(new Date())
 const colorMode = useColorMode()
 const attrs = ref([{}])
@@ -324,7 +325,7 @@ const isDark = computed(() => {
         :attributes="attrs"
         :is-dark="isDark"
         :columns="columns"
-        :rows="2"
+        :rows="rows"
         id="calendar"
       ></VCalendar>
     </ClientOnly>
