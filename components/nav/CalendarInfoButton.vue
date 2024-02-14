@@ -46,7 +46,7 @@ const nuxtVersion = versionNuxt
         <div v-else>Couldn't fetch version</div>
 
       </div>
-      <div class="w-100 p-2 text-center">
+      <div class="w-full p-2 text-center">
         <NuxtLink class="text-primary hover:text-green-300" to="https://github.com/Dino-Kupinic/UntisPlanner/issues"
                   target="_blank"
                   title="Head to Issues">

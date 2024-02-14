@@ -37,19 +37,19 @@ const validate = (state: any): FormError[] => {
 </script>
 
 <template>
-  <p class="text-xl my-3">Add custom holidays</p>
+  <p class="text-xl my-3"> {{ $t("addCustomHolidayTitle") }}</p>
   <UModal v-model="showErrorModal">
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
           <p class="text-base font-semibold text-red-600 leading-6 text-gray-900 dark:text-white">
-            Oops... something went wrong!
+            {{ $t("addCustomHolidayErrorTitle") }}
           </p>
           <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
                    @click="showErrorModal = false"/>
         </div>
       </template>
-      You can only add up to 5 custom holidays.
+      {{ $t("addCustomHolidayErrorBody") }}
     </UCard>
   </UModal>
   <UForm :state="customDay" :validate="validate" @submit="onSubmit" class="mb-5">
