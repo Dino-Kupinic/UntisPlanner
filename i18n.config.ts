@@ -10,6 +10,10 @@ export default defineI18nConfig(() => ({
       addCustomHolidayTitle: "Add custom holidays",
       addCustomHolidayErrorTitle: "Oops... something went wrong!",
       addCustomHolidayErrorBody: "You can only add up to 5 custom holidays.",
+      addCustomHolidayDateLabel: "Date",
+      holidayPlaceholder: "Name of Holiday",
+      SubmitHoliday: "Submit",
+      holidayTableEndColumn: "End",
     },
     German: {
       // Settings
@@ -19,6 +23,10 @@ export default defineI18nConfig(() => ({
       addCustomHolidayTitle: "Eigene Feiertage hinzufügen",
       addCustomHolidayErrorTitle: "Ups... etwas ist schief gegangen!",
       addCustomHolidayErrorBody: "Du kannst nur bis zu 5 eigene Feiertage hinzufügen.",
+      addCustomHolidayDateLabel: "Datum",
+      holidayPlaceholder: "Name des Feiertags",
+      SubmitHoliday: "Hinzufügen",
+      holidayTableEndColumn: "Ende",
     },
   },
 }))
