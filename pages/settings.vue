@@ -10,7 +10,6 @@ interface Colors {
   };
 }
 
-const primaryColorCookie = useCookie("primaryColor")
 const primaryColors = computed(() => appConfig.ui.colors.filter(color => color !== "primary").map(color => ({
   value: color,
   text: color,
@@ -35,7 +34,6 @@ const grayColors = computed(() => ["slate", "cool", "zinc", "neutral", "stone"].
   hex: (colors as Colors)[color][colorMode.value === "dark" ? 400 : 500],
 })))
 
-const grayColorCookie = useCookie("grayColor")
 const gray = computed({
   get() {
     const selected = grayColors.value.find(option => option.value === appConfig.ui.gray)
