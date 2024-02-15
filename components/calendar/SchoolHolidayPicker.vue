@@ -37,26 +37,26 @@ const validate = (state: any): FormError[] => {
 </script>
 
 <template>
-  <p class="text-xl my-3">Add custom holidays</p>
+  <p class="text-xl my-3"> {{ $t("addCustomHolidayTitle") }}</p>
   <UModal v-model="showErrorModal">
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <p class="text-base font-semibold text-red-600 leading-6 text-gray-900 dark:text-white">
-            Oops... something went wrong!
+          <p class="text-base font-semibold text-red-600 leading-6 dark:text-white">
+            {{ $t("addCustomHolidayErrorTitle") }}
           </p>
           <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
                    @click="showErrorModal = false"/>
         </div>
       </template>
-      You can only add up to 5 custom holidays.
+      {{ $t("addCustomHolidayErrorBody") }}
     </UCard>
   </UModal>
   <UForm :state="customDay" :validate="validate" @submit="onSubmit" class="mb-5">
     <UFormGroup label="Name" name="name">
-      <UInput v-model="customDay.name" size="sm" color="primary" variant="outline" placeholder="Name of Holiday"/>
+      <UInput v-model="customDay.name" size="sm" color="primary" variant="outline" :placeholder="$t('holidayPlaceholder')"/>
     </UFormGroup>
-    <UFormGroup class="space-y-3 mt-3" label="Date" name="date">
+    <UFormGroup class="space-y-3 mt-3" :label="$t('addCustomHolidayDateLabel')" name="date">
       <UPopover :popper="{ placement: 'bottom-start' }" :open-delay="0">
         <UButton icon="i-heroicons-calendar-days-20-solid" class="w-full sm:w-auto justify-center">
           {{ format(customDay.date.start, "d MMM, yyy") }} - {{ format(customDay.date.end, "d MMM, yyy") }}
@@ -68,7 +68,7 @@ const validate = (state: any): FormError[] => {
         </template>
       </UPopover>
     </UFormGroup>
-    <UButton class="mt-3 w-full sm:w-24 justify-center" type="submit">Submit</UButton>
+    <UButton class="mt-3 w-full sm:w-24 justify-center" type="submit">{{ $t("SubmitHoliday") }}</UButton>
   </UForm>
   <SchoolHolidayTable class="mt-3"/>
 </template>

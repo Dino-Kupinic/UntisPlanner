@@ -38,7 +38,7 @@ watch(selected.value, () => {
 
 const columns = [{
   key: "id",
-  label: "Id",
+  label: "id",
 }, {
   key: "user",
   label: "User",

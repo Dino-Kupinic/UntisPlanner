@@ -17,13 +17,14 @@ const appVersion = useAppVersion()
         </div>
       </div>
       <div class="basis-1/3 text-center">
-        <p>Made with
+        <p>
+          {{ $t("FooterMadeWithLove")}}
           <HeartIcon class="inline-block pb-0.5"/>
         </p>
         <p>UntisPlanner v{{ appVersion }}</p>
       </div>
       <div class="basis-1/3 text-sm text-center">
-        Released under the
+        {{ $t("FooterLicense") }}
         <p>
           <NuxtLink to="https://github.com/Dino-Kupinic/UntisPlanner/blob/master/LICENSE">GNU General Public License
             v3.0

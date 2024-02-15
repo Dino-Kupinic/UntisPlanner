@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import {useScreens} from "vue-screen-utils"
+import {useHolidayExportStore} from "~/stores/holidayExportStore"
+
 
 type DateList = {
   name: string,
@@ -8,7 +10,7 @@ type DateList = {
     end: Date
   }[],
   startDate?: Date,
-  enddate?: Date,
+  endDate?: Date,
   repeat?: boolean
 }
 
@@ -19,6 +21,7 @@ const date = ref(new Date())
 const colorMode = useColorMode()
 const attrs = ref([{}])
 const holidayColor = "red"
+const customHolidayStore = useHolidayExportStore()
 
 const staticHolidays = ref([
   {name: "Semester Holidays", start: new Date(0, 2, 12), end: new Date(0, 2, 18)},
@@ -45,11 +48,22 @@ onMounted(() => {
   setWeekendMarked()
   addFederalStateHolidays()
   addEasterRelatedHolidays()
-  pushAttributes({name: "Hallo"})
+  addCustomHolidays()
 })
 
-function getListsCombined(listToExtend: {}[]): {}[] {
-  return attrs.value.concat(listToExtend)
+function addCustomHolidays():void {
+  if (customHolidayStore.holidays.length != 0){
+    customHolidayStore.holidays.forEach((item) =>{
+      const temp : DateList = {
+        name: item.name,
+        dates: [{
+          start: new Date(item.start),
+          end: new Date(item.end)
+        }],
+      }
+      pushAttributes(temp)
+    })
+  }
 }
 
 function pushAttributes(dateList: DateList) {
@@ -57,9 +71,9 @@ function pushAttributes(dateList: DateList) {
    * If startDate and endDate is the same, the enddate has to be +1 day because otherwise it doesn't work
    */
 
-  dateList.startDate?.getDate() == dateList.enddate?.getDate() ?
-    dateList.enddate = new Date(0, <number>dateList.startDate?.getMonth(), <number>dateList.startDate?.getDate() + 1) :
-    dateList.enddate = dateList.startDate
+  dateList.startDate?.getDate() == dateList.endDate?.getDate() ?
+    dateList.endDate = new Date(0, <number>dateList.startDate?.getMonth(), <number>dateList.startDate?.getDate() + 1) :
+    dateList.endDate = dateList.startDate
 
 
   if (dateList.repeat) {
@@ -78,7 +92,7 @@ function pushAttributes(dateList: DateList) {
       dates: [
         {
           start: dateList.startDate,
-          end: dateList.enddate,
+          end: dateList.endDate,
           repeat: {
             every: [12, "months"],
             days: dateList.startDate?.getDate(),
@@ -109,7 +123,7 @@ function addFederalStateHolidays() {
   federalStateHolidays.value.forEach((nationalHoliday) => {
     pushAttributes({
       name: nationalHoliday, startDate: new Date(0, 10, 26),
-      enddate: new Date(0, 10, 26),
+      endDate: new Date(0, 10, 26),
       repeat: true,
     })
   })

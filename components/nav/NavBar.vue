@@ -11,10 +11,10 @@
     </UContainer>
     <UContainer class="flex space-x-5 max-[775px]:hidden">
       <NavBarThemeToggle class="self-center"/>
-      <NavItem icon="i-heroicons-cog-6-tooth" label="Settings" size="sm" path="/settings" />
+      <NavItem icon="i-heroicons-cog-6-tooth" :label="$t('NavSettingsButton')" size="sm" path="/settings" />
       <CalendarInfoButton/>
     </UContainer>
-    <UContainer id="BurgerMenuContainer" class="space-x-5 min-[775px]:hidden p-2 pb-0 pt-1">
+    <UContainer id="BurgerMenuContainer" class="min-[775px]:hidden align-center p-0 mr-3 mt-1">
       <NavBurgerMenu></NavBurgerMenu>
     </UContainer>
   </UContainer>
