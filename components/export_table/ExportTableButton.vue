@@ -98,7 +98,7 @@ const {isSupported} = useClipboard({legacy: true})
 // @ts-ignore
 const {copy: copyJSON, copied: copiedJSON} = useClipboard({jsonContent, legacy: true})
 // @ts-ignore
-const {copy: copyCSV, copied: copiedCSV} = useClipboard({csvContent, legacy: true })
+const {copy: copyCSV, copied: copiedCSV} = useClipboard({csvContent, legacy: true})
 
 function copyToClipboard() {
   showClipboardOutput.value = true
@@ -114,44 +114,46 @@ function copyToClipboard() {
         <template #header>
           <div class="flex items-center justify-between">
             <p class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-              How would you like to have your data?
+              {{ $t("ExportDownloadTitle") }}
             </p>
             <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
                      @click="isOpen = false"/>
           </div>
         </template>
         <div class="flex flex-row justify-evenly">
-          <UButton @click="download()" icon="i-heroicons-arrow-down-circle" label="Download directly"/>
-          <UButton @click="copyToClipboard()" variant="outline" icon="i-heroicons-clipboard" label="Copy to clipboard"/>
+          <UButton @click="download()" icon="i-heroicons-arrow-down-circle"
+                   :label="$t('ExportDownloadDownloadButton')"/>
+          <UButton @click="copyToClipboard()" variant="outline" icon="i-heroicons-clipboard"
+                   :label="$t('ExportDownloadClipboardButton')"/>
         </div>
         <template #footer>
           <div v-if="showClipboardOutput" class="flex flex-col gap-2">
             <template v-if="isSupported">
-              <p class="text text-base font-semibold">Output</p>
+              <p class="text text-base font-semibold">{{ $t("ExportOutput") }}</p>
               <p class="text text-sm">JSON</p>
               <UTextarea v-model="jsonContent" :rows="6"/>
-              <UButton @click="copyJSON(jsonContent)" variant="ghost" icon="i-heroicons-clipboard" class="w-24">
-                <span v-if="!copiedJSON">Copy</span>
-                <span v-else>Copied!</span>
+              <UButton @click="copyJSON(jsonContent)" variant="ghost" icon="i-heroicons-clipboard" class="w-fit">
+                <span v-if="!copiedJSON">{{ $t("ExportCopyButton") }}</span>
+                <span v-else>{{ $t("ExportCopyButtonClicked") }}</span>
               </UButton>
               <p class="text text-sm">CSV</p>
               <UTextarea v-model="csvContent" :rows="6"/>
-              <UButton @click="copyCSV(csvContent)" variant="ghost" icon="i-heroicons-clipboard" class="w-24">
-                <span v-if="!copiedCSV">Copy</span>
-                <span v-else>Copied!</span>
+              <UButton @click="copyCSV(csvContent)" variant="ghost" icon="i-heroicons-clipboard" class="w-fit">
+                <span v-if="!copiedCSV">{{ $t("ExportCopyButton") }}</span>
+                <span v-else>{{ $t("ExportCopyButtonClicked") }}</span>
               </UButton>
             </template>
           </div>
-          <p class="text text-sm mb-2 mt-2">Download Options</p>
+          <p class="text text-sm mb-2 mt-2">{{ $t("ExportDownloadOptions") }}</p>
           <UDropdown :items="items">
-            <UButton color="white" label="File Type"/>
+            <UButton color="white" :label="$t('ExportDownloadFileType')"/>
           </UDropdown>
         </template>
       </UCard>
     </UModal>
   </div>
   <div class="flex justify-center m-3">
-    <UButton label="Export Data" @click="isOpen = true">
+    <UButton :label="$t('ExportButton')" @click="isOpen = true">
       <template #trailing>
         <UIcon class="w-5 h-5" name="i-material-symbols-export-notes"/>
       </template>
