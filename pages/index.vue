@@ -22,7 +22,7 @@ const skeletonRows = computed(() => {
     <GeneratorSettings/>
     <Calendar/>
     <div class="flex justify-center p-5">
-      <UButton :loading="isLoading" @click="generate()" icon="i-material-symbols-magic-button" label="Generate" />
+      <UButton :loading="isLoading" @click="generate()" icon="i-material-symbols-magic-button" :label="$t('GenerateButton')" />
     </div>
     <div v-if="isLoading" class="flex flex-col justify-center mt-8">
       <ExportTableSkeleton :rows="skeletonRows" />

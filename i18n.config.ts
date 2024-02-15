@@ -24,9 +24,24 @@ export default defineI18nConfig(() => ({
       FooterLicense: "Released under the",
       // Generator Settings
       GeneratorFederalStateLabel: "Federal State",
+      GeneratorFederalStatePlaceholder: "Select federal state",
       GeneratorPeriodLabel: "Period",
       GeneratorLessonDaysLabel: "Lesson Days",
+      GeneratorLessonDaysPlaceholder: "Select Days",
       GeneratorTeacherLabel: "Teacher",
+      GeneratorTeacherPlaceholder: "Select Teacher",
+      // Generate
+      GenerateButton: "Generate",
+      // Export
+      ExportButton: "Export Data",
+      ExportDownloadOptions: "Download Options",
+      ExportDownloadFileType: "File Type",
+      ExportDownloadTitle: "How would you like to have your data?",
+      ExportDownloadDownloadButton: "Download directly",
+      ExportDownloadClipboardButton: "Copy to clipboard",
+      ExportOutput: "Output",
+      ExportCopyButton: "Copy",
+      ExportCopyButtonClicked: "Copied!",
     },
     German: {
       // Settings
@@ -50,9 +65,24 @@ export default defineI18nConfig(() => ({
       FooterLicense: "Veröffentlicht unter der",
       // Generator Settings
       GeneratorFederalStateLabel: "Bundesland",
+      GeneratorFederalStatePlaceholder: "Bundesland auswählen",
       GeneratorPeriodLabel: "Periode",
       GeneratorLessonDaysLabel: "Unterrichtstage",
+      GeneratorLessonDaysPlaceholder: "Tage auswählen",
       GeneratorTeacherLabel: "Lehrer",
+      GeneratorTeacherPlaceholder: "Lehrer auswählen",
+      // Generate
+      GenerateButton: "Generieren",
+      // Export
+      ExportButton: "Daten exportieren",
+      ExportDownloadOptions: "Download Einstellungen",
+      ExportDownloadFileType: "Dateityp",
+      ExportDownloadTitle: "Wie würden Sie ihre Daten gerne haben?",
+      ExportDownloadDownloadButton: "Direkt runterladen",
+      ExportDownloadClipboardButton: "In die Zwischenablage",
+      ExportOutput: "Ausgabe",
+      ExportCopyButton: "Kopieren",
+      ExportCopyButtonClicked: "Kopiert!",
     },
   },
 }))

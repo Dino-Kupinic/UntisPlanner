@@ -42,14 +42,14 @@ const query = ref<string>("")
   >
     <GeneratorItem :label="$t('GeneratorFederalStateLabel')">
       <USelectMenu class="sm:w-auto w-full mt-1" v-model="selectedFederalState" :options="federalStates"
-                   placeholder="Select federal state"/>
+                   :placeholder="$t('GeneratorFederalStatePlaceholder')"/>
     </GeneratorItem>
     <GeneratorItem :label="$t('GeneratorPeriodLabel')">
       <UInput class="mt-1 sm:w-auto w-full" placeholder="1"></UInput>
     </GeneratorItem>
     <GeneratorItem :label="$t('GeneratorLessonDaysLabel')">
       <USelectMenu class="sm:w-auto w-full mt-1" v-model="selectedWeekday" :options="weekdays" multiple
-                   placeholder="Select Days">
+                   :placeholder="$t('GeneratorLessonDaysPlaceholder')">
         <template #label>
           <span v-if="selectedWeekday.length" class="truncate">{{ selectedWeekday.join(", ") }}</span>
         </template>
@@ -60,7 +60,7 @@ const query = ref<string>("")
                    v-model="selectedTeacher"
                    v-model:query="query"
                    :options="teachers"
-                   placeholder="Select teacher"
+                   :placeholder="$t('GeneratorTeacherPlaceholder')"
                    searchable
       />
     </GeneratorItem>
