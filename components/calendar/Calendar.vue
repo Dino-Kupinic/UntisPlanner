@@ -55,14 +55,14 @@ onMounted(() => {
   setWeekendMarked()
   addFederalStateHolidays()
   addEasterRelatedHolidays()
-  addCustomHolidays()
+  // addCustomHolidays()
 
   markTeachingLessons(weekday, durationInWeeks)
 })
 
 function addCustomHolidays():void {
-  if (customHolidayStore.holidays.length != 0){
-    customHolidayStore.holidays.forEach((item) =>{
+  if (customHolidayStore.holidays.value.length != 0){
+    customHolidayStore.holidays.value.forEach((item) =>{
       const temp : DateList = {
         name: item.name,
         dates: [{
@@ -152,16 +152,13 @@ function setWeekendMarked() {
       label: "Weekend",
       visibility: "hover",
     },
-    dates: [
-      {
-        repeat: {
-          every: "week",
-          on: {weekdays: [7, 1]}, // Saturday & Sunday
-        },
-      },
-    ],
+    dates: [{
+      repeat: {
+        every: "week",
+        weekdays: [7, 1]
+      }
+    }],
   }
-
   attrs.value.push(weekendAttributes)
 }
 
@@ -197,10 +194,10 @@ function addHolidaysToList() {
 function markTeachingLessons(weekday: number, durationInWeeks: number) {
   /*
   * Here is the start- and end-date for the function defined,
-  * in this case static for the school year 2023.
+  * in this case static for the school year 2024.
   * This can easily be changed to dynamic (start- and end-date as parameters to function)
   */
-  const start = new Date(2024, 1 - 1, 18)
+  const start = new Date(2024, 1 - 1, 1)
   const end = new Date(2024, 7 - 1, 31)
 
   let teachingUnitValid: boolean
@@ -225,6 +222,7 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
 
   /* Here starts the loop that checks each day from start- to end-date */
   while (dayToCheck <= end) {
+    teachingUnitValid = true
     /* Check if dayToCheck is the correct weekday */
     if (dayToCheck.getDay() === weekday) {
       /* Calendar gets run through for each entry */
@@ -233,16 +231,15 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
 
         /* The start- and end-date for each holiday get extracted from .dates array */
         dateArrayFromDates.forEach((dateRangeFromDates: DateRangeSource) => {
-          teachingUnitValid = true
-
-          let holidayStart = dateRangeFromDates.start
-          let holidayEnd = dateRangeFromDates.end
+          /* Get values of holiday-start and -end not reference*/
+          let holidayStart: Date = structuredClone(dateRangeFromDates.start)
+          let holidayEnd: Date = dateRangeFromDates.end
 
           /* If the dayToCheck is in the range of this holiday it goes further into the checks */
-          if (holidayStart <= dayToCheck <= holidayEnd) {
+          if (holidayStart <= dayToCheck && dayToCheck <= holidayEnd) {
 
             /* Since the holidays get put into the calendar in a start-end form it runs through this range */
-            while (holidayStart <= holidayEnd) {
+            while (holidayStart <= holidayEnd && teachingUnitValid) {
               /* Checks if calendar already has entry for date from dayToCheck */
               if (holidayStart.getDay() === weekday) {
                 teachingUnitValid = false
@@ -254,7 +251,7 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
             }
           }
         })
-        // if (teachingUnitValid) {
+        if (teachingUnitValid) {
           attrs.value.push({
             key: "Unterrichtseinheit",
             highlight: {
@@ -268,11 +265,13 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
               label: "SEW - Mit Samegmüller",
               visibility: "hover",
             },
-            dates: [
-              dayToCheck,
+            dates: [{
+              start: dayToCheck,
+              end: dayToCheck
+            },
             ]
           } as AttributeConfig)
-        // }
+        }
       })
     }
     /* Go on one day in the dayToCheck */
