@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import {useScreens} from "vue-screen-utils"
+import {useHolidayExportStore} from "~/stores/holidayExportStore"
+
 import type {AttributeConfig} from "v-calendar/src/utils/attribute"
 import type {DateRangeSource} from "v-calendar/src/utils/date/range"
 
@@ -10,18 +12,20 @@ type DateList = {
     end: Date
   }[],
   startDate?: Date,
-  enddate?: Date,
+  endDate?: Date,
   repeat?: boolean
 }
 
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
-const columns = mapCurrent({lg: 4}, 1)
+const columns = mapCurrent({lg: 4, md: 3, sm: 2, xs: 1}, 1)
+const rows = mapCurrent({xs: 1}, 2)
 const date = ref(new Date())
 const colorMode = useColorMode()
 
 const attrs = ref<AttributeConfig[]>([])
 // const attrs = ref([{}])
 const holidayColor = "red"
+const customHolidayStore = useHolidayExportStore()
 
 const staticHolidays = ref([
   {name: "Semester Holidays", start: new Date(0, 2, 12), end: new Date(0, 2, 18)},
@@ -51,13 +55,24 @@ onMounted(() => {
   setWeekendMarked()
   addFederalStateHolidays()
   addEasterRelatedHolidays()
-  pushAttributes({name: "Hallo"})
+  addCustomHolidays()
 
   markTeachingLessons(weekday, durationInWeeks)
 })
 
-function getListsCombined(listToExtend: {}[]): {}[] {
-  return attrs.value.concat(listToExtend)
+function addCustomHolidays():void {
+  if (customHolidayStore.holidays.length != 0){
+    customHolidayStore.holidays.forEach((item) =>{
+      const temp : DateList = {
+        name: item.name,
+        dates: [{
+          start: new Date(item.start),
+          end: new Date(item.end)
+        }],
+      }
+      pushAttributes(temp)
+    })
+  }
 }
 
 function pushAttributes(dateList: DateList) {
@@ -65,9 +80,9 @@ function pushAttributes(dateList: DateList) {
    * If startDate and endDate is the same, the enddate has to be +1 day because otherwise it doesn't work
    */
 
-  dateList.startDate?.getDate() == dateList.enddate?.getDate() ?
-    dateList.enddate = new Date(0, <number>dateList.startDate?.getMonth(), <number>dateList.startDate?.getDate() + 1) :
-    dateList.enddate = dateList.startDate
+  dateList.startDate?.getDate() == dateList.endDate?.getDate() ?
+    dateList.endDate = new Date(0, <number>dateList.startDate?.getMonth(), <number>dateList.startDate?.getDate() + 1) :
+    dateList.endDate = dateList.startDate
 
   if (dateList.repeat) {
     attrs.value.push({
@@ -85,7 +100,7 @@ function pushAttributes(dateList: DateList) {
       dates: [
         {
           start: dateList.startDate,
-          end: dateList.enddate,
+          end: dateList.endDate,
           repeat: {
             every: [12, "months"],
             days: dateList.startDate?.getDate(),
@@ -116,7 +131,7 @@ function addFederalStateHolidays() {
   federalStateHolidays.value.forEach((nationalHoliday) => {
     pushAttributes({
       name: nationalHoliday, startDate: new Date(0, 10, 26),
-      enddate: new Date(0, 10, 26),
+      endDate: new Date(0, 10, 26),
       repeat: true,
     })
   })
@@ -419,7 +434,7 @@ const isDark = computed(() => {
         :attributes="attrs"
         :is-dark="isDark"
         :columns="columns"
-        :rows="2"
+        :rows="rows"
         id="calendar"
       ></VCalendar>
     </ClientOnly>

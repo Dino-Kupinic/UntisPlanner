@@ -11,7 +11,13 @@ const customDay: InputHoliday = reactive({
 
 const {holidays} = storeToRefs(useHolidayExportStore())
 
+const MAX_HOLIDAYS = 5
+const showErrorModal = ref<boolean>(false)
 async function onSubmit(event: FormSubmitEvent<any>) {
+  if (holidays.value.length === MAX_HOLIDAYS) {
+    showErrorModal.value = true
+    return
+  }
   const temp: ExportHoliday = {
     name: customDay.name,
     start: customDay.date.start,
@@ -32,6 +38,20 @@ const validate = (state: any): FormError[] => {
 
 <template>
   <p class="text-xl my-3">Add custom holidays</p>
+  <UModal v-model="showErrorModal">
+    <UCard>
+      <template #header>
+        <div class="flex items-center justify-between">
+          <p class="text-base font-semibold text-red-600 leading-6 text-gray-900 dark:text-white">
+            Oops... something went wrong!
+          </p>
+          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+                   @click="showErrorModal = false"/>
+        </div>
+      </template>
+      You can only add up to 5 custom holidays.
+    </UCard>
+  </UModal>
   <UForm :state="customDay" :validate="validate" @submit="onSubmit" class="mb-5">
     <UFormGroup label="Name" name="name">
       <UInput v-model="customDay.name" size="sm" color="primary" variant="outline" placeholder="Name of Holiday"/>

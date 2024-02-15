@@ -18,11 +18,11 @@ const skeletonRows = computed(() => {
 </script>
 
 <template>
-  <main class="h-screen">
+  <main class="h-100 2xl:h-screen pb-24">
     <GeneratorSettings/>
     <Calendar/>
-    <div class="flex justify-center m-3">
-      <UButton :loading="isLoading" @click="generate()" icon="i-material-symbols-magic-button" label="Generate"/>
+    <div class="flex justify-center m-5 w-100">
+      <UButton :loading="isLoading" @click="generate()" icon="i-material-symbols-magic-button" label="Generate" class="w-100"/>
     </div>
     <div v-if="isLoading" class="flex flex-col justify-center mt-8">
       <ExportTableSkeleton :rows="skeletonRows" />
@@ -30,6 +30,9 @@ const skeletonRows = computed(() => {
     <div v-if="showTable">
       <ExportTable/>
       <ExportTableButton/>
+    </div>
+    <div v-else>
+      <div class="h-36" />
     </div>
   </main>
 </template>

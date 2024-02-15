@@ -48,7 +48,7 @@ const gray = computed({
 </script>
 
 <template>
-  <main class="h-screen pl-8 pr-8 sm:mt-8">
+  <main class="h-screen pl-8 pr-8 pb-24 sm:mt-8 mb-32 sm:mb-0">
     <div class="flex flex-col justify-center items-center pl-8 pr-8 sm:w-[600px] sm:m-auto">
       <p class="text-xl m-3 sm:justify-start sm:w-full">Theme</p>
       <div class="w-2/3 sm:w-full">
