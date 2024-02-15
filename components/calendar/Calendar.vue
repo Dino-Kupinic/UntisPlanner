@@ -210,19 +210,16 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
 
   /* Here starts the loop that checks each day from start- to end-date */
   while (dayToCheck <= end) {
-    let running = true
-
     /* Check if dayToCheck is the correct weekday */
     if (dayToCheck.getDay() === weekday) {
-      const temp = attrs.value
-      console.log(temp)
       /* Calendar gets run through for each entry */
-      temp.forEach((elem: AttributeConfig) => {
-        teachingUnitValid = true
+      attrs.value.forEach((elem: AttributeConfig) => {
         const dateArrayFromDates = elem.dates
 
         /* The start- and end-date for each holiday get extracted from .dates array */
         dateArrayFromDates.forEach((dateRangeFromDates: DateRangeSource) => {
+          teachingUnitValid = true
+
           let holidayStart = dateRangeFromDates.start
           let holidayEnd = dateRangeFromDates.end
 
@@ -230,13 +227,11 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
           if (holidayStart <= dayToCheck <= holidayEnd) {
 
             /* Since the holidays get put into the calendar in a start-end form it runs through this range */
-            while (holidayStart <= holidayEnd && running) {
+            while (holidayStart <= holidayEnd) {
               /* Checks if calendar already has entry for date from dayToCheck */
               if (holidayStart.getDay() === weekday) {
                 teachingUnitValid = false
-                /* Stops the loop early if a teaching unit has been put in to increase efficiency */
-                running = false
-              }
+                }
 
               /* Go on one day in the holiday check */
               let oneDayAfter = holidayStart.setDate(holidayStart.getDate() + 1)
@@ -245,23 +240,23 @@ function markTeachingLessons(weekday: number, durationInWeeks: number) {
           }
         })
         // if (teachingUnitValid) {
-        //   attrs.value.push({
-        //     key: "Unterrichtseinheit",
-        //     highlight: {
-        //       fillMode: "light",
-        //       style: {
-        //         background: "red",
-        //         color: "black",
-        //       },
-        //     },
-        //     popover: {
-        //       label: "SEW - Mit Samegmüller",
-        //       visibility: "hover",
-        //     },
-        //     dates: [
-        //       dayToCheck,
-        //     ]
-        //   } as AttributeConfig)
+          attrs.value.push({
+            key: "Unterrichtseinheit",
+            highlight: {
+              fillMode: "light",
+              style: {
+                background: "red",
+                color: "black",
+              },
+            },
+            popover: {
+              label: "SEW - Mit Samegmüller",
+              visibility: "hover",
+            },
+            dates: [
+              dayToCheck,
+            ]
+          } as AttributeConfig)
         // }
       })
     }
