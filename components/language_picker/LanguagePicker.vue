@@ -1,15 +1,7 @@
 <script setup lang="ts">
 const {locale} = useI18n()
 const locales = ["English", "German"]
-
 const localeCookie = useCookie("locale")
-
-onMounted(() => {
-  if (!localeCookie.value) {
-    localeCookie.value = "English"
-  }
-  locale.value = localeCookie.value
-})
 
 watch(locale, () => {
   localeCookie.value = locale.value
@@ -24,6 +16,12 @@ watch(locale, () => {
         <UIcon v-else name="i-flag-de-4x3"/>
       </template>
     </USelect>
+    <div v-if="locale === 'German'" class="flex align-center justify-start gap-2">
+      <UIcon name="i-heroicons-exclamation-triangle-16-solid" class="text-yellow-500"/>
+      <span class="text text-red-500">
+        German is not fully translated yet.
+      </span>
+    </div>
     <p>{{ $t("welcome") }}</p>
   </div>
 </template>

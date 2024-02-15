@@ -14,6 +14,19 @@ export default defineI18nConfig(() => ({
       holidayPlaceholder: "Name of Holiday",
       SubmitHoliday: "Submit",
       holidayTableEndColumn: "End",
+      // Nav
+      NavSettingsButton: "Settings",
+      NavInfoButton: "Info",
+      NavInfoBugReport: "Report a bug",
+      NavCouldntFetchVersion: "Couldn't fetch version",
+      // Footer
+      FooterMadeWithLove: "Made with",
+      FooterLicense: "Released under the",
+      // Generator Settings
+      GeneratorFederalStateLabel: "Federal State",
+      GeneratorPeriodLabel: "Period",
+      GeneratorLessonDaysLabel: "Lesson Days",
+      GeneratorTeacherLabel: "Teacher",
     },
     German: {
       // Settings
@@ -27,6 +40,19 @@ export default defineI18nConfig(() => ({
       holidayPlaceholder: "Name des Feiertags",
       SubmitHoliday: "Hinzufügen",
       holidayTableEndColumn: "Ende",
+      // Nav
+      NavSettingsButton: "Einstellungen",
+      NavInfoButton: "Informationen",
+      NavInfoBugReport: "Einen Fehler melden",
+      NavCouldntFetchVersion: "Konnte Version nicht laden",
+      // Footer
+      FooterMadeWithLove: "Gemacht mit",
+      FooterLicense: "Veröffentlicht unter der",
+      // Generator Settings
+      GeneratorFederalStateLabel: "Bundesland",
+      GeneratorPeriodLabel: "Periode",
+      GeneratorLessonDaysLabel: "Unterrichtstage",
+      GeneratorTeacherLabel: "Lehrer",
     },
   },
 }))
