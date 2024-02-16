@@ -1,5 +1,10 @@
 <script setup lang="ts">
 
+import {useConfigStore} from "~/stores/configStore"
+import {storeToRefs} from "pinia"
+
+const configStore = useConfigStore()
+
 const federalStates = ref<string[]>([
   "Vienna",
   "Carinthia",
@@ -29,7 +34,7 @@ const teachers = ref<string[]>([
 ])
 
 const selectedWeekday = ref([])
-const selectedFederalState = ref()
+const {federalState} = storeToRefs(useConfigStore())
 const selectedTeacher = ref()
 
 const query = ref<string>("")
@@ -41,7 +46,7 @@ const query = ref<string>("")
     class="m-auto flex flex-wrap justify-evenly items-center w-[260px] sm:w-[520px] md:w-[775px] lg:w-[1034px] sm:h-auto sm:min-h-28 dark:bg-gray-900 border h-[400px] mt-5 p-3 rounded-lg border-neutral-300 dark:border-gray-700"
   >
     <GeneratorItem label="Federal State">
-      <USelectMenu class="sm:w-auto w-full mt-1" v-model="selectedFederalState" :options="federalStates"
+      <USelectMenu class="sm:w-auto w-full mt-1" v-model="federalState" :options="federalStates"
                    placeholder="Select federal state"/>
     </GeneratorItem>
     <GeneratorItem label="Period">
