@@ -3,7 +3,7 @@ import {useScreens} from "vue-screen-utils"
 import type {AttributeConfig} from "v-calendar/dist/types/src/utils/attribute.d.ts"
 import type {DateRangeSource} from "v-calendar/dist/types/src/utils/date/range.d.ts"
 import {useConfigStore} from "~/stores/configStore"
-import type {ExportHoliday} from "~/model/holiday"
+
 
 const colorMode = useColorMode()
 const appConfig = useAppConfig()
@@ -28,31 +28,6 @@ const disabledDates: DateRangeSource[] = [{
   },
 }]
 
-const federalStateHolidays =
-  [
-    "Burgenland",
-    "Oberösterreich",
-    "Niederösterreich",
-    "Salzburg",
-    "Tirol",
-    "Vorarlberg",
-    "Wien",
-    "Steiermark",
-    "Kärnten",
-  ]
-
-const testData: AttributeConfig = {
-  key: "SAMC",
-  highlight: "red",
-  dates: [{
-    start: new Date(),
-    span: 40,
-  }],
-  popover: {
-    label: "SAMC",
-    visibility: "hover",
-  },
-}
 
 onMounted(() => {
   exportAllAttributes()
@@ -88,12 +63,18 @@ function padout(number: number) {
 
 
 function exportAllAttributes() {
-  attributes.value.push(testData)
   if (holidays.value.length > 0) {
-    // @ts-ignore TODO: fix this this weird type mismatch
-    attributes.value.push(getCustomHolidays(holidays.value))
+    const customHolidays = getCustomHolidays(holidays.value)
+    for (const holiday of customHolidays) {
+      attributes.value.push(holiday)
+    }
   }
   attributes.value.push(getFederalStateHoliday())
+
+  const allHolidays = getAllHolidays(2024, "en")
+  for (const holiday of allHolidays) {
+    attributes.value.push(holiday)
+  }
 }
 </script>
 
