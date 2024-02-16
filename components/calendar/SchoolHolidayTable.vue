@@ -11,6 +11,7 @@ watch(holidays.value, () => {
   importData()
 })
 
+// TODO: Add i18n
 const columns = [{
   key: "name",
   label: "Name",
