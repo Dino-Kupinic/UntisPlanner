@@ -1,9 +1,12 @@
-import type {ExportHoliday} from "~/model/holiday"
-
 export const useConfigStore = defineStore("configExport", () => {
-  const federalState = ref('')
+  const DEFAULT_STATE: string = "Upper Austria"
+  const federalState = ref<string>(DEFAULT_STATE)
 
-  return {federalState}
-}, {
-  persist: true
+  const selectedWeekday = ref<string[]>([])
+  const selectedTeacher = ref<string>("")
+
+  const MINIMUM_PERIOD: number = 2
+  const period = ref<number>(MINIMUM_PERIOD)
+
+  return {federalState, selectedWeekday, selectedTeacher, period}
 })

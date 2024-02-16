@@ -1,45 +1,45 @@
 <script setup lang="ts">
 import {useScreens} from "vue-screen-utils"
-import type {AttributeConfig, PopoverConfig} from "v-calendar/dist/types/src/utils/attribute.d.ts"
+import type {AttributeConfig} from "v-calendar/dist/types/src/utils/attribute.d.ts"
 import type {DateRangeSource} from "v-calendar/dist/types/src/utils/date/range.d.ts"
 import {useConfigStore} from "~/stores/configStore"
-import {storeToRefs} from "pinia"
+import type {ExportHoliday} from "~/model/holiday"
 
+const colorMode = useColorMode()
+const appConfig = useAppConfig()
 
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
 const columns = mapCurrent({lg: 4, md: 3, sm: 2, xs: 1}, 1)
 const rows = mapCurrent({xs: 1}, 2)
-const date = ref(new Date())
-const colorMode = useColorMode()
-const isDark = computed(() => { return colorMode.value !== "light" })
-const attrs = ref<AttributeConfig[]>([{}])
-const appConfig = useAppConfig()
+const isDark = computed(() => {
+  return colorMode.value !== "light"
+})
+
+const attributes = ref<AttributeConfig[]>([{}])
 
 const holidayColor = "red"
-const customHolidayStore = useHolidayExportStore()
+const {holidays} = storeToRefs(useHolidayExportStore())
 const configStore = useConfigStore()
 const {federalState} = storeToRefs(useConfigStore())
 
-const popOverVisibility = "hover"
-const customHolidayColor = "blue"
-const disabledDates : DateRangeSource[] = [{
-  repeat:{
-    weekdays: [7,1]
-  }
+const disabledDates: DateRangeSource[] = [{
+  repeat: {
+    weekdays: [7, 1],
+  },
 }]
 
 const federalStateHolidays =
-    [
-      "Burgenland",
-      "Oberösterreich",
-      "Niederösterreich",
-      "Salzburg",
-      "Tirol",
-      "Vorarlberg",
-      "Wien",
-      "Steiermark",
-      "Kärnten",
-    ]
+  [
+    "Burgenland",
+    "Oberösterreich",
+    "Niederösterreich",
+    "Salzburg",
+    "Tirol",
+    "Vorarlberg",
+    "Wien",
+    "Steiermark",
+    "Kärnten",
+  ]
 
 const testData: AttributeConfig = {
   key: "SAMC",
@@ -59,99 +59,56 @@ onMounted(() => {
 })
 
 watch(federalState, () => {
-  attrs.value = []
+  attributes.value = []
   exportAllAttributes()
 })
 
-function addCustomHolidays(): AttributeConfig[] | undefined {
-  if (customHolidayStore.holidays.length != 0) {
-    const returnArray: AttributeConfig[] = [{}]
-    customHolidayStore.holidays.forEach((item) => {
-      const temp: AttributeConfig = {
-        key: item.name,
-        highlight: customHolidayColor,
-        dates: [{
-          start: new Date(item.start),
-          end: new Date(item.end),
-        }],
-        popover: getPopOver(item.name),
-      }
-      returnArray.push(temp)
-    })
-    return returnArray
-  }
-  return undefined
-}
-
-function addFederalStateHoliday() : AttributeConfig {
-  const nationalHoliday: AttributeConfig = {
-    key: 'nationalHoliday',
-    highlight: holidayColor,
-    dates: [{
-      repeat: {
-        every: [12, "months"],
-        on: dayParts => dayParts.day == 26 && dayParts.month == 10
-      }
-    }
-    ],
-    popover: getPopOver("National holiday")
-  }
-  return nationalHoliday
-}
-
-function addSemesterHoliday() : AttributeConfig {
+function addSemesterHoliday(): AttributeConfig {
   const holidayStart = null
   const holidayEnd = null
 
-  switch (federalState.value){
+  switch (federalState.value) {
     case "Vienna":
     case "Lower Austria":
 
   }
 
-  const temp : AttributeConfig = {
+  const temp: AttributeConfig = {
     key: "Semester holiday",
-    highlight: holidayColor
+    highlight: holidayColor,
 
   }
+
+  return {}
 }
 
 function padout(number: number) {
   return (number < 10) ? parseInt("0" + number) : parseInt("" + number)
 }
 
-//Getter
-function getPopOver(label: string) {
-  const temp: Partial<PopoverConfig> = {
-    label: label,
-    visibility: popOverVisibility,
-  }
-  return temp
-}
 
 function exportAllAttributes() {
-  attrs.value.push(testData)
-  addCustomHolidays()?.forEach((value) => attrs.value.push(value))
-  attrs.value.push(addFederalStateHoliday())
+  attributes.value.push(testData)
+  if (holidays.value.length > 0) {
+    // @ts-ignore TODO: fix this this weird type mismatch
+    attributes.value.push(getCustomHolidays(holidays.value))
+  }
+  attributes.value.push(getFederalStateHoliday())
 }
 </script>
 
 <template>
   <div class="flex flex-wrap justify-center mt-6">
-    <ClientOnly fallback-tag="span" fallback="Loading Calendar...">
-      <!-- @vue-ignore TODO: Fix type issues with attributes -->
-      <VCalendar
-          show-weeknumbers
-          v-model="date"
-          :attributes="attrs"
-          :is-dark="isDark"
-          :columns="columns"
-          :rows="rows"
-          :disabled-dates="disabledDates"
-          :color="appConfig.ui.primary"
-          id="calendar"
-      ></VCalendar>
-    </ClientOnly>
+    <!-- @vue-ignore -->
+    <VCalendar
+      show-weeknumbers
+      :is-dark="isDark"
+      :disabled-dates="disabledDates"
+      :color="appConfig.ui.primary"
+      :attributes
+      :columns
+      :rows
+    />
   </div>
 </template>
 
