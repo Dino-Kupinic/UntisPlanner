@@ -82,11 +82,25 @@ function addChristmasHolidays() {
   }
 }
 
+function addEasterHolidays() {
+  for (let i = MINIMUM_YEAR; i < MAXIMUM_YEAR; i++) {
+    attributes.value.push(getEasterHolidays(i))
+  }
+}
+
+function addAutumnHolidays() {
+  for (let i = MINIMUM_YEAR; i < MAXIMUM_YEAR; i++) {
+    attributes.value.push(getAutumnHolidays(i))
+  }
+}
+
 function exportAllAttributes() {
   addCustomHolidays()
   addSemesterHolidays()
   addSummerHolidays()
+  addEasterHolidays()
   addChristmasHolidays()
+  addAutumnHolidays()
   addNormalHolidays()
 }
 </script>

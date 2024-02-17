@@ -4,7 +4,7 @@ import {MINIMUM_YEAR} from "~/model/constants"
 export default function (year: number = MINIMUM_YEAR): AttributeConfig {
   const holidayStart: Date = new Date(year, 11, 24)
   const holidayEnd: Date = new Date(holidayStart)
-  holidayEnd.setDate(holidayStart.getDate() + 14)
+  holidayEnd.setDate(holidayStart.getDate() + 13)
 
   return {
     key: "Christmas holidays",
