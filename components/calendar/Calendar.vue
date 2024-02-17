@@ -71,35 +71,64 @@ function addSemesterHolidays() {
 }
 
 function addHolidaysByYear(holidayFunction: (year: number) => AttributeConfig) {
-  for (let i = MINIMUM_YEAR; i < MAXIMUM_YEAR; i++) {
-    attributes.value.push(holidayFunction(i));
+  for (let year = MINIMUM_YEAR; year < MAXIMUM_YEAR; year++) {
+    attributes.value.push(holidayFunction(year))
   }
 }
 
 function addSummerHolidays() {
-  addHolidaysByYear((year) => getSummerHolidays(federalState.value, year));
+  addHolidaysByYear((year) => getSummerHolidays(federalState.value, year))
 }
 
 function addChristmasHolidays() {
-  addHolidaysByYear(getChristmasHolidays);
+  addHolidaysByYear(getChristmasHolidays)
 }
 
 function addEasterHolidays() {
-  addHolidaysByYear(getEasterHolidays);
+  addHolidaysByYear(getEasterHolidays)
 }
 
 function addAutumnHolidays() {
-  addHolidaysByYear(getAutumnHolidays);
+  addHolidaysByYear(getAutumnHolidays)
+}
+
+function findDaysToCheck(startDate: Date, endDate: Date, daysToCheck: Date[]) {
+  while (startDate <= endDate) {
+    if (selectedWeekday.value.includes(startDate.toLocaleDateString("en", {weekday: "long"}))) {
+      daysToCheck.push(new Date(startDate))
+    }
+    startDate.setDate(startDate.getDate() + 1)
+  }
+}
+
+function markTeachingPeriods() {
+  const LAST_YEAR = MINIMUM_YEAR - 1
+  const summerHolidaysBegin: AttributeConfig = getSummerHolidays(federalState.value, LAST_YEAR)
+  const summerHolidaysEnd: AttributeConfig = getSummerHolidays(federalState.value, MINIMUM_YEAR)
+  // @ts-ignore
+  const startDate = summerHolidaysBegin.dates[0].end
+  // @ts-ignore
+  const endDate = summerHolidaysEnd.dates[0].start
+  console.log("From " + startDate)
+  console.log("To " + endDate)
+
+  const daysToCheck: Date[] = []
+  findDaysToCheck(startDate, endDate, daysToCheck)
+  console.log(daysToCheck)
+
+
 }
 
 function exportAllAttributes() {
-  addCustomHolidays()
   addSemesterHolidays()
   addSummerHolidays()
   addEasterHolidays()
   addChristmasHolidays()
   addAutumnHolidays()
   addNormalHolidays()
+  addCustomHolidays()
+  markTeachingPeriods()
+  console.log(attributes.value)
 }
 </script>
 
