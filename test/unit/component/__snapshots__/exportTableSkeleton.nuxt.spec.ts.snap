@@ -12,7 +12,7 @@ exports[`ExportTableSkeleton > Display correctly 1`] = `
               <!--v-if-->
             </div>
           </th>
-          <th scope="col" class="text-left rtl:text-right px-3 py-3.5 text-gray-900 dark:text-white font-semibold text-sm"><span>Id</span></th>
+          <th scope="col" class="text-left rtl:text-right px-3 py-3.5 text-gray-900 dark:text-white font-semibold text-sm"><span>id</span></th>
           <th scope="col" class="text-left rtl:text-right px-3 py-3.5 text-gray-900 dark:text-white font-semibold text-sm"><span>User</span></th>
           <th scope="col" class="text-left rtl:text-right px-3 py-3.5 text-gray-900 dark:text-white font-semibold text-sm w-1/2"><span>From</span></th>
           <th scope="col" class="text-left rtl:text-right px-3 py-3.5 text-gray-900 dark:text-white font-semibold text-sm"><span>To</span></th>

@@ -1,5 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
-import {isDevelopment} from "std-env"
 import pkg from "./package.json"
 import {execaSync} from "execa"
 
@@ -11,7 +9,6 @@ export default defineNuxtConfig({
   },
   devtools: {
     enabled: true,
-
     timeline: {
       enabled: true,
     },
@@ -54,6 +51,9 @@ export default defineNuxtConfig({
     classSuffix: "",
     preference: "system",
     fallback: "light",
+  },
+  i18n: {
+    vueI18n: './i18n.config.ts' 
   },
   modules: [
     "@vueuse/nuxt",
