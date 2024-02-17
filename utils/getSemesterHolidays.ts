@@ -8,12 +8,11 @@ import type {DayOfWeek} from "v-calendar/dist/types/src/utils/date/helpers.d.ts"
  * @returns AttributeConfig
  */
 export default function (federalState: string = "Upper Austria"): AttributeConfig {
-  const holidayStart: Date = new Date(MINIMUM_YEAR, 0, 1);
-  const holidayEnd: Date = new Date(holidayStart);
-  holidayEnd.setDate(holidayStart.getDate() + 7);
+  const holidayStart: Date = new Date(MINIMUM_YEAR)
+  const holidayEnd: Date = new Date(holidayStart)
+  holidayEnd.setDate(holidayStart.getDate() + 7)
 
   let mondayOfMonth: DayOfWeek = 1
-
   switch (federalState) {
     case "Vienna":
     case "Lower Austria":
@@ -30,9 +29,6 @@ export default function (federalState: string = "Upper Austria"): AttributeConfi
     case "Upper Austria":
       mondayOfMonth = 3
       break
-    default:
-      mondayOfMonth = 1;
-      break;
   }
 
   return {
@@ -45,7 +41,7 @@ export default function (federalState: string = "Upper Austria"): AttributeConfi
         months: 2,
         from: holidayStart,
         ordinalWeekdays: [
-          [mondayOfMonth, VCALENDAR_MONDAY]
+          [mondayOfMonth, VCALENDAR_MONDAY],
         ],
       },
     }],

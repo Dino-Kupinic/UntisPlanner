@@ -8,7 +8,7 @@ import type {ExportHoliday} from "~/model/holiday"
 export default function (holidays: ExportHoliday[]): AttributeConfig[] {
   const returnArray: AttributeConfig[] = [{}]
   // TODO: add the color to the type?
-  const COLOR: string = "red"
+  const COLOR: string = "orange"
 
   holidays.forEach((item: ExportHoliday) => {
     const temp: AttributeConfig = {

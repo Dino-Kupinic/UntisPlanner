@@ -4,7 +4,7 @@ import type {DateRangeSource} from "v-calendar/dist/types/src/utils/date/range.d
 import type {PageAddress} from "v-calendar/dist/types/src/utils/page.d.ts"
 import {useScreens} from "vue-screen-utils"
 import {useConfigStore} from "~/stores/configStore"
-import {MAXIMUM_YEAR, MINIMUM_YEAR, VCALENDAR_SATURDAY, VCALENDAR_SUNDAY} from "~/model/constants"
+import {MAXIMUM_YEAR, MINIMUM_YEAR, VCALENDAR_MONDAY, VCALENDAR_SATURDAY, VCALENDAR_SUNDAY} from "~/model/constants"
 
 const colorMode = useColorMode()
 const appConfig = useAppConfig()
@@ -20,7 +20,7 @@ const isDark = computed(() => {
 
 const attributes = ref<AttributeConfig[]>([{}])
 const {holidays} = storeToRefs(useHolidayExportStore())
-const {federalState} = storeToRefs(useConfigStore())
+const {federalState, selectedWeekday, selectedTeacher, period} = storeToRefs(useConfigStore())
 
 const minPage: PageAddress = {
   year: MINIMUM_YEAR,
@@ -42,11 +42,10 @@ onMounted(() => {
   exportAllAttributes()
 })
 
-watch(federalState, () => {
+watch([federalState, selectedWeekday, selectedTeacher, period], () => {
   attributes.value = []
   exportAllAttributes()
 })
-
 
 function addCustomHolidays() {
   if (holidays.value.length > 0) {
@@ -71,17 +70,31 @@ function addSemesterHolidays() {
   attributes.value.push(semesterHolidays)
 }
 
+function addSummerHolidays() {
+  for (let i = MINIMUM_YEAR; i < MAXIMUM_YEAR; i++) {
+    attributes.value.push(getSummerHolidays(federalState.value, i))
+  }
+}
+
+function addChristmasHolidays() {
+  for (let i = MINIMUM_YEAR; i < MAXIMUM_YEAR; i++) {
+    attributes.value.push(getChristmasHolidays(i))
+  }
+}
+
 function exportAllAttributes() {
   addCustomHolidays()
-  addNormalHolidays()
   addSemesterHolidays()
+  addSummerHolidays()
+  addChristmasHolidays()
+  addNormalHolidays()
 }
 </script>
 
 <template>
   <div class="flex flex-wrap justify-center mt-6">
     <VCalendar
-      :first-day-of-week="2"
+      :first-day-of-week="VCALENDAR_MONDAY"
       show-iso-weeknumbers
       :is-dark="isDark"
       :disabled-dates="disabledDates"

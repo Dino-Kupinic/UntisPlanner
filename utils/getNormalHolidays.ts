@@ -27,7 +27,11 @@ export default function (year: number, language: string = "en", color: string = 
     }
     const temp: AttributeConfig = {
       key: holiday.name,
-      highlight: color,
+      highlight: {
+        color: color,
+        fillMode: "outline",
+      },
+      content: color,
       dates: [{
         start: new Date(holiday.start),
         end: new Date(holiday.start),
