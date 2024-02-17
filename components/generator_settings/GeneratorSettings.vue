@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {useConfigStore} from "~/stores/configStore"
 
 const federalStates = ref<string[]>([
   "Vienna",
@@ -18,8 +19,6 @@ const weekdays = ref<string[]>([
   "Wednesday",
   "Thursday",
   "Friday",
-  "Saturday",
-  "Sunday",
 ])
 
 const teachers = ref<string[]>([
@@ -28,12 +27,8 @@ const teachers = ref<string[]>([
   "WITT",
 ])
 
-const selectedWeekday = ref([])
-const selectedFederalState = ref()
-const selectedTeacher = ref()
-
+const {federalState, selectedWeekday, selectedTeacher, period} = storeToRefs(useConfigStore())
 const query = ref<string>("")
-
 </script>
 
 <template>
@@ -41,11 +36,11 @@ const query = ref<string>("")
     class="m-auto flex flex-wrap justify-evenly items-center w-[260px] sm:w-[520px] md:w-[775px] lg:w-[1034px] sm:h-auto sm:min-h-28 dark:bg-gray-900 border h-[400px] mt-5 p-3 rounded-lg border-neutral-300 dark:border-gray-700"
   >
     <GeneratorItem :label="$t('GeneratorFederalStateLabel')">
-      <USelectMenu class="sm:w-auto w-full mt-1" v-model="selectedFederalState" :options="federalStates"
+      <USelectMenu class="sm:w-auto w-full mt-1" v-model="federalState" :options="federalStates"
                    :placeholder="$t('GeneratorFederalStatePlaceholder')"/>
     </GeneratorItem>
     <GeneratorItem :label="$t('GeneratorPeriodLabel')">
-      <UInput class="mt-1 sm:w-auto w-full" placeholder="1"></UInput>
+      <UInput class="mt-1 sm:w-auto w-full" type="number" v-model="period" min="2"/>
     </GeneratorItem>
     <GeneratorItem :label="$t('GeneratorLessonDaysLabel')">
       <USelectMenu class="sm:w-auto w-full mt-1" v-model="selectedWeekday" :options="weekdays" multiple
