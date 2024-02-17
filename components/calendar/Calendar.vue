@@ -58,7 +58,7 @@ function addCustomHolidays() {
 
 function addNormalHolidays() {
   for (let i = MINIMUM_YEAR; i < MAXIMUM_YEAR; i++) {
-    const allHolidays = getNormalHolidays(i, "de")
+    const allHolidays = getNormalHolidays(i, "en")
     for (const holiday of allHolidays) {
       attributes.value.push(holiday)
     }
@@ -70,28 +70,26 @@ function addSemesterHolidays() {
   attributes.value.push(semesterHolidays)
 }
 
-function addSummerHolidays() {
+function addHolidaysByYear(holidayFunction: (year: number) => AttributeConfig) {
   for (let i = MINIMUM_YEAR; i < MAXIMUM_YEAR; i++) {
-    attributes.value.push(getSummerHolidays(federalState.value, i))
+    attributes.value.push(holidayFunction(i));
   }
+}
+
+function addSummerHolidays() {
+  addHolidaysByYear((year) => getSummerHolidays(federalState.value, year));
 }
 
 function addChristmasHolidays() {
-  for (let i = MINIMUM_YEAR; i < MAXIMUM_YEAR; i++) {
-    attributes.value.push(getChristmasHolidays(i))
-  }
+  addHolidaysByYear(getChristmasHolidays);
 }
 
 function addEasterHolidays() {
-  for (let i = MINIMUM_YEAR; i < MAXIMUM_YEAR; i++) {
-    attributes.value.push(getEasterHolidays(i))
-  }
+  addHolidaysByYear(getEasterHolidays);
 }
 
 function addAutumnHolidays() {
-  for (let i = MINIMUM_YEAR; i < MAXIMUM_YEAR; i++) {
-    attributes.value.push(getAutumnHolidays(i))
-  }
+  addHolidaysByYear(getAutumnHolidays);
 }
 
 function exportAllAttributes() {
@@ -122,12 +120,3 @@ function exportAllAttributes() {
   </div>
 </template>
 
-<style scoped>
-.vc-bg-blue {
-  background-color: rgba(42, 42, 42, 0.15);
-}
-
-.vc-bg-blue-600 {
-  background-color: rgba(42, 42, 42, 0.9);
-}
-</style>
