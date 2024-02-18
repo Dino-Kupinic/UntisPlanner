@@ -2,7 +2,7 @@ import type {DayOfWeek} from "v-calendar/dist/types/src/utils/date/helpers.d.ts"
 
 export const MINIMUM_YEAR: number = new Date().getFullYear()
 // TODO: Perhaps add user definable maximum year?
-export const MAXIMUM_YEAR: number = MINIMUM_YEAR + 10
+export const MAXIMUM_YEAR: number = MINIMUM_YEAR + 3
 
 export const VCALENDAR_MONDAY: DayOfWeek = 2
 export const VCALENDAR_TUESDAY: DayOfWeek = 3

@@ -9,7 +9,7 @@ import {MINIMUM_YEAR} from "~/model/constants"
  * @returns AttributeConfig
  */
 export default function (federalState: string = "Upper Austria", year: number = MINIMUM_YEAR): AttributeConfig {
-  let startDate: Date = new Date()
+  let startDate: Date = new Date(year)
 
   let mondayOfMonth: number = 1
   switch (federalState) {

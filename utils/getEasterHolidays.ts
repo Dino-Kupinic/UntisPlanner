@@ -27,7 +27,7 @@ export default function (year: number, language: string = "de-at"): AttributeCon
     highlight: "pink",
     dates: [{
       start: palmSaturday,
-      end: easterMonday,
+      end: new Date(easterMonday),
     }],
     popover: {
       label: "Easter holidays",

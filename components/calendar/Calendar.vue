@@ -18,7 +18,7 @@ const isDark = computed(() => {
   return colorMode.value !== "light"
 })
 
-const attributes = ref<AttributeConfig[]>([{}])
+const attributes = ref<AttributeConfig[]>([])
 const {holidays} = storeToRefs(useHolidayExportStore())
 const {federalState, selectedWeekday, selectedTeacher, period} = storeToRefs(useConfigStore())
 
@@ -101,23 +101,49 @@ function findDaysToCheck(startDate: Date, endDate: Date, daysToCheck: Date[]) {
   }
 }
 
-function markTeachingPeriods() {
-  const LAST_YEAR = MINIMUM_YEAR - 1
+function markTeachingPeriods(year: number = MINIMUM_YEAR) {
+  const LAST_YEAR = year - 1
   const summerHolidaysBegin: AttributeConfig = getSummerHolidays(federalState.value, LAST_YEAR)
-  const summerHolidaysEnd: AttributeConfig = getSummerHolidays(federalState.value, MINIMUM_YEAR)
+  const summerHolidaysEnd: AttributeConfig = getSummerHolidays(federalState.value, year)
   // @ts-ignore
   const startDate = summerHolidaysBegin.dates[0].end
   // @ts-ignore
   const endDate = summerHolidaysEnd.dates[0].start
-  console.log("From " + startDate)
-  console.log("To " + endDate)
 
   const daysToCheck: Date[] = []
   findDaysToCheck(startDate, endDate, daysToCheck)
-  console.log(daysToCheck)
 
+  daysToCheck.forEach((date) => {
+    const isOverlap = attributes.value.find((attribute) => {
+      const existingDate = attribute.dates[0].start || attribute.dates[0].end
+      // console.log(existingDate + " == " + date, areDatesOverlapping(existingDate, date))
+      return areDatesOverlapping(existingDate, date)
+    })
 
+    if (isOverlap) {
+      return
+    }
+    attributes.value.push({
+      key: "teachingPeriod",
+      highlight: "gray",
+      dates: [{
+        start: date,
+        end: date,
+      }],
+      popover: {
+        label: "teachingPeriod",
+        visibility: "hover",
+      },
+    })
+  })
 }
+
+function areDatesOverlapping(date1: Date, date2: Date): boolean {
+  return (
+    date1 == date2
+  )
+}
+
 
 function exportAllAttributes() {
   addSemesterHolidays()
@@ -127,8 +153,7 @@ function exportAllAttributes() {
   addAutumnHolidays()
   addNormalHolidays()
   addCustomHolidays()
-  markTeachingPeriods()
-  console.log(attributes.value)
+  markTeachingPeriods(2025)
 }
 </script>
 
