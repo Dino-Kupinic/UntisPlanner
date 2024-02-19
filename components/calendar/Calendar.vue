@@ -65,15 +65,14 @@ function addNormalHolidays() {
   }
 }
 
-function addSemesterHolidays() {
-  const semesterHolidays = getSemesterHolidays(federalState.value)
-  attributes.value.push(semesterHolidays)
-}
-
 function addHolidaysByYear(holidayFunction: (year: number) => AttributeConfig) {
   for (let year = MINIMUM_YEAR; year < MAXIMUM_YEAR; year++) {
     attributes.value.push(holidayFunction(year))
   }
+}
+
+function addSemesterHolidays() {
+  addHolidaysByYear((year) => getSemesterHolidays(federalState.value, year))
 }
 
 function addSummerHolidays() {
@@ -101,6 +100,14 @@ function findDaysToCheck(startDate: Date, endDate: Date, daysToCheck: Date[]) {
   }
 }
 
+function areDatesInRange(date: Date, start: Date, end: Date): boolean {
+  date.setHours(0, 0, 0, 0);
+  start.setHours(0, 0, 0, 0);
+  end.setHours(0, 0, 0, 0);
+
+  return date >= start && date <= end;
+}
+
 function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   const LAST_YEAR = year - 1
   const summerHolidaysBegin: AttributeConfig = getSummerHolidays(federalState.value, LAST_YEAR)
@@ -113,14 +120,29 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   const daysToCheck: Date[] = []
   findDaysToCheck(startDate, endDate, daysToCheck)
 
+  attributes.value.sort((a, b) => {
+    const dateA = a.dates[0].start;
+    const dateB = b.dates[0].start;
+
+    if (dateA.getFullYear() !== dateB.getFullYear()) {
+      return dateA.getFullYear() - dateB.getFullYear();
+    }
+
+    if (dateA.getMonth() !== dateB.getMonth()) {
+      return dateA.getMonth() - dateB.getMonth();
+    }
+
+    return dateA.getDate() - dateB.getDate();
+  });
+
   daysToCheck.forEach((date) => {
-    const isOverlap = attributes.value.find((attribute) => {
-      const existingDate = attribute.dates[0].start || attribute.dates[0].end
-      // console.log(existingDate + " == " + date, areDatesOverlapping(existingDate, date))
-      return areDatesOverlapping(existingDate, date)
+    const holidayOnTeachingDay = attributes.value.find((attribute) => {
+      const start = attribute.dates[0].start
+      const end = attribute.dates[0].end
+      return areDatesInRange(date, start, end);
     })
 
-    if (isOverlap) {
+    if (holidayOnTeachingDay) {
       return
     }
     attributes.value.push({
@@ -138,13 +160,6 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   })
 }
 
-function areDatesOverlapping(date1: Date, date2: Date): boolean {
-  return (
-    date1 == date2
-  )
-}
-
-
 function exportAllAttributes() {
   addSemesterHolidays()
   addSummerHolidays()
@@ -154,6 +169,7 @@ function exportAllAttributes() {
   addNormalHolidays()
   addCustomHolidays()
   markTeachingPeriods(2025)
+
 }
 </script>
 
