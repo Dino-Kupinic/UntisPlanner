@@ -28,7 +28,6 @@ const teachers = ref<string[]>([
 ])
 
 const {federalState, selectedWeekday, selectedTeacher, period} = storeToRefs(useConfigStore())
-const query = ref<string>("")
 </script>
 
 <template>
@@ -53,10 +52,9 @@ const query = ref<string>("")
     <GeneratorItem :label="$t('GeneratorTeacherLabel')">
       <USelectMenu class="sm:w-auto w-full mt-1"
                    v-model="selectedTeacher"
-                   v-model:query="query"
                    :options="teachers"
                    :placeholder="$t('GeneratorTeacherPlaceholder')"
-                   searchable
+                   multiple
       />
     </GeneratorItem>
   </div>

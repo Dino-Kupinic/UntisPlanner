@@ -120,21 +120,6 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   const daysToCheck: Date[] = []
   findDaysToCheck(startDate, endDate, daysToCheck)
 
-  attributes.value.sort((a, b) => {
-    const dateA = a.dates[0].start;
-    const dateB = b.dates[0].start;
-
-    if (dateA.getFullYear() !== dateB.getFullYear()) {
-      return dateA.getFullYear() - dateB.getFullYear();
-    }
-
-    if (dateA.getMonth() !== dateB.getMonth()) {
-      return dateA.getMonth() - dateB.getMonth();
-    }
-
-    return dateA.getDate() - dateB.getDate();
-  });
-
   daysToCheck.forEach((date) => {
     const holidayOnTeachingDay = attributes.value.find((attribute) => {
       const start = attribute.dates[0].start
@@ -169,6 +154,7 @@ function exportAllAttributes() {
   addNormalHolidays()
   addCustomHolidays()
   markTeachingPeriods(2025)
+  console.log("samc")
 
 }
 </script>
@@ -189,4 +175,3 @@ function exportAllAttributes() {
     />
   </div>
 </template>
-
