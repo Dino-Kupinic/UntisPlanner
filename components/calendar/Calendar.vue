@@ -117,6 +117,7 @@ function getWeekNumber(date: Date): number {
 }
 
 function markTeachingPeriods(year: number = MINIMUM_YEAR) {
+  const TEACHERS: String[] = ["SAMC", "WITN", "STOW"]
   const LAST_YEAR = year - 1
   const summerHolidaysBegin: AttributeConfig = getSummerHolidays(federalState.value, LAST_YEAR)
   const summerHolidaysEnd: AttributeConfig = getSummerHolidays(federalState.value, year)
@@ -128,16 +129,22 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   const daysToCheck: Date[] = []
 
   let week: number = getWeekNumber(startDate)
-  let ongoingPeriod: number = 0
+  let ongoingPeriod: number = 1
+  let currentTeacher = TEACHERS[0]
 
   findDaysToCheck(startDate, endDate, daysToCheck)
   
   daysToCheck.forEach((date) => {
     if (getWeekNumber(date) > week) {
       week = getWeekNumber(date)
-      ongoingPeriod < 2 ? ongoingPeriod++ : ongoingPeriod = 0
+      if (ongoingPeriod < 2) {
+        ongoingPeriod++;
+      } else {
+        ongoingPeriod = 0
+        currentTeacher = TEACHERS[(TEACHERS.indexOf(currentTeacher) + 1) % TEACHERS.length]
+      }
     }
-    console.log(ongoingPeriod);
+    console.log(currentTeacher + " " + ongoingPeriod  );
     const holidayOnTeachingDay = attributes.value.find((attribute) => {
       const start = attribute.dates[0].start
       const end = attribute.dates[0].end
