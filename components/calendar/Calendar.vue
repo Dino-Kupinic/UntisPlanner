@@ -108,6 +108,14 @@ function areDatesInRange(date: Date, start: Date, end: Date): boolean {
   return date >= start && date <= end;
 }
 
+function getWeekNumber(date: Date): number {
+  let clonedDate = structuredClone(date)
+  const dayOfWeek: number = (clonedDate.getUTCDay() + 6) % 7
+  clonedDate.setUTCDate(clonedDate.getUTCDate() - dayOfWeek + 3)
+  const startOfYear: Date = new Date(Date.UTC(clonedDate.getUTCFullYear(), 0, 4))
+  return Math.ceil(((clonedDate.getTime() - startOfYear.getTime()) / 86400000 + 1) / 7)
+}
+
 function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   const LAST_YEAR = year - 1
   const summerHolidaysBegin: AttributeConfig = getSummerHolidays(federalState.value, LAST_YEAR)
@@ -118,9 +126,18 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   const endDate = summerHolidaysEnd.dates[0].start
 
   const daysToCheck: Date[] = []
-  findDaysToCheck(startDate, endDate, daysToCheck)
 
+  let week: number = getWeekNumber(startDate)
+  let ongoingPeriod: number = 0
+
+  findDaysToCheck(startDate, endDate, daysToCheck)
+  
   daysToCheck.forEach((date) => {
+    if (getWeekNumber(date) > week) {
+      week = getWeekNumber(date)
+      ongoingPeriod < 2 ? ongoingPeriod++ : ongoingPeriod = 0
+    }
+    console.log(ongoingPeriod);
     const holidayOnTeachingDay = attributes.value.find((attribute) => {
       const start = attribute.dates[0].start
       const end = attribute.dates[0].end
