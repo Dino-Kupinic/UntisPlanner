@@ -22,6 +22,9 @@ const attributes = ref<AttributeConfig[]>([])
 const {holidays} = storeToRefs(useHolidayExportStore())
 const {federalState, selectedWeekday, selectedTeacher, period} = storeToRefs(useConfigStore())
 
+const TEACHERS: string[] = ["SAMC", "WITN", "STOW"]
+
+
 const minPage: PageAddress = {
   year: MINIMUM_YEAR,
   month: 1,
@@ -37,9 +40,6 @@ const disabledDates: DateRangeSource[] = [{
     weekdays: [VCALENDAR_SATURDAY, VCALENDAR_SUNDAY],
   },
 }]
-
-const TEACHERS: String[] = ["SAMC", "WITN", "STOW"]
-
 
 onMounted(() => {
   exportAllAttributes()
@@ -112,7 +112,7 @@ function areDatesInRange(date: Date, start: Date, end: Date): boolean {
 }
 
 function getWeekNumber(date: Date): number {
-  let clonedDate = structuredClone(date)
+  let clonedDate = new Date(date)
   const dayOfWeek: number = (clonedDate.getUTCDay() + 6) % 7
   clonedDate.setUTCDate(clonedDate.getUTCDate() - dayOfWeek + 3)
   const startOfYear: Date = new Date(Date.UTC(clonedDate.getUTCFullYear(), 0, 4))
@@ -132,11 +132,13 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
 
   let week: number = getWeekNumber(startDate)
   let ongoingPeriod: number = 1
-  let currentTeacher = TEACHERS[0]
+  let currentTeacher: string = TEACHERS[0]
 
   findDaysToCheck(startDate, endDate, daysToCheck)
-  
+
   daysToCheck.forEach((date) => {
+    // console.log("Fortlaufende Woche: " + week + " | Woche des Tages: " + getWeekNumber(date) + " | " + date)
+    console.log("New Week | " + week + " | " + date)
     if (getWeekNumber(date) > week) {
       week = getWeekNumber(date)
     }
@@ -150,25 +152,26 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
       return
     }
 
-    if (getWeekNumber(date) > week) {
-      if (ongoingPeriod < 2) {
-        ongoingPeriod++;
-      } else {
-        ongoingPeriod = 1
-        currentTeacher = TEACHERS[(TEACHERS.indexOf(currentTeacher) + 1) % TEACHERS.length]
-      }
-    }
+    // TODO: consider year leap
+    // if (getWeekNumber(date) > week - 1) {
+    //   if (ongoingPeriod < 2) {
+    //     ongoingPeriod++;
+    //   } else {
+    //     ongoingPeriod = 1
+    //     currentTeacher = TEACHERS[(TEACHERS.indexOf(currentTeacher) + 1) % TEACHERS.length]
+    //   }
+    // }
 
-    console.log(currentTeacher + " " + date);
+    // console.log(currentTeacher + " " + date);
     attributes.value.push({
-      key: "teachingPeriod",
+      key: currentTeacher,
       highlight: "gray",
       dates: [{
         start: date,
         end: date,
       }],
       popover: {
-        label: currentTeacher.toString(),
+        label: currentTeacher,
         visibility: "hover",
       },
     })
