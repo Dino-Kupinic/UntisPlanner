@@ -18,7 +18,16 @@ const skeletonRows = computed(() => {
 </script>
 
 <template>
-  <main class="h-full 2xl:h-screen pb-24">
+  <main class="h-full pb-24">
+    <!-- TODO: remove on v1.0.0 -->
+    <UAlert
+      class="m-auto w-[260px] sm:w-[520px] md:w-[775px] lg:w-[1034px] h-auto mt-5 p-3"
+      icon="i-heroicons-exclamation-triangle-16-solid"
+      color="red"
+      variant="solid"
+      description="UntisPlanner is still in Development. Until v1.0.0 you will find bugs and broken/unfinished features."
+      title="Heads up!"
+    />
     <GeneratorSettings/>
     <Calendar/>
     <div class="flex justify-center p-5">

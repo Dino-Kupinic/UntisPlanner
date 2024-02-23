@@ -11,8 +11,13 @@ export default defineI18nConfig(() => ({
       addCustomHolidayErrorTitle: "Oops... something went wrong!",
       addCustomHolidayErrorBody: "You can only add up to 5 custom holidays.",
       addCustomHolidayDateLabel: "Date",
+      addTeacherTitle: "Add a teacher",
+      addTeacherErrorTitle: "Oops... something went wrong!",
+      addTeacherErrorBody: "You must have atleast 2 teachers",
       holidayPlaceholder: "Name of Holiday",
+      teacherPlaceholder: "Shorthand name",
       SubmitHoliday: "Submit",
+      SubmitTeacher: "Add",
       holidayTableEndColumn: "End",
       // Nav
       NavSettingsButton: "Settings",
@@ -30,6 +35,8 @@ export default defineI18nConfig(() => ({
       GeneratorLessonDaysPlaceholder: "Select Days",
       GeneratorTeacherLabel: "Teacher",
       GeneratorTeacherPlaceholder: "Select Teacher",
+      GeneratorYearLabel: "Year",
+      GeneratorYearPlaceholder: "Select Year",
       // Generate
       GenerateButton: "Generate",
       // Export
@@ -42,6 +49,8 @@ export default defineI18nConfig(() => ({
       ExportOutput: "Output",
       ExportCopyButton: "Copy",
       ExportCopyButtonClicked: "Copied!",
+      // Util
+      BadgeNEW: "NEW"
     },
     German: {
       // Settings
@@ -52,8 +61,13 @@ export default defineI18nConfig(() => ({
       addCustomHolidayErrorTitle: "Ups... etwas ist schief gegangen!",
       addCustomHolidayErrorBody: "Du kannst nur bis zu 5 eigene Feiertage hinzufügen.",
       addCustomHolidayDateLabel: "Datum",
+      addTeacherTitle: "Einen Lehrer hinzufügen",
+      addTeacherErrorTitle: "Ups... etwas ist schief gegangen!",
+      addTeacherErrorBody: "Du musst mindestens 2 Lehrer haben.",
       holidayPlaceholder: "Name des Feiertags",
+      teacherPlaceholder: "Lehrerkürzel",
       SubmitHoliday: "Hinzufügen",
+      SubmitTeacher: "Erstellen",
       holidayTableEndColumn: "Ende",
       // Nav
       NavSettingsButton: "Einstellungen",
@@ -71,6 +85,8 @@ export default defineI18nConfig(() => ({
       GeneratorLessonDaysPlaceholder: "Tage auswählen",
       GeneratorTeacherLabel: "Lehrer",
       GeneratorTeacherPlaceholder: "Lehrer auswählen",
+      GeneratorYearLabel: "Jahr",
+      GeneratorYearPlaceholder: "Jahr auswählen",
       // Generate
       GenerateButton: "Generieren",
       // Export
@@ -83,6 +99,8 @@ export default defineI18nConfig(() => ({
       ExportOutput: "Ausgabe",
       ExportCopyButton: "Kopieren",
       ExportCopyButtonClicked: "Kopiert!",
+      // Util
+      BadgeNEW: "NEU"
     },
   },
 }))

@@ -7,6 +7,9 @@ export default defineNuxtConfig({
       title: "UntisPlanner",
     },
   },
+  css: [
+    "~/assets/styles/main.css",
+  ],
   devtools: {
     enabled: true,
     timeline: {
@@ -100,8 +103,8 @@ export default defineNuxtConfig({
   //     type: "module",
   //   },
   // },
-  typescript: {
-    typeCheck: true,
-    strict: true,
-  },
+  // typescript: {
+  //   typeCheck: true,
+  //   strict: true,
+  // },
 })

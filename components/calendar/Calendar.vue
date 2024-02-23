@@ -1,357 +1,205 @@
 <script setup lang="ts">
+import type {AttributeConfig} from "v-calendar/dist/types/src/utils/attribute.d.ts"
+import type {DateRangeSource} from "v-calendar/dist/types/src/utils/date/range.d.ts"
+import type {PageAddress} from "v-calendar/dist/types/src/utils/page.d.ts"
 import {useScreens} from "vue-screen-utils"
-import {useHolidayExportStore} from "~/stores/holidayExportStore"
+import {useConfigStore} from "~/stores/configStore"
+import {MAXIMUM_YEAR, MINIMUM_YEAR, VCALENDAR_MONDAY, VCALENDAR_SATURDAY, VCALENDAR_SUNDAY} from "~/model/constants"
 
+const colorMode = useColorMode()
+const appConfig = useAppConfig()
 
-type DateList = {
-  name: string,
-  dates?: {
-    start: Date,
-    end: Date
-  }[],
-  startDate?: Date,
-  endDate?: Date,
-  repeat?: boolean
-}
-
+// Responsive
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
 const columns = mapCurrent({lg: 4, md: 3, sm: 2, xs: 1}, 1)
-const rows = mapCurrent({xs: 1}, 2)
-const date = ref(new Date())
-const colorMode = useColorMode()
-const attrs = ref([{}])
-const holidayColor = "red"
-const customHolidayStore = useHolidayExportStore()
-
-const staticHolidays = ref([
-  {name: "Semester Holidays", start: new Date(0, 2, 12), end: new Date(0, 2, 18)},
-  {name: "Summer Holidays", start: new Date(0, 6, 29), end: new Date(0, 9, 2)},
-  {name: "Autumn Holidays", start: new Date(0, 10, 27), end: new Date(0, 10, 31)},
-  {name: "Christmas Holidays", start: new Date(0, 12, 24), end: new Date(0, 1, 6)},
-])
-
-const federalStateHolidays = ref(
-  [
-    "Burgenland",
-    "Oberösterreich",
-    "Niederösterreich",
-    "Salzburg",
-    "Tirol",
-    "Vorarlberg",
-    "Wien",
-    "Steiermark",
-    "Kärnten",
-  ])
-
-onMounted(() => {
-  addHolidaysToList()
-  setWeekendMarked()
-  addFederalStateHolidays()
-  addEasterRelatedHolidays()
-  addCustomHolidays()
-})
-
-function addCustomHolidays():void {
-  if (customHolidayStore.holidays.length != 0){
-    customHolidayStore.holidays.forEach((item) =>{
-      const temp : DateList = {
-        name: item.name,
-        dates: [{
-          start: new Date(item.start),
-          end: new Date(item.end)
-        }],
-      }
-      pushAttributes(temp)
-    })
-  }
-}
-
-function pushAttributes(dateList: DateList) {
-  /**
-   * If startDate and endDate is the same, the enddate has to be +1 day because otherwise it doesn't work
-   */
-
-  dateList.startDate?.getDate() == dateList.endDate?.getDate() ?
-    dateList.endDate = new Date(0, <number>dateList.startDate?.getMonth(), <number>dateList.startDate?.getDate() + 1) :
-    dateList.endDate = dateList.startDate
-
-
-  if (dateList.repeat) {
-    attrs.value.push({
-      key: dateList.name,
-      highlight: {
-        fillMode: "light",
-        style: {
-          background: holidayColor,
-        },
-      },
-      popover: {
-        label: dateList.name,
-        visibility: "hover",
-      },
-      dates: [
-        {
-          start: dateList.startDate,
-          end: dateList.endDate,
-          repeat: {
-            every: [12, "months"],
-            days: dateList.startDate?.getDate(),
-          },
-        },
-      ],
-    })
-  } else {
-    attrs.value.push({
-      key: dateList.name,
-      highlight: {
-        fillMode: "light",
-        style: {
-          background: holidayColor,
-        },
-      },
-      popover: {
-        label: dateList.name,
-        visibility: "hover",
-      },
-      dates: dateList.dates,
-    })
-  }
-}
-
-
-function addFederalStateHolidays() {
-  federalStateHolidays.value.forEach((nationalHoliday) => {
-    pushAttributes({
-      name: nationalHoliday, startDate: new Date(0, 10, 26),
-      endDate: new Date(0, 10, 26),
-      repeat: true,
-    })
-  })
-}
-
-
-function setWeekendMarked() {
-  const weekendAttributes = {
-    key: "Weekend",
-    highlight: {
-      fillMode: "light",
-      style: {
-        background: "transparent",
-        border: "2px solid darkgreen",
-      },
-    },
-    popover: {
-      label: "Weekend",
-      visibility: "hover",
-    },
-    dates: [
-      {
-        repeat: {
-          every: "week",
-          on: {weekdays: [7, 1]}, // Saturday & Sunday
-        },
-      },
-    ],
-  }
-
-  attrs.value.push(weekendAttributes)
-}
-
-function addHolidaysToList() {
-  staticHolidays.value.forEach((holiday) => {
-    attrs.value.push({
-      key: holiday.name,
-      highlight: {
-        fillMode: "light",
-        style: {
-          background: holidayColor,
-          color: "black",
-        },
-      },
-      popover: {
-        label: holiday.name,
-        visibility: "hover",
-      },
-      dates: [
-        {
-          start: new Date(new Date().getFullYear(), holiday.start.getMonth() - 1, holiday.start.getDate()),
-          end: new Date(new Date().getFullYear(), holiday.end.getMonth() - 1, holiday.end.getDate() + 1),
-          repeat: {
-            every: [12, "months"],
-            days: holiday.start.getDate(),
-          },
-        },
-      ],
-    })
-  })
-}
-
-function calculateEasterSundayByYears(years: number) {
-  const easterSundays: Date[] = []
-  let currentYear = new Date().getFullYear() - 1
-
-  for (let year = currentYear; year < currentYear + years; year++) {
-    easterSundays.push(calculateEasterSunday(year))
-  }
-
-  return easterSundays
-}
-
-function calculatePentecostSundays(easterSundays: Date[]) {
-  const pentecostSundays: Date[] = []
-
-  easterSundays.forEach((date) => {
-    pentecostSundays.push(calculatePentecost(date.getFullYear(), date.getMonth(), date.getDate()))
-  })
-
-  return pentecostSundays
-}
-
-function addEasterRelatedHolidays() {
-
-  const easterSundays: Date[] = calculateEasterSundayByYears(5)
-
-  const pentecostSundays: Date[] = calculatePentecostSundays(easterSundays)
-
-  const pentecostHolidays = calculatePentecostHolidays(pentecostSundays)
-
-  pushAttributes({name: "Pentecost", dates: pentecostHolidays})
-}
-
-function calculatePentecostHolidays(pentecostSundays: Date[]): { start: Date, end: Date }[] {
-  const holidays: { start: Date, end: Date }[] = []
-
-  pentecostSundays.forEach((sunday) => {
-    let pentecostMonday = new Date(sunday.getFullYear(), sunday.getMonth(), sunday.getDate() + 1)
-    let pentecostSaturday = new Date(sunday.getFullYear(), sunday.getMonth(), sunday.getDate() - 1)
-
-    holidays.push({
-      start: pentecostSaturday,
-      end: pentecostMonday,
-    })
-
-    calculateCorpusChristi(pentecostMonday)
-    calculateAscensionofChrist(pentecostMonday)
-  })
-  return holidays
-
-}
-
-function calculateEasterHolidays(easterMonday: Date) {
-
-  pushAttributes({
-      name: "Easter Holidays",
-      dates: [{
-        start: new Date(easterMonday.getFullYear(), easterMonday.getMonth(), easterMonday.getDate()),
-        end: new Date(easterMonday.getFullYear(), easterMonday.getMonth(), easterMonday.getDate() + 9),
-      }],
-    },
-  )
-}
-
-function calculateAscensionofChrist(pentecostMonday: Date) {
-  pushAttributes({
-    name: "Ascension of Christ",
-    dates: [
-      {
-        start: new Date(pentecostMonday.getFullYear(), pentecostMonday.getMonth(), pentecostMonday.getDate() - 11),
-        end: new Date(pentecostMonday.getFullYear(), pentecostMonday.getMonth(), pentecostMonday.getDate() - 8),
-      },
-    ],
-
-  })
-}
-
-function calculateCorpusChristi(pentecostMonday: Date) {
-  pushAttributes({
-    name: "Corpus Christi",
-    dates: [
-      {
-        start: new Date(pentecostMonday.getFullYear(), pentecostMonday.getMonth(), pentecostMonday.getDate() + 10),
-        end: new Date(pentecostMonday.getFullYear(), pentecostMonday.getMonth(), pentecostMonday.getDate() + 13),
-      },
-    ],
-  })
-
-
-}
-
-function calculateEasterSunday(year: number) {
-  let c = Math.floor(year / 100)
-  let n = year - 19 * Math.floor(year / 19)
-  let k = Math.floor((c - 17) / 25)
-  let i = c - Math.floor(c / 4) - Math.floor((c - k) / 3) + 19 * n + 15
-  i = i - 30 * Math.floor((i / 30))
-  i = i - Math.floor(i / 28) * (1 - Math.floor(i / 28) * Math.floor(29 / (i + 1)) * Math.floor((21 - n) / 11))
-  let j = year + Math.floor(year / 4) + i + 2 - c + Math.floor(c / 4)
-  j = j - 7 * Math.floor(j / 7)
-  let l = i - j
-  let month = 3 + Math.floor((l + 40) / 44)
-  let day = l + 28 - 31 * Math.floor(month / 4)
-
-  month -= 1
-
-  calculateEasterHolidays(new Date(year, padout(month), padout(day + 1)))
-
-
-  return new Date(year, padout(month), padout(day))
-
-}
-
-function calculatePentecost(year: number, month: number, day: number) {
-
-  month += 1
-
-  let pday: number
-  let pmonth: number
-
-  if (month == 3) {
-    pday = day - 12
-    pmonth = 5
-  } else if (month == 4 && day < 13) {
-    pday = day + 19
-    pmonth = 5
-  } else {
-    pday = day - 12
-    pmonth = 6
-  }
-
-  return new Date(year, pmonth - 1, pday)
-}
-
-function padout(number: number) {
-  return (number < 10) ? parseInt("0" + number) : parseInt("" + number)
-}
-
+const rows = mapCurrent({xs: 2}, 3)
 
 const isDark = computed(() => {
   return colorMode.value !== "light"
 })
+
+const attributes = ref<AttributeConfig[]>([])
+const {holidays} = storeToRefs(useHolidayExportStore())
+const {federalState, selectedWeekday, selectedTeacher, period} = storeToRefs(useConfigStore())
+
+const minPage: PageAddress = {
+  year: MINIMUM_YEAR,
+  month: 1,
+}
+
+const maxPage: PageAddress = {
+  year: MAXIMUM_YEAR,
+  month: 1,
+}
+
+const disabledDates: DateRangeSource[] = [{
+  repeat: {
+    weekdays: [VCALENDAR_SATURDAY, VCALENDAR_SUNDAY],
+  },
+}]
+
+const TEACHERS: string[] = ["SAMC", "WITN", "STOW"]
+
+
+onMounted(() => {
+  exportAllAttributes()
+})
+
+watch([federalState, selectedWeekday, selectedTeacher, period], () => {
+  attributes.value = []
+  exportAllAttributes()
+})
+
+function addCustomHolidays() {
+  if (holidays.value.length > 0) {
+    const customHolidays = getCustomHolidays(holidays.value)
+    for (const holiday of customHolidays) {
+      attributes.value.push(holiday)
+    }
+  }
+}
+
+function addNormalHolidays() {
+  for (let i = MINIMUM_YEAR; i < MAXIMUM_YEAR; i++) {
+    const allHolidays = getNormalHolidays(i, "en")
+    for (const holiday of allHolidays) {
+      attributes.value.push(holiday)
+    }
+  }
+}
+
+function addHolidaysByYear(holidayFunction: (year: number) => AttributeConfig) {
+  for (let year = MINIMUM_YEAR; year < MAXIMUM_YEAR; year++) {
+    attributes.value.push(holidayFunction(year))
+  }
+}
+
+function addSemesterHolidays() {
+  addHolidaysByYear((year) => getSemesterHolidays(federalState.value, year))
+}
+
+function addSummerHolidays() {
+  addHolidaysByYear((year) => getSummerHolidays(federalState.value, year))
+}
+
+function addChristmasHolidays() {
+  addHolidaysByYear(getChristmasHolidays)
+}
+
+function addEasterHolidays() {
+  addHolidaysByYear(getEasterHolidays)
+}
+
+function addAutumnHolidays() {
+  addHolidaysByYear(getAutumnHolidays)
+}
+
+function findDaysToCheck(startDate: Date, endDate: Date, daysToCheck: Date[]) {
+  while (startDate <= endDate) {
+    if (selectedWeekday.value.includes(startDate.toLocaleDateString("en", {weekday: "long"}))) {
+      daysToCheck.push(new Date(startDate))
+    }
+    startDate.setDate(startDate.getDate() + 1)
+  }
+}
+
+function areDatesInRange(date: Date, start: Date, end: Date): boolean {
+  date.setHours(0, 0, 0, 0);
+  start.setHours(0, 0, 0, 0);
+  end.setHours(0, 0, 0, 0);
+
+  return date >= start && date <= end;
+}
+
+function getWeekNumber(date: Date): number {
+  let clonedDate = structuredClone(date)
+  const dayOfWeek: number = (clonedDate.getUTCDay() + 6) % 7
+  clonedDate.setUTCDate(clonedDate.getUTCDate() - dayOfWeek + 3)
+  const startOfYear: Date = new Date(Date.UTC(clonedDate.getUTCFullYear(), 0, 4))
+  return Math.ceil(((clonedDate.getTime() - startOfYear.getTime()) / 86400000 + 1) / 7)
+}
+
+function markTeachingPeriods(year: number = MINIMUM_YEAR) {
+  const LAST_YEAR = year - 1
+  const summerHolidaysBegin: AttributeConfig = getSummerHolidays(federalState.value, LAST_YEAR)
+  const summerHolidaysEnd: AttributeConfig = getSummerHolidays(federalState.value, year)
+  // @ts-ignore
+  const startDate = summerHolidaysBegin.dates[0].end
+  // @ts-ignore
+  const endDate = summerHolidaysEnd.dates[0].start
+
+  const daysToCheck: Date[] = []
+
+  let week: number = getWeekNumber(startDate)
+  let ongoingPeriod: number = 1
+  let currentTeacher = TEACHERS[0]
+
+  findDaysToCheck(startDate, endDate, daysToCheck)
+  
+  daysToCheck.forEach((date) => {
+    if (getWeekNumber(date) > week) {
+      week = getWeekNumber(date)
+    }
+    const holidayOnTeachingDay = attributes.value.find((attribute) => {
+      const start = attribute.dates[0].start
+      const end = attribute.dates[0].end
+      return areDatesInRange(date, start, end);
+    })
+
+    if (holidayOnTeachingDay) {
+      return
+    }
+
+    if (getWeekNumber(date) > week) {
+      if (ongoingPeriod < 2) {
+        ongoingPeriod++;
+      } else {
+        ongoingPeriod = 1
+        currentTeacher = TEACHERS[(TEACHERS.indexOf(currentTeacher) + 1) % TEACHERS.length]
+      }
+    }
+
+    console.log(currentTeacher + " " + date);
+    attributes.value.push({
+      key: "teachingPeriod",
+      highlight: "gray",
+      dates: [{
+        start: date,
+        end: date,
+      }],
+      popover: {
+        label: currentTeacher.toString(),
+        visibility: "hover",
+      },
+    })
+  })
+}
+
+function exportAllAttributes() {
+  addSemesterHolidays()
+  addSummerHolidays()
+  addEasterHolidays()
+  addChristmasHolidays()
+  addAutumnHolidays()
+  addNormalHolidays()
+  addCustomHolidays()
+  markTeachingPeriods(2025)
+}
 </script>
 
 <template>
   <div class="flex flex-wrap justify-center mt-6">
-    <ClientOnly fallback-tag="span" fallback="Loading Calendar...">
-      <!-- @vue-ignore TODO: Fix type issues with attributes -->
-      <VCalendar
-        show-weeknumbers
-        v-model="date"
-        :attributes="attrs"
-        :is-dark="isDark"
-        :columns="columns"
-        :rows="rows"
-        id="calendar"
-      ></VCalendar>
-    </ClientOnly>
+    <VCalendar
+      :first-day-of-week="VCALENDAR_MONDAY"
+      show-iso-weeknumbers
+      :is-dark="isDark"
+      :disabled-dates="disabledDates"
+      :color="appConfig.ui.primary"
+      :min-page="minPage"
+      :max-page="maxPage"
+      :attributes
+      :columns
+      :rows
+    />
   </div>
 </template>
-
-<style>
-.vc-bg-blue {
-  background-color: rgba(42, 42, 42, 0.15);
-}
-
-.vc-bg-blue-600 {
-  background-color: rgba(42, 42, 42, 0.9);
-}
-</style>
