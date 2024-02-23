@@ -131,6 +131,7 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   let week: number = getWeek(startDate)
   let ongoingPeriod: number = 0
   let currentTeacher: string = selectedTeacher.value[0]
+  let weekIncreased: boolean = false
 
   findDaysToCheck(startDate, endDate, daysToCheck)
 
@@ -138,11 +139,12 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   const LAST_YEAR_WEEK = 52
 
   daysToCheck.forEach((date) => {
-    // maybe bool already incremented eg status
-    if (getWeek(date) === FIRST_YEAR_WEEK && week === LAST_YEAR_WEEK)
-      week = FIRST_YEAR_WEEK
+    // check for new year
+    if (getWeek(date) === FIRST_YEAR_WEEK && week === LAST_YEAR_WEEK) week = 1
+
     if (getWeek(date) > week) {
       week = getWeek(date)
+      weekIncreased = false
     }
 
     const holidayOnTeachingDay = attributes.value.find((attribute) => {
@@ -157,16 +159,18 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
       return
     }
 
-    // only increment period each week not day if multiple days
-    if (getWeek(date) > week - 1) {
+    // Wenn ein zweites Datum geprüft wird wird dieses if ein zweites mal durchlaufen und ongoingperiod ein zweites mal
+    // erhöht
+    // vielleicht mit status variable könnte gelöst werden
+    if (getWeek(date) > week - 1 && !weekIncreased) {
       if (ongoingPeriod < period.value) {
         ongoingPeriod++
       } else {
-        ongoingPeriod = period.value - 1
+        ongoingPeriod = 1
         currentTeacher = selectedTeacher.value[(selectedTeacher.value.indexOf(currentTeacher) + 1) % selectedTeacher.value.length]
       }
+      weekIncreased = true
     }
-    console.log(currentTeacher)
     attributes.value.push({
       key: currentTeacher,
       highlight: "gray",
