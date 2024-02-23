@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import "~/styles/overrides.css"
+import "~/assets/styles/overrides.css"
 
 const {locale} = useI18n()
 const localeCookie = useCookie("locale")

@@ -2,14 +2,14 @@
   "name": "nuxt-app",
   "private": true,
   "type": "module",
-  "version": "0.3.7",
+  "version": "0.4.1",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "test": "vitest run test/unit",
+    "test": "vitest run test/unit --silent=false",
     "e2e-test": "npx playwright test test/e2e && npx playwright show-report",
     "e2e-test-ui": "npx playwright test test/e2e --ui "
   },

@@ -14,3 +14,13 @@ export interface ViewHoliday{
   start: string
   end: string
 }
+
+export type Color = {
+  name: string;
+  value: string;
+};
+
+export type LegendHoliday = {
+  name: string;
+  color: Color
+};

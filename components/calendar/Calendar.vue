@@ -12,13 +12,13 @@ const appConfig = useAppConfig()
 // Responsive
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
 const columns = mapCurrent({lg: 4, md: 3, sm: 2, xs: 1}, 1)
-const rows = mapCurrent({xs: 1}, 2)
+const rows = mapCurrent({xs: 2}, 3)
 
 const isDark = computed(() => {
   return colorMode.value !== "light"
 })
 
-const attributes = ref<AttributeConfig[]>([{}])
+const attributes = ref<AttributeConfig[]>([])
 const {holidays} = storeToRefs(useHolidayExportStore())
 const {federalState, selectedWeekday, selectedTeacher, period} = storeToRefs(useConfigStore())
 
@@ -37,6 +37,9 @@ const disabledDates: DateRangeSource[] = [{
     weekdays: [VCALENDAR_SATURDAY, VCALENDAR_SUNDAY],
   },
 }]
+
+const TEACHERS: string[] = ["SAMC", "WITN", "STOW"]
+
 
 onMounted(() => {
   exportAllAttributes()
@@ -65,41 +68,122 @@ function addNormalHolidays() {
   }
 }
 
-function addSemesterHolidays() {
-  const semesterHolidays = getSemesterHolidays(federalState.value)
-  attributes.value.push(semesterHolidays)
-}
-
 function addHolidaysByYear(holidayFunction: (year: number) => AttributeConfig) {
-  for (let i = MINIMUM_YEAR; i < MAXIMUM_YEAR; i++) {
-    attributes.value.push(holidayFunction(i));
+  for (let year = MINIMUM_YEAR; year < MAXIMUM_YEAR; year++) {
+    attributes.value.push(holidayFunction(year))
   }
 }
 
+function addSemesterHolidays() {
+  addHolidaysByYear((year) => getSemesterHolidays(federalState.value, year))
+}
+
 function addSummerHolidays() {
-  addHolidaysByYear((year) => getSummerHolidays(federalState.value, year));
+  addHolidaysByYear((year) => getSummerHolidays(federalState.value, year))
 }
 
 function addChristmasHolidays() {
-  addHolidaysByYear(getChristmasHolidays);
+  addHolidaysByYear(getChristmasHolidays)
 }
 
 function addEasterHolidays() {
-  addHolidaysByYear(getEasterHolidays);
+  addHolidaysByYear(getEasterHolidays)
 }
 
 function addAutumnHolidays() {
-  addHolidaysByYear(getAutumnHolidays);
+  addHolidaysByYear(getAutumnHolidays)
+}
+
+function findDaysToCheck(startDate: Date, endDate: Date, daysToCheck: Date[]) {
+  while (startDate <= endDate) {
+    if (selectedWeekday.value.includes(startDate.toLocaleDateString("en", {weekday: "long"}))) {
+      daysToCheck.push(new Date(startDate))
+    }
+    startDate.setDate(startDate.getDate() + 1)
+  }
+}
+
+function areDatesInRange(date: Date, start: Date, end: Date): boolean {
+  date.setHours(0, 0, 0, 0);
+  start.setHours(0, 0, 0, 0);
+  end.setHours(0, 0, 0, 0);
+
+  return date >= start && date <= end;
+}
+
+function getWeekNumber(date: Date): number {
+  let clonedDate = structuredClone(date)
+  const dayOfWeek: number = (clonedDate.getUTCDay() + 6) % 7
+  clonedDate.setUTCDate(clonedDate.getUTCDate() - dayOfWeek + 3)
+  const startOfYear: Date = new Date(Date.UTC(clonedDate.getUTCFullYear(), 0, 4))
+  return Math.ceil(((clonedDate.getTime() - startOfYear.getTime()) / 86400000 + 1) / 7)
+}
+
+function markTeachingPeriods(year: number = MINIMUM_YEAR) {
+  const LAST_YEAR = year - 1
+  const summerHolidaysBegin: AttributeConfig = getSummerHolidays(federalState.value, LAST_YEAR)
+  const summerHolidaysEnd: AttributeConfig = getSummerHolidays(federalState.value, year)
+  // @ts-ignore
+  const startDate = summerHolidaysBegin.dates[0].end
+  // @ts-ignore
+  const endDate = summerHolidaysEnd.dates[0].start
+
+  const daysToCheck: Date[] = []
+
+  let week: number = getWeekNumber(startDate)
+  let ongoingPeriod: number = 1
+  let currentTeacher = TEACHERS[0]
+
+  findDaysToCheck(startDate, endDate, daysToCheck)
+  
+  daysToCheck.forEach((date) => {
+    if (getWeekNumber(date) > week) {
+      week = getWeekNumber(date)
+    }
+    const holidayOnTeachingDay = attributes.value.find((attribute) => {
+      const start = attribute.dates[0].start
+      const end = attribute.dates[0].end
+      return areDatesInRange(date, start, end);
+    })
+
+    if (holidayOnTeachingDay) {
+      return
+    }
+
+    if (getWeekNumber(date) > week) {
+      if (ongoingPeriod < 2) {
+        ongoingPeriod++;
+      } else {
+        ongoingPeriod = 1
+        currentTeacher = TEACHERS[(TEACHERS.indexOf(currentTeacher) + 1) % TEACHERS.length]
+      }
+    }
+
+    console.log(currentTeacher + " " + date);
+    attributes.value.push({
+      key: "teachingPeriod",
+      highlight: "gray",
+      dates: [{
+        start: date,
+        end: date,
+      }],
+      popover: {
+        label: currentTeacher.toString(),
+        visibility: "hover",
+      },
+    })
+  })
 }
 
 function exportAllAttributes() {
-  addCustomHolidays()
   addSemesterHolidays()
   addSummerHolidays()
   addEasterHolidays()
   addChristmasHolidays()
   addAutumnHolidays()
   addNormalHolidays()
+  addCustomHolidays()
+  markTeachingPeriods(2025)
 }
 </script>
 
@@ -119,4 +203,3 @@ function exportAllAttributes() {
     />
   </div>
 </template>
-
