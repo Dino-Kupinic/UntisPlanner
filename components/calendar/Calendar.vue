@@ -131,7 +131,6 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   findDaysToCheck(startDate, endDate, daysToCheck)
 
   daysToCheck.forEach((date) => {
-    // console.log("Fortlaufende Woche: " + week + " | Woche des Tages: " + getWeekNumber(date) + " | " + date)
     console.log("New Week | " + week + " | " + date)
     if (getWeek(date) === 1 && week === 52)
       week = 1
@@ -151,6 +150,9 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
       return
     }
 
+    // Wenn ein zweites Datum geprüft wird wird dieses if ein zweites mal durchlaufen und ongoingperiod ein zweites mal
+    // erhöht
+    // vielleicht mit status variable könnte gelöst werden
     if (getWeek(date) > week - 1) {
       if (ongoingPeriod < 2) {
         ongoingPeriod++;
