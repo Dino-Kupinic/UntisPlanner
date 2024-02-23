@@ -7,6 +7,9 @@ export default defineNuxtConfig({
       title: "UntisPlanner",
     },
   },
+  css: [
+    "~/assets/styles/main.css",
+  ],
   devtools: {
     enabled: true,
     timeline: {

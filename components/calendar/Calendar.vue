@@ -12,7 +12,7 @@ const appConfig = useAppConfig()
 // Responsive
 const {mapCurrent} = useScreens({xs: "0px", sm: "640px", md: "768px", lg: "1024px"})
 const columns = mapCurrent({lg: 4, md: 3, sm: 2, xs: 1}, 1)
-const rows = mapCurrent({xs: 1}, 3)
+const rows = mapCurrent({xs: 2}, 3)
 
 const isDark = computed(() => {
   return colorMode.value !== "light"

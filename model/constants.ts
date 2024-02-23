@@ -11,3 +11,7 @@ export const VCALENDAR_THURSDAY: DayOfWeek = 5
 export const VCALENDAR_FRIDAY: DayOfWeek = 6
 export const VCALENDAR_SATURDAY: DayOfWeek = 7
 export const VCALENDAR_SUNDAY: DayOfWeek = 1
+
+export const MINIMUM_PERIOD: number = 2
+export const DEFAULT_STATE: string = "Upper Austria"
+
