@@ -5,6 +5,7 @@ import type {PageAddress} from "v-calendar/dist/types/src/utils/page.d.ts"
 import {useScreens} from "vue-screen-utils"
 import {useConfigStore} from "~/stores/configStore"
 import {MAXIMUM_YEAR, MINIMUM_YEAR, VCALENDAR_MONDAY, VCALENDAR_SATURDAY, VCALENDAR_SUNDAY} from "~/model/constants"
+import {getWeek} from "date-fns"
 
 const colorMode = useColorMode()
 const appConfig = useAppConfig()
@@ -20,10 +21,8 @@ const isDark = computed(() => {
 
 const attributes = ref<AttributeConfig[]>([])
 const {holidays} = storeToRefs(useHolidayExportStore())
+const {teachers} = storeToRefs(useTeacherStore())
 const {federalState, selectedWeekday, selectedTeacher, period} = storeToRefs(useConfigStore())
-
-const TEACHERS: string[] = ["SAMC", "WITN", "STOW"]
-
 
 const minPage: PageAddress = {
   year: MINIMUM_YEAR,
@@ -111,15 +110,10 @@ function areDatesInRange(date: Date, start: Date, end: Date): boolean {
   return date >= start && date <= end;
 }
 
-function getWeekNumber(date: Date): number {
-  let clonedDate = new Date(date)
-  const dayOfWeek: number = (clonedDate.getUTCDay() + 6) % 7
-  clonedDate.setUTCDate(clonedDate.getUTCDate() - dayOfWeek + 3)
-  const startOfYear: Date = new Date(Date.UTC(clonedDate.getUTCFullYear(), 0, 4))
-  return Math.ceil(((clonedDate.getTime() - startOfYear.getTime()) / 86400000 + 1) / 7)
-}
-
 function markTeachingPeriods(year: number = MINIMUM_YEAR) {
+  if (teachers.value.length === 0 || selectedWeekday.value.length === 0)
+    return
+
   const LAST_YEAR = year - 1
   const summerHolidaysBegin: AttributeConfig = getSummerHolidays(federalState.value, LAST_YEAR)
   const summerHolidaysEnd: AttributeConfig = getSummerHolidays(federalState.value, year)
@@ -130,20 +124,25 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
 
   const daysToCheck: Date[] = []
 
-  let week: number = getWeekNumber(startDate)
-  let ongoingPeriod: number = 1
-  let currentTeacher: string = TEACHERS[0]
+  let week: number = getWeek(startDate)
+  let ongoingPeriod: number = 0
+  let currentTeacher: string = teachers.value[0]
 
   findDaysToCheck(startDate, endDate, daysToCheck)
 
   daysToCheck.forEach((date) => {
     // console.log("Fortlaufende Woche: " + week + " | Woche des Tages: " + getWeekNumber(date) + " | " + date)
     console.log("New Week | " + week + " | " + date)
-    if (getWeekNumber(date) > week) {
-      week = getWeekNumber(date)
+    if (getWeek(date) === 1 && week === 52)
+      week = 1
+    if (getWeek(date) > week) {
+      week = getWeek(date)
     }
+
     const holidayOnTeachingDay = attributes.value.find((attribute) => {
+      // @ts-ignore
       const start = attribute.dates[0].start
+      // @ts-ignore
       const end = attribute.dates[0].end
       return areDatesInRange(date, start, end);
     })
@@ -152,17 +151,16 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
       return
     }
 
-    // TODO: consider year leap
-    // if (getWeekNumber(date) > week - 1) {
-    //   if (ongoingPeriod < 2) {
-    //     ongoingPeriod++;
-    //   } else {
-    //     ongoingPeriod = 1
-    //     currentTeacher = TEACHERS[(TEACHERS.indexOf(currentTeacher) + 1) % TEACHERS.length]
-    //   }
-    // }
+    if (getWeek(date) > week - 1) {
+      if (ongoingPeriod < 2) {
+        ongoingPeriod++;
+      } else {
+        ongoingPeriod = 1
+        currentTeacher = teachers.value[(teachers.value.indexOf(currentTeacher) + 1) % teachers.value.length]
+      }
+    }
 
-    // console.log(currentTeacher + " " + date);
+    console.log(currentTeacher + " " + date);
     attributes.value.push({
       key: currentTeacher,
       highlight: "gray",
