@@ -22,7 +22,7 @@ const isDark = computed(() => {
 const attributes = ref<AttributeConfig[]>([])
 const {holidays} = storeToRefs(useHolidayExportStore())
 const {teachers} = storeToRefs(useTeacherStore())
-const {federalState, selectedWeekday, selectedTeacher, period} = storeToRefs(useConfigStore())
+const {federalState, selectedWeekday, selectedTeacher, selectedYear, period} = storeToRefs(useConfigStore())
 
 const minPage: PageAddress = {
   year: MINIMUM_YEAR,
@@ -44,7 +44,7 @@ onMounted(() => {
   exportAllAttributes()
 })
 
-watch([federalState, selectedWeekday, selectedTeacher, period], () => {
+watch([federalState, selectedWeekday, selectedTeacher, selectedYear, period], () => {
   attributes.value = []
   exportAllAttributes()
 })
@@ -103,17 +103,14 @@ function findDaysToCheck(startDate: Date, endDate: Date, daysToCheck: Date[]) {
 }
 
 function areDatesInRange(date: Date, start: Date, end: Date): boolean {
-  date.setHours(0, 0, 0, 0);
-  start.setHours(0, 0, 0, 0);
-  end.setHours(0, 0, 0, 0);
+  date.setHours(0, 0, 0, 0)
+  start.setHours(0, 0, 0, 0)
+  end.setHours(0, 0, 0, 0)
 
-  return date >= start && date <= end;
+  return date >= start && date <= end
 }
 
-function markTeachingPeriods(year: number = MINIMUM_YEAR) {
-  if (teachers.value.length === 0 || selectedWeekday.value.length === 0)
-    return
-
+function getStartAndEndDates(year: number) {
   const LAST_YEAR = year - 1
   const summerHolidaysBegin: AttributeConfig = getSummerHolidays(federalState.value, LAST_YEAR)
   const summerHolidaysEnd: AttributeConfig = getSummerHolidays(federalState.value, year)
@@ -121,19 +118,29 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   const startDate = summerHolidaysBegin.dates[0].end
   // @ts-ignore
   const endDate = summerHolidaysEnd.dates[0].start
+  return {startDate, endDate}
+}
 
+function markTeachingPeriods(year: number = MINIMUM_YEAR) {
+  if (teachers.value.length === 0 || selectedTeacher.value.length < 2 || selectedWeekday.value.length === 0)
+    return
+
+  const {startDate, endDate} = getStartAndEndDates(year)
   const daysToCheck: Date[] = []
 
   let week: number = getWeek(startDate)
   let ongoingPeriod: number = 0
-  let currentTeacher: string = teachers.value[0]
+  let currentTeacher: string = selectedTeacher.value[0]
 
   findDaysToCheck(startDate, endDate, daysToCheck)
 
+  const FIRST_YEAR_WEEK = 1
+  const LAST_YEAR_WEEK = 52
+
   daysToCheck.forEach((date) => {
-    console.log("New Week | " + week + " | " + date)
-    if (getWeek(date) === 1 && week === 52)
-      week = 1
+    // maybe bool already incremented eg status
+    if (getWeek(date) === FIRST_YEAR_WEEK && week === LAST_YEAR_WEEK)
+      week = FIRST_YEAR_WEEK
     if (getWeek(date) > week) {
       week = getWeek(date)
     }
@@ -143,26 +150,23 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
       const start = attribute.dates[0].start
       // @ts-ignore
       const end = attribute.dates[0].end
-      return areDatesInRange(date, start, end);
+      return areDatesInRange(date, start, end)
     })
 
     if (holidayOnTeachingDay) {
       return
     }
 
-    // Wenn ein zweites Datum geprüft wird wird dieses if ein zweites mal durchlaufen und ongoingperiod ein zweites mal
-    // erhöht
-    // vielleicht mit status variable könnte gelöst werden
+    // only increment period each week not day if multiple days
     if (getWeek(date) > week - 1) {
-      if (ongoingPeriod < 2) {
-        ongoingPeriod++;
+      if (ongoingPeriod < period.value) {
+        ongoingPeriod++
       } else {
-        ongoingPeriod = 1
-        currentTeacher = teachers.value[(teachers.value.indexOf(currentTeacher) + 1) % teachers.value.length]
+        ongoingPeriod = period.value - 1
+        currentTeacher = selectedTeacher.value[(selectedTeacher.value.indexOf(currentTeacher) + 1) % selectedTeacher.value.length]
       }
     }
-
-    console.log(currentTeacher + " " + date);
+    console.log(currentTeacher)
     attributes.value.push({
       key: currentTeacher,
       highlight: "gray",
@@ -170,6 +174,9 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
         start: date,
         end: date,
       }],
+      customData: {
+        teacher: currentTeacher
+      },
       popover: {
         label: currentTeacher,
         visibility: "hover",
@@ -186,7 +193,7 @@ function exportAllAttributes() {
   addAutumnHolidays()
   addNormalHolidays()
   addCustomHolidays()
-  markTeachingPeriods(2025)
+  markTeachingPeriods(selectedYear.value)
 }
 </script>
 
