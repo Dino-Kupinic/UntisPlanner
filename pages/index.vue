@@ -1,19 +1,54 @@
 <script setup lang="ts">
+import type {AttributeConfig} from "v-calendar/dist/types/src/utils/attribute.d.ts"
+import type {Teacher} from "~/model/teacher"
+
 const isLoading = ref<boolean>(false)
 const showTable = ref<boolean>(false)
 
-function generate() {
+const attributes = ref<AttributeConfig[]>([])
+const {teachers} = storeToRefs(useTeacherStore())
+const {selectedTeacher} = storeToRefs(useConfigStore())
+const result = ref<Teacher[]>([])
+
+async function calculate(): Promise<Teacher[]> {
+  return new Promise((resolve) => {
+    const output: Teacher[] = []
+
+    for (const teacher of selectedTeacher.value) {
+      const firstOccurance = attributes.value.find((attr) => {
+        return attr.customData && attr.customData.teacher === teacher;
+      })
+      console.log(firstOccurance)
+    }
+    // for (const [index, attribute] of attributes.value.entries()) {
+    //   if (attribute.customData)
+    //   output.push({
+    //     id: index + 1,
+    //     user: attribute.customData.teacher,
+    //     from: ",20230925,20231127,20240115,20240212,20240318,20240415,20240513,",
+    //     to: ",20230925,20231127,20240115,20240212,20240318,20240415,20240513,",
+    //   } as Teacher)
+    // }
+
+    resolve(output)
+  })
+}
+
+async function generate() {
   isLoading.value = true
   showTable.value = false
-  setTimeout(() => {
+  try {
+    result.value = await calculate()
+    console.log(result.value)
     isLoading.value = false
     showTable.value = true
-  }, 1000)
+  } catch (error) {
+    console.error("Error in calculate:", error)
+  }
 }
 
 const skeletonRows = computed(() => {
-  // TODO: Replace with actual number of rows
-  return 4
+  return result.value.length
 })
 </script>
 
@@ -29,19 +64,20 @@ const skeletonRows = computed(() => {
       title="Heads up!"
     />
     <GeneratorSettings/>
-    <Calendar/>
+    <Calendar @change="(attr) => attributes = attr"/>
     <div class="flex justify-center p-5">
-      <UButton :loading="isLoading" @click="generate()" icon="i-material-symbols-magic-button" :label="$t('GenerateButton')" />
+      <UButton :loading="isLoading" @click="generate()" icon="i-material-symbols-magic-button"
+               :label="$t('GenerateButton')"/>
     </div>
     <div v-if="isLoading" class="flex flex-col justify-center mt-8">
-      <ExportTableSkeleton :rows="skeletonRows" />
+      <ExportTableSkeleton :rows="skeletonRows"/>
     </div>
     <div v-if="showTable">
-      <ExportTable/>
+      <ExportTable :teacher="result"/>
       <ExportTableButton/>
     </div>
     <div v-else>
-      <div class="h-36" />
+      <div class="h-36"/>
     </div>
   </main>
 </template>

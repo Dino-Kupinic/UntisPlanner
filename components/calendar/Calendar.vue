@@ -166,7 +166,7 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
         currentTeacher = selectedTeacher.value[(selectedTeacher.value.indexOf(currentTeacher) + 1) % selectedTeacher.value.length]
       }
     }
-    console.log(currentTeacher)
+    // console.log(currentTeacher)
     attributes.value.push({
       key: currentTeacher,
       highlight: "gray",
@@ -195,6 +195,14 @@ function exportAllAttributes() {
   addCustomHolidays()
   markTeachingPeriods(selectedYear.value)
 }
+
+const emit = defineEmits<{
+  change: [attributes: AttributeConfig[]]
+}>()
+
+watch(attributes, () => {
+  emit("change", attributes.value)
+})
 </script>
 
 <template>
