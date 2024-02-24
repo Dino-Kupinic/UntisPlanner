@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type {AttributeConfig} from "v-calendar/dist/types/src/utils/attribute.d.ts"
 import type {Teacher} from "~/model/teacher"
+import {differenceInCalendarDays} from "date-fns"
 
 const isLoading = ref<boolean>(false)
 const showTable = ref<boolean>(false)
@@ -14,24 +15,62 @@ async function calculate(): Promise<Teacher[]> {
   return new Promise((resolve) => {
     const output: Teacher[] = []
 
-    for (const teacher of selectedTeacher.value) {
-      const firstOccurance = attributes.value.find((attr) => {
-        return attr.customData && attr.customData.teacher === teacher;
+    for (const [idx, teacher] of selectedTeacher.value.entries()) {
+      const lessonDays = attributes.value.filter((attr) => {
+        return attr.customData && attr.customData.teacher === teacher
       })
-      console.log(firstOccurance)
-    }
-    // for (const [index, attribute] of attributes.value.entries()) {
-    //   if (attribute.customData)
-    //   output.push({
-    //     id: index + 1,
-    //     user: attribute.customData.teacher,
-    //     from: ",20230925,20231127,20240115,20240212,20240318,20240415,20240513,",
-    //     to: ",20230925,20231127,20240115,20240212,20240318,20240415,20240513,",
-    //   } as Teacher)
-    // }
 
+      const interruptionsFROM: string[] = []
+      const interruptionsTO: string[] = []
+
+      if (lessonDays.length > 0) {
+        for (let i = 0; i < lessonDays.length; i++) {
+          // @ts-ignore
+          const date: Date = lessonDays[i].dates[0].start || lessonDays[i + 1].dates[0].end
+          // @ts-ignore
+          const nextDate: Date | undefined = lessonDays[i + 1]?.dates[0]?.start
+
+          if (!nextDate)
+            continue
+
+          if (differenceInCalendarDays(date, nextDate) !== -7) {
+            /*
+            This code is for when the day is not monday (no guarantee it works)
+             */
+            // const dayOfWeek = date.getDay()
+            // if (dayOfWeek !== 1) {
+            //   const daysToMonday = (dayOfWeek - 1 + 7) % 7
+            //   const mondayDate = new Date(date)
+            //   mondayDate.setDate(date.getDate() - daysToMonday)
+            //   interruptionsFROM.push(formatDateString(daysToMonday))
+            // }
+            const newDate = new Date(date);
+            newDate.setDate(date.getDate() + 7);
+            interruptionsFROM.push(formatDateString(newDate))
+
+            const previousSunday = new Date(nextDate);
+            const daysToPreviousSunday = nextDate.getDay() === 0 ? 7 : nextDate.getDay(); // Calculate days to go back to Sunday
+            previousSunday.setDate(nextDate.getDate() - daysToPreviousSunday);
+            interruptionsTO.push(formatDateString(previousSunday))
+          }
+        }
+      }
+      output.push({
+        id: idx + 1,
+        user: teacher,
+        from: "," + interruptionsFROM.toString() + ",",
+        to: "," + interruptionsTO.toString() + ",",
+      } as Teacher)
+    }
     resolve(output)
   })
+}
+
+function formatDateString(date: Date): string {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, "0")
+  const day = String(date.getDate()).padStart(2, "0")
+  return `${year}${month}${day}`
 }
 
 async function generate() {
