@@ -238,6 +238,14 @@ function exportAllAttributes() {
   addCustomHolidays()
   markTeachingPeriods(selectedYear.value)
 }
+
+const emit = defineEmits<{
+  change: [attributes: AttributeConfig[]]
+}>()
+
+watch(attributes, () => {
+  emit("change", attributes.value)
+})
 </script>
 
 <template>
