@@ -121,13 +121,19 @@ function getStartAndEndDates(year: number) {
   return {startDate, endDate}
 }
 
-function checkPeriod(dayPeriod: number, teacher: string) {
+type periodTeacher = {
+  period: number,
+  teacher: string
+}
+
+function checkPeriod(dayPeriod: number, teacher: string): periodTeacher {
   if (dayPeriod < period.value) {
     dayPeriod++
   } else {
     dayPeriod = 1
     teacher = selectedTeacher.value[(selectedTeacher.value.indexOf(teacher) + 1) % selectedTeacher.value.length]
   }
+  return {period: dayPeriod, teacher: teacher}
 }
 
 function pushTeachingUnit(date: Date, teacher: string) {
@@ -191,23 +197,33 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
     if (getWeek(date) > week - 1) {
       switch (date.getDay()) {
         case 1:
-          checkPeriod(mondayPeriod, mondayTeacher)
+          const mondayObject = checkPeriod(mondayPeriod, mondayTeacher)
+            mondayPeriod = mondayObject.period
+            mondayTeacher = mondayObject.teacher
           pushTeachingUnit(date, mondayTeacher)
           break
         case 2:
-          checkPeriod(tuesdayPeriod, tuesdayTeacher)
+          const tuesdayObject =  checkPeriod(tuesdayPeriod, tuesdayTeacher)
+          tuesdayPeriod = tuesdayObject.period
+          tuesdayTeacher = tuesdayObject.teacher
           pushTeachingUnit(date, tuesdayTeacher)
           break
         case 3:
-          checkPeriod(wednesdayPeriod, wednesdayTeacher)
+          const wednesdayObject = checkPeriod(wednesdayPeriod, wednesdayTeacher)
+          wednesdayPeriod = wednesdayObject.period
+          wednesdayTeacher = wednesdayObject.teacher
           pushTeachingUnit(date, wednesdayTeacher)
           break
         case 4:
-          checkPeriod(thursdayPeriod, thursdayTeacher)
+          const thursdayObject = checkPeriod(thursdayPeriod, thursdayTeacher)
+            thursdayPeriod = thursdayObject.period
+            thursdayTeacher = thursdayObject.teacher
           pushTeachingUnit(date, thursdayTeacher)
           break
         case 5:
-          checkPeriod(fridayPeriod, fridayTeacher)
+          const fridayObject = checkPeriod(fridayPeriod, fridayTeacher)
+            fridayPeriod = fridayObject.period
+            fridayTeacher = fridayObject.teacher
           pushTeachingUnit(date, fridayTeacher)
           break
       }
