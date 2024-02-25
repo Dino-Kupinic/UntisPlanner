@@ -121,6 +121,39 @@ function getStartAndEndDates(year: number) {
   return {startDate, endDate}
 }
 
+type periodTeacher = {
+  period: number,
+  teacher: string
+}
+
+function checkPeriod(dayPeriod: number, teacher: string): periodTeacher {
+  if (dayPeriod < period.value) {
+    dayPeriod++
+  } else {
+    dayPeriod = 1
+    teacher = selectedTeacher.value[(selectedTeacher.value.indexOf(teacher) + 1) % selectedTeacher.value.length]
+  }
+  return {period: dayPeriod, teacher: teacher}
+}
+
+function pushTeachingUnit(date: Date, teacher: string) {
+  attributes.value.push({
+    key: teacher,
+    highlight: "gray",
+    dates: [{
+      start: date,
+      end: date,
+    }],
+    customData: {
+      teacher: teacher
+    },
+    popover: {
+      label: teacher,
+      visibility: "hover",
+    },
+  })
+}
+
 function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   if (teachers.value.length === 0 || selectedTeacher.value.length < 2 || selectedWeekday.value.length === 0)
     return
@@ -129,8 +162,9 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   const daysToCheck: Date[] = []
 
   let week: number = getWeek(startDate)
-  let ongoingPeriod: number = 0
-  let currentTeacher: string = selectedTeacher.value[0]
+  let mondayPeriod: number, tuesdayPeriod: number, wednesdayPeriod: number, thursdayPeriod: number, fridayPeriod: number = 0
+  let mondayTeacher: string, tuesdayTeacher: string, wednesdayTeacher: string, thursdayTeacher: string, fridayTeacher: string
+      = selectedTeacher.value[0]
 
   findDaysToCheck(startDate, endDate, daysToCheck)
 
@@ -138,9 +172,9 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   const LAST_YEAR_WEEK = 52
 
   daysToCheck.forEach((date) => {
-    // maybe bool already incremented eg status
-    if (getWeek(date) === FIRST_YEAR_WEEK && week === LAST_YEAR_WEEK)
-      week = FIRST_YEAR_WEEK
+    // check for new year
+    if (getWeek(date) === FIRST_YEAR_WEEK && week === LAST_YEAR_WEEK) week = 1
+
     if (getWeek(date) > week) {
       week = getWeek(date)
     }
@@ -157,31 +191,40 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
       return
     }
 
-    // only increment period each week not day if multiple days
     if (getWeek(date) > week - 1) {
-      if (ongoingPeriod < period.value) {
-        ongoingPeriod++
-      } else {
-        ongoingPeriod = period.value - 1
-        currentTeacher = selectedTeacher.value[(selectedTeacher.value.indexOf(currentTeacher) + 1) % selectedTeacher.value.length]
+      switch (date.getDay()) {
+        case 1:
+          const mondayObject = checkPeriod(mondayPeriod, mondayTeacher)
+            mondayPeriod = mondayObject.period
+            mondayTeacher = mondayObject.teacher
+          pushTeachingUnit(date, mondayTeacher)
+          break
+        case 2:
+          const tuesdayObject = checkPeriod(tuesdayPeriod, tuesdayTeacher)
+            tuesdayPeriod = tuesdayObject.period
+            tuesdayTeacher = tuesdayObject.teacher
+          pushTeachingUnit(date, tuesdayTeacher)
+          break
+        case 3:
+          const wednesdayObject = checkPeriod(wednesdayPeriod, wednesdayTeacher)
+            wednesdayPeriod = wednesdayObject.period
+            wednesdayTeacher = wednesdayObject.teacher
+          pushTeachingUnit(date, wednesdayTeacher)
+          break
+        case 4:
+          const thursdayObject = checkPeriod(thursdayPeriod, thursdayTeacher)
+            thursdayPeriod = thursdayObject.period
+            thursdayTeacher = thursdayObject.teacher
+          pushTeachingUnit(date, thursdayTeacher)
+          break
+        case 5:
+          const fridayObject = checkPeriod(fridayPeriod, fridayTeacher)
+            fridayPeriod = fridayObject.period
+            fridayTeacher = fridayObject.teacher
+          pushTeachingUnit(date, fridayTeacher)
+          break
       }
     }
-    // console.log(currentTeacher)
-    attributes.value.push({
-      key: currentTeacher,
-      highlight: "gray",
-      dates: [{
-        start: date,
-        end: date,
-      }],
-      customData: {
-        teacher: currentTeacher
-      },
-      popover: {
-        label: currentTeacher,
-        visibility: "hover",
-      },
-    })
   })
 }
 
