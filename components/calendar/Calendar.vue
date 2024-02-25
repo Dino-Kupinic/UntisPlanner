@@ -191,9 +191,6 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
       return
     }
 
-    // Wenn ein zweites Datum geprüft wird, wird dieses if ein zweites Mal durchlaufen und ongoingPeriod ein zweites Mal
-    // erhöht
-    // vielleicht mit status variable könnte gelöst werden
     if (getWeek(date) > week - 1) {
       switch (date.getDay()) {
         case 1:
