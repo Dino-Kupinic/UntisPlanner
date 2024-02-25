@@ -59,8 +59,7 @@ A live demo of UntisPlanner is available on https://untis-planner.vercel.app/
 - Year
 
 ### Legend
-
-Quick reference for which colors represents which mark in the Calendar
+- Quick reference for which colors represents which mark in the Calendar
 
 ### Calendar
 
