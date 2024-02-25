@@ -200,15 +200,15 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
           pushTeachingUnit(date, mondayTeacher)
           break
         case 2:
-          const tuesdayObject =  checkPeriod(tuesdayPeriod, tuesdayTeacher)
-          tuesdayPeriod = tuesdayObject.period
-          tuesdayTeacher = tuesdayObject.teacher
+          const tuesdayObject = checkPeriod(tuesdayPeriod, tuesdayTeacher)
+            tuesdayPeriod = tuesdayObject.period
+            tuesdayTeacher = tuesdayObject.teacher
           pushTeachingUnit(date, tuesdayTeacher)
           break
         case 3:
           const wednesdayObject = checkPeriod(wednesdayPeriod, wednesdayTeacher)
-          wednesdayPeriod = wednesdayObject.period
-          wednesdayTeacher = wednesdayObject.teacher
+            wednesdayPeriod = wednesdayObject.period
+            wednesdayTeacher = wednesdayObject.teacher
           pushTeachingUnit(date, wednesdayTeacher)
           break
         case 4:
