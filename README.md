@@ -1,4 +1,7 @@
+[![UntisPlanner](./.github/assets/untisplanner.png)](https://untis-planner.vercel.app/)
+
 # UntisPlanner
+UntisPlanner is an easy-to-use application for generating a special teaching plan which currently has to be done manually.
 
 > [!CAUTION]
 > UntisPlanner is still in Development. Until `v1.0.0` you will find bugs and broken/unfinished features.
@@ -44,6 +47,44 @@ A live demo of UntisPlanner is available on https://untis-planner.vercel.app/
 
 > [!IMPORTANT]  
 > The live demo is based on the `main` branch. If you want to test the latest features, you should head to the `develop` branch.
+
+# Features
+
+### Generation Options
+
+- Federal State selection (Upper Austria, Salzburg, Vienna, ...)
+- Period
+- Lesson Days (Monday - Friday)
+- Teacher selection 
+- Year
+
+### Legend
+
+Quick reference for which colors represents which mark in the Calendar
+
+### Calendar
+
+- Year view with color marked holidays and teaching periods
+- Left/Right arrows for navigating calendar
+- Quick travel by clicking on a month
+- Popover for detailed information on each marking
+
+### Export
+
+- Table display of generation result
+- Option for downloading or copying to clipboard
+- JSON/CSV format support
+
+### Settings
+
+- Language selection
+- Theme selection
+- Creating/Removing teachers
+- Creating/Removing custom holidays
+
+### Other
+- Light/Dark Mode
+
 
 ## 😄 Authors
 
