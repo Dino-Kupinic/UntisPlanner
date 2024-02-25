@@ -121,6 +121,33 @@ function getStartAndEndDates(year: number) {
   return {startDate, endDate}
 }
 
+function checkPeriod(dayPeriod: number, teacher: string) {
+  if (dayPeriod < period.value) {
+    dayPeriod++
+  } else {
+    dayPeriod = 1
+    teacher = selectedTeacher.value[(selectedTeacher.value.indexOf(teacher) + 1) % selectedTeacher.value.length]
+  }
+}
+
+function pushTeachingUnit(date: Date, teacher: string) {
+  attributes.value.push({
+    key: teacher,
+    highlight: "gray",
+    dates: [{
+      start: date,
+      end: date,
+    }],
+    customData: {
+      teacher: teacher
+    },
+    popover: {
+      label: teacher,
+      visibility: "hover",
+    },
+  })
+}
+
 function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   if (teachers.value.length === 0 || selectedTeacher.value.length < 2 || selectedWeekday.value.length === 0)
     return
@@ -129,9 +156,9 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   const daysToCheck: Date[] = []
 
   let week: number = getWeek(startDate)
-  let ongoingPeriod: number = 0
-  let currentTeacher: string = selectedTeacher.value[0]
-  let weekIncreased: boolean = false
+  let mondayPeriod: number, tuesdayPeriod: number, wednesdayPeriod: number, thursdayPeriod: number, fridayPeriod: number = 0
+  let mondayTeacher: string, tuesdayTeacher: string, wednesdayTeacher: string, thursdayTeacher: string, fridayTeacher: string
+      = selectedTeacher.value[0]
 
   findDaysToCheck(startDate, endDate, daysToCheck)
 
@@ -144,7 +171,6 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
 
     if (getWeek(date) > week) {
       week = getWeek(date)
-      weekIncreased = false
     }
 
     const holidayOnTeachingDay = attributes.value.find((attribute) => {
@@ -159,33 +185,33 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
       return
     }
 
-    // Wenn ein zweites Datum geprüft wird wird dieses if ein zweites mal durchlaufen und ongoingperiod ein zweites mal
+    // Wenn ein zweites Datum geprüft wird, wird dieses if ein zweites Mal durchlaufen und ongoingPeriod ein zweites Mal
     // erhöht
     // vielleicht mit status variable könnte gelöst werden
-    if (getWeek(date) > week - 1 && !weekIncreased) {
-      if (ongoingPeriod < period.value) {
-        ongoingPeriod++
-      } else {
-        ongoingPeriod = 1
-        currentTeacher = selectedTeacher.value[(selectedTeacher.value.indexOf(currentTeacher) + 1) % selectedTeacher.value.length]
+    if (getWeek(date) > week - 1) {
+      switch (date.getDay()) {
+        case 1:
+          checkPeriod(mondayPeriod, mondayTeacher)
+          pushTeachingUnit(date, mondayTeacher)
+          break
+        case 2:
+          checkPeriod(tuesdayPeriod, tuesdayTeacher)
+          pushTeachingUnit(date, tuesdayTeacher)
+          break
+        case 3:
+          checkPeriod(wednesdayPeriod, wednesdayTeacher)
+          pushTeachingUnit(date, wednesdayTeacher)
+          break
+        case 4:
+          checkPeriod(thursdayPeriod, thursdayTeacher)
+          pushTeachingUnit(date, thursdayTeacher)
+          break
+        case 5:
+          checkPeriod(fridayPeriod, fridayTeacher)
+          pushTeachingUnit(date, fridayTeacher)
+          break
       }
-      weekIncreased = true
     }
-    attributes.value.push({
-      key: currentTeacher,
-      highlight: "gray",
-      dates: [{
-        start: date,
-        end: date,
-      }],
-      customData: {
-        teacher: currentTeacher
-      },
-      popover: {
-        label: currentTeacher,
-        visibility: "hover",
-      },
-    })
   })
 }
 
