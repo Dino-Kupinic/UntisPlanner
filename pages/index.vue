@@ -16,6 +16,10 @@ async function calculate(): Promise<Teacher[]> {
     const output: Teacher[] = []
 
     for (const [idx, teacher] of selectedTeacher.value.entries()) {
+      /*
+       * This approach goes through each teachers lesson days
+       * Perhaps it might work if we go through all lesson days regardless
+       */
       const lessonDays = attributes.value.filter((attr) => {
         return attr.customData && attr.customData.teacher === teacher
       })
@@ -49,7 +53,7 @@ async function calculate(): Promise<Teacher[]> {
             interruptionsFROM.push(formatDateString(newDate))
 
             const previousSunday = new Date(nextDate);
-            const daysToPreviousSunday = nextDate.getDay() === 0 ? 7 : nextDate.getDay(); // Calculate days to go back to Sunday
+            const daysToPreviousSunday = nextDate.getDay() === 0 ? 7 : nextDate.getDay();
             previousSunday.setDate(nextDate.getDate() - daysToPreviousSunday);
             interruptionsTO.push(formatDateString(previousSunday))
           }
