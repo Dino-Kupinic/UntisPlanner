@@ -23,11 +23,6 @@ const weekdays = ref<string[]>([
   "Friday",
 ])
 
-const years = ref<number[]>([])
-
-for (let year = MINIMUM_YEAR + 1; year <= MAXIMUM_YEAR; year++) {
-  years.value.push(year)
-}
 
 const legendItems = ref<LegendHoliday[]>([
   {name: "Autumn Holidays", color: {name: "Teal", value: "#14b8a6"}},
@@ -40,7 +35,7 @@ const legendItems = ref<LegendHoliday[]>([
   {name: "Teaching Period", color: {name: "Gray", value: "#6b7280"}},
 ])
 
-const {federalState, selectedWeekday, selectedTeacher, selectedYear, period} = storeToRefs(useConfigStore())
+const {federalState, selectedWeekday, selectedTeacher, selectedYear, years, period} = storeToRefs(useConfigStore())
 const {teachers} = storeToRefs(useTeacherStore())
 const sliceArray: number[] = [0, 3, 6]
 const MAX_ITEMS: number = 3
