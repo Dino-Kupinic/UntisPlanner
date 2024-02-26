@@ -53,7 +53,8 @@ function addCustomHolidays() {
   if (holidays.value.length > 0) {
     const customHolidays = getCustomHolidays(holidays.value)
     for (const holiday of customHolidays) {
-      attributes.value.push(holiday)
+      if (holiday.dates)
+        attributes.value.push(holiday)
     }
   }
 }
@@ -145,7 +146,7 @@ function pushTeachingUnit(date: Date, teacher: string) {
       end: date,
     }],
     customData: {
-      teacher: teacher
+      teacher: teacher,
     },
     popover: {
       label: teacher,
@@ -162,9 +163,10 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
   const daysToCheck: Date[] = []
 
   let week: number = getWeek(startDate)
-  let mondayPeriod: number, tuesdayPeriod: number, wednesdayPeriod: number, thursdayPeriod: number, fridayPeriod: number = 0
-  let mondayTeacher: string, tuesdayTeacher: string, wednesdayTeacher: string, thursdayTeacher: string, fridayTeacher: string
-      = selectedTeacher.value[0]
+  let mondayPeriod: number, tuesdayPeriod: number, wednesdayPeriod: number, thursdayPeriod: number,
+    fridayPeriod: number = 0
+  let mondayTeacher: string, tuesdayTeacher: string, wednesdayTeacher: string, thursdayTeacher: string,
+    fridayTeacher: string = selectedTeacher.value[0]
 
   findDaysToCheck(startDate, endDate, daysToCheck)
 
@@ -195,32 +197,32 @@ function markTeachingPeriods(year: number = MINIMUM_YEAR) {
       switch (date.getDay()) {
         case 1:
           const mondayObject = checkPeriod(mondayPeriod, mondayTeacher)
-            mondayPeriod = mondayObject.period
-            mondayTeacher = mondayObject.teacher
+          mondayPeriod = mondayObject.period
+          mondayTeacher = mondayObject.teacher
           pushTeachingUnit(date, mondayTeacher)
           break
         case 2:
           const tuesdayObject = checkPeriod(tuesdayPeriod, tuesdayTeacher)
-            tuesdayPeriod = tuesdayObject.period
-            tuesdayTeacher = tuesdayObject.teacher
+          tuesdayPeriod = tuesdayObject.period
+          tuesdayTeacher = tuesdayObject.teacher
           pushTeachingUnit(date, tuesdayTeacher)
           break
         case 3:
           const wednesdayObject = checkPeriod(wednesdayPeriod, wednesdayTeacher)
-            wednesdayPeriod = wednesdayObject.period
-            wednesdayTeacher = wednesdayObject.teacher
+          wednesdayPeriod = wednesdayObject.period
+          wednesdayTeacher = wednesdayObject.teacher
           pushTeachingUnit(date, wednesdayTeacher)
           break
         case 4:
           const thursdayObject = checkPeriod(thursdayPeriod, thursdayTeacher)
-            thursdayPeriod = thursdayObject.period
-            thursdayTeacher = thursdayObject.teacher
+          thursdayPeriod = thursdayObject.period
+          thursdayTeacher = thursdayObject.teacher
           pushTeachingUnit(date, thursdayTeacher)
           break
         case 5:
           const fridayObject = checkPeriod(fridayPeriod, fridayTeacher)
-            fridayPeriod = fridayObject.period
-            fridayTeacher = fridayObject.teacher
+          fridayPeriod = fridayObject.period
+          fridayTeacher = fridayObject.teacher
           pushTeachingUnit(date, fridayTeacher)
           break
       }
@@ -245,12 +247,13 @@ const emit = defineEmits<{
 
 watch(attributes, () => {
   emit("change", attributes.value)
-})
+}, {deep: true})
 </script>
 
 <template>
   <div class="flex flex-wrap justify-center mt-6">
     <VCalendar
+      :key="attributes"
       :first-day-of-week="VCALENDAR_MONDAY"
       show-iso-weeknumbers
       :is-dark="isDark"
