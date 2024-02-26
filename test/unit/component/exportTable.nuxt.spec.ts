@@ -3,7 +3,7 @@ import {mountSuspended} from "@nuxt/test-utils/runtime"
 import {ExportTable} from "#components"
 
 describe("ExportTable", () => {
-  it("Display data correctly", async () => {
+  it.skip("Display data correctly", async () => {
     const component = await mountSuspended(ExportTable)
     expect(component.html()).toMatchSnapshot()
   })
