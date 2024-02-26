@@ -133,7 +133,6 @@ function checkPeriod(dayPeriod: number, teacher: string): periodTeacher {
   } else {
     dayPeriod = 1
     teacher = selectedTeacher.value[(selectedTeacher.value.indexOf(teacher) + 1) % selectedTeacher.value.length]
-    console.log(teacher)
   }
   return {period: dayPeriod, teacher: teacher}
 }

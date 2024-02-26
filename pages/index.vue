@@ -82,7 +82,6 @@ async function generate() {
   showTable.value = false
   try {
     result.value = await calculate()
-    console.log(result.value)
     isLoading.value = false
     showTable.value = true
   } catch (error) {
