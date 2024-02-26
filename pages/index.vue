@@ -48,13 +48,13 @@ async function calculate(): Promise<Teacher[]> {
             //   mondayDate.setDate(date.getDate() - daysToMonday)
             //   interruptionsFROM.push(formatDateString(daysToMonday))
             // }
-            const newDate = new Date(date);
-            newDate.setDate(date.getDate() + 7);
+            const newDate = new Date(date)
+            newDate.setDate(date.getDate() + 7)
             interruptionsFROM.push(formatDateString(newDate))
 
-            const previousSunday = new Date(nextDate);
-            const daysToPreviousSunday = nextDate.getDay() === 0 ? 7 : nextDate.getDay();
-            previousSunday.setDate(nextDate.getDate() - daysToPreviousSunday);
+            const previousSunday = new Date(nextDate)
+            const daysToPreviousSunday = nextDate.getDay() === 0 ? 7 : nextDate.getDay()
+            previousSunday.setDate(nextDate.getDate() - daysToPreviousSunday)
             interruptionsTO.push(formatDateString(previousSunday))
           }
         }
