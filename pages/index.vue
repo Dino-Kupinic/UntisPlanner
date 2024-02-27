@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type {AttributeConfig} from "v-calendar/dist/types/src/utils/attribute.d.ts"
 import type {Teacher} from "~/model/teacher"
-import {differenceInCalendarDays} from "date-fns"
+import {getWeek, nextMonday} from "date-fns"
 
 const isLoading = ref<boolean>(false)
 const showTable = ref<boolean>(false)
@@ -16,48 +16,38 @@ async function calculate(): Promise<Teacher[]> {
     const output: Teacher[] = []
 
     for (const [idx, teacher] of selectedTeacher.value.entries()) {
-      /*
-       * This approach goes through each teachers lesson days
-       * Perhaps it might work if we go through all lesson days regardless
-       */
-      const lessonDays = attributes.value.filter((attr) => {
-        return attr.customData && attr.customData.teacher === teacher
-      })
-
       const interruptionsFROM: string[] = []
       const interruptionsTO: string[] = []
 
-      if (lessonDays.length > 0) {
-        for (let i = 0; i < lessonDays.length; i++) {
-          // @ts-ignore
-          const date: Date = lessonDays[i].dates[0].start || lessonDays[i + 1].dates[0].end
-          // @ts-ignore
-          const nextDate: Date | undefined = lessonDays[i + 1]?.dates[0]?.start
+      const lessonDays = attributes.value.filter((attr: AttributeConfig) => {
+        return attr.customData && attr.customData.teacher
+      })
 
-          if (!nextDate)
-            continue
+      let toRequired = false
+      for (let i = 0; i < lessonDays.length; i++) {
+        const currentAttribute = lessonDays[i]
+        const nextAttribute = lessonDays[i + 1]
 
-          if (differenceInCalendarDays(date, nextDate) !== -7) {
-            /*
-            This code is for when the day is not monday (no guarantee it works)
-             */
-            // const dayOfWeek = date.getDay()
-            // if (dayOfWeek !== 1) {
-            //   const daysToMonday = (dayOfWeek - 1 + 7) % 7
-            //   const mondayDate = new Date(date)
-            //   mondayDate.setDate(date.getDate() - daysToMonday)
-            //   interruptionsFROM.push(formatDateString(daysToMonday))
-            // }
-            const newDate = new Date(date)
-            newDate.setDate(date.getDate() + 7)
-            interruptionsFROM.push(formatDateString(newDate))
+        if (!nextAttribute)
+          continue
 
-            const previousSunday = new Date(nextDate)
-            const daysToPreviousSunday = nextDate.getDay() === 0 ? 7 : nextDate.getDay()
-            previousSunday.setDate(nextDate.getDate() - daysToPreviousSunday)
-            interruptionsTO.push(formatDateString(previousSunday))
-          }
+        // @ts-ignore
+        const date: Date = currentAttribute.dates[0].start
+        // @ts-ignore
+        const nextDate: Date = nextAttribute.dates[0].start
+
+        // check if nextAttribute is same week, then get monday from next week
+        if (currentAttribute.customData.teacher !== nextAttribute.customData.teacher) {
+          toRequired = true
+          const monday = nextMonday(date)
+          interruptionsFROM.push(formatDateString(monday))
         }
+        //
+        //
+        // const previousSunday = new Date(nextDate)
+        // const daysToPreviousSunday = nextDate.getDay() === 0 ? 7 : nextDate.getDay()
+        // previousSunday.setDate(nextDate.getDate() - daysToPreviousSunday)
+        // interruptionsTO.push(formatDateString(previousSunday))
       }
       output.push({
         id: idx + 1,
