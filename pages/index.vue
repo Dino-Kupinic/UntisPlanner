@@ -1,21 +1,26 @@
 <script setup lang="ts">
 import type {AttributeConfig} from "v-calendar/dist/types/src/utils/attribute.d.ts"
 import type {Teacher} from "~/model/teacher"
-import {getWeek, nextMonday} from "date-fns"
+import {getWeek, nextMonday, previousSunday} from "date-fns"
 
 const isLoading = ref<boolean>(false)
 const showTable = ref<boolean>(false)
 
 const attributes = ref<AttributeConfig[]>([])
 const {teachers} = storeToRefs(useTeacherStore())
-const {selectedTeacher} = storeToRefs(useConfigStore())
+const {selectedTeacher, period} = storeToRefs(useConfigStore())
 const result = ref<Teacher[]>([])
 
 async function calculate(): Promise<Teacher[]> {
   return new Promise((resolve) => {
     const output: Teacher[] = []
 
+
     for (const [idx, teacher] of selectedTeacher.value.entries()) {
+      const teacherInterrupts = []
+
+      teacherInterrupts.push({name: teacher, interFrom: "", interTo: ""})
+
       const interruptionsFROM: string[] = []
       const interruptionsTO: string[] = []
 
@@ -25,6 +30,7 @@ async function calculate(): Promise<Teacher[]> {
 
       let toRequired = false
       for (let i = 0; i < lessonDays.length; i++) {
+
         const currentAttribute = lessonDays[i]
         const nextAttribute = lessonDays[i + 1]
 
@@ -39,22 +45,40 @@ async function calculate(): Promise<Teacher[]> {
         // check if nextAttribute is same week, then get monday from next week
         if (currentAttribute.customData.teacher !== nextAttribute.customData.teacher) {
           toRequired = true
+
           const monday = nextMonday(date)
+
           interruptionsFROM.push(formatDateString(monday))
+
+          teacherInterrupts.forEach((teacher) => {
+            if (teacher.name === currentAttribute.customData.teacher) {
+              teacher.interFrom += "," + formatDateString(monday)
+            }
+          })
         }
-        //
-        //
-        // const previousSunday = new Date(nextDate)
-        // const daysToPreviousSunday = nextDate.getDay() === 0 ? 7 : nextDate.getDay()
-        // previousSunday.setDate(nextDate.getDate() - daysToPreviousSunday)
-        // interruptionsTO.push(formatDateString(previousSunday))
+
+
+        if (currentAttribute.customData.teacher != nextAttribute.customData.teacher) {
+
+          let previousSundayDate = previousSunday(nextDate)
+
+          teacherInterrupts.forEach((teacher) => {
+            if (teacher.name === nextAttribute.customData.teacher) {
+              teacher.interTo += "," + formatDateString(previousSundayDate)
+            }
+          })
+        }
       }
-      output.push({
-        id: idx + 1,
-        user: teacher,
-        from: "," + interruptionsFROM.toString() + ",",
-        to: "," + interruptionsTO.toString() + ",",
-      } as Teacher)
+
+      teacherInterrupts.forEach((teacher) => {
+        output.push({
+          id: idx + 1,
+          user: teacher.name,
+          from: "," + teacher.interFrom + ",",
+          to: "," + teacher.interTo + ",",
+        } as Teacher)
+      })
+
     }
     resolve(output)
   })
