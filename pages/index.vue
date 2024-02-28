@@ -15,32 +15,22 @@ async function calculate(): Promise<Teacher[]> {
   return new Promise((resolve) => {
     const output: Teacher[] = []
 
+
     for (const [idx, teacher] of selectedTeacher.value.entries()) {
       const teacherInterrupts = []
 
       teacherInterrupts.push({name: teacher, interFrom: "", interTo: ""})
 
-      let interruptsForCurrentTeacher: string = ""
       const interruptionsFROM: string[] = []
       const interruptionsTO: string[] = []
 
       const lessonDays = attributes.value.filter((attr: AttributeConfig) => {
         return attr.customData && attr.customData.teacher
       })
-      const firstLesson: AttributeConfig = lessonDays[0]
-      //@ts-ignore
-      const firstLessonDate: Date = firstLesson.dates[0].start || firstLesson.dates[0].end
-      if (firstLessonDate.getDay() !== 1) {
-        const firstMondayOfSchoolyear = previousMonday(firstLessonDate)
-        //@ts-ignore
-        firstLesson.dates[0].start = firstMondayOfSchoolyear
-        //@ts-ignore
-        firstLesson.dates[0].end = firstMondayOfSchoolyear
-        lessonDays.unshift(firstLesson)
-      }
 
       let toRequired = false
       for (let i = 0; i < lessonDays.length; i++) {
+
         const currentAttribute = lessonDays[i]
         const nextAttribute = lessonDays[i + 1]
 
@@ -52,10 +42,19 @@ async function calculate(): Promise<Teacher[]> {
         // @ts-ignore
         const nextDate: Date = nextAttribute.dates[0].start
 
-        if (currentAttribute.customData.teacher === teacher && currentAttribute.customData.teacher !== nextAttribute.customData.teacher) {
+        // check if nextAttribute is same week, then get monday from next week
+        if (currentAttribute.customData.teacher !== nextAttribute.customData.teacher) {
           toRequired = true
+
           const monday = nextMonday(date)
-          interruptsForCurrentTeacher += "," + formatDateString(monday)
+
+          interruptionsFROM.push(formatDateString(monday))
+
+          teacherInterrupts.forEach((teacher) => {
+            if (teacher.name === currentAttribute.customData.teacher) {
+              teacher.interFrom += formatDateString(monday)
+            }
+          })
         }
 
 
@@ -65,7 +64,7 @@ async function calculate(): Promise<Teacher[]> {
 
           teacherInterrupts.forEach((teacher) => {
             if (teacher.name === nextAttribute.customData.teacher) {
-              teacher.interTo += "," + formatDateString(previousSundayDate)
+              teacher.interTo += formatDateString(previousSundayDate)
             }
           })
         }
@@ -75,7 +74,7 @@ async function calculate(): Promise<Teacher[]> {
         output.push({
           id: idx + 1,
           user: teacher.name,
-          from: interruptsForCurrentTeacher,
+          from: "," + teacher.interFrom + ",",
           to: "," + teacher.interTo + ",",
         } as Teacher)
       })
