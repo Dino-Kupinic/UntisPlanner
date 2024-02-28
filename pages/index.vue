@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type {AttributeConfig} from "v-calendar/dist/types/src/utils/attribute.d.ts"
 import type {Teacher} from "~/model/teacher"
-import {getWeek, nextMonday} from "date-fns"
+import {getWeek, nextMonday, previousMonday} from "date-fns"
 
 const isLoading = ref<boolean>(false)
 const showTable = ref<boolean>(false)
@@ -16,12 +16,24 @@ async function calculate(): Promise<Teacher[]> {
     const output: Teacher[] = []
 
     for (const [idx, teacher] of selectedTeacher.value.entries()) {
+      let interruptsForCurrentTeacher: string = ""
       const interruptionsFROM: string[] = []
       const interruptionsTO: string[] = []
 
       const lessonDays = attributes.value.filter((attr: AttributeConfig) => {
         return attr.customData && attr.customData.teacher
       })
+      const firstLesson: AttributeConfig = lessonDays[0]
+      //@ts-ignore
+      const firstLessonDate: Date = firstLesson.dates[0].start || firstLesson.dates[0].end
+      if (firstLessonDate.getDay() !== 1) {
+        const firstMondayOfSchoolyear = previousMonday(firstLessonDate)
+        //@ts-ignore
+        firstLesson.dates[0].start = firstMondayOfSchoolyear
+        //@ts-ignore
+        firstLesson.dates[0].end = firstMondayOfSchoolyear
+        lessonDays.unshift(firstLesson)
+      }
 
       let toRequired = false
       for (let i = 0; i < lessonDays.length; i++) {
@@ -36,11 +48,10 @@ async function calculate(): Promise<Teacher[]> {
         // @ts-ignore
         const nextDate: Date = nextAttribute.dates[0].start
 
-        // check if nextAttribute is same week, then get monday from next week
-        if (currentAttribute.customData.teacher !== nextAttribute.customData.teacher) {
+        if (currentAttribute.customData.teacher === teacher && currentAttribute.customData.teacher !== nextAttribute.customData.teacher) {
           toRequired = true
           const monday = nextMonday(date)
-          interruptionsFROM.push(formatDateString(monday))
+          interruptsForCurrentTeacher += "," + formatDateString(monday)
         }
         //
         //
@@ -52,7 +63,7 @@ async function calculate(): Promise<Teacher[]> {
       output.push({
         id: idx + 1,
         user: teacher,
-        from: "," + interruptionsFROM.toString() + ",",
+        from: interruptsForCurrentTeacher,
         to: "," + interruptionsTO.toString() + ",",
       } as Teacher)
     }
