@@ -90,6 +90,7 @@ function resetConfig() {
         </USelectMenu>
       </GeneratorItem>
       <GeneratorItem :label="$t('GeneratorYearLabel')" :badge="$t('BadgeNEW')">
+        <!-- @vue-ignore -->
         <USelectMenu class="sm:w-auto w-full mt-1" v-model="selectedYear" :options="years"
                      :placeholder="$t('GeneratorYearPlaceholder')">
         </USelectMenu>

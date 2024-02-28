@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-ignore
 import { DatePicker as VCalendarDatePicker } from 'v-calendar'
 import 'v-calendar/dist/style.css'
 import type {PropType} from "vue"

@@ -1,6 +1,8 @@
 import pkg from "./package.json"
 import {execaSync} from "execa"
 
+const sw = process.env.SW === 'true'
+
 export default defineNuxtConfig({
   app: {
     head: {
@@ -60,7 +62,7 @@ export default defineNuxtConfig({
   },
   modules: [
     "@vueuse/nuxt",
-    // "@vite-pwa/nuxt",
+    "@vite-pwa/nuxt",
     "@nuxt/ui",
     "@samk-dev/nuxt-vcalendar",
     "@nuxt/test-utils/module",
@@ -74,37 +76,50 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ["./stores/**"],
   },
-  // pwa: {
-  //   manifest: {
-  //     name: "UntisPlanner",
-  //     description: "Intuitive Untis Planner",
-  //     theme_color: "#ffffff",
-  //     icons: [
-  //       {
-  //         src: "untisplanner-icon-192.png",
-  //         sizes: "192x192",
-  //         type: "image/png",
-  //       },
-  //       {
-  //         src: "untisplanner-icon-512.png",
-  //         sizes: "512x512",
-  //         type: "image/png",
-  //       },
-  //     ],
-  //   },
-  //   registerType: "autoUpdate",
-  //   workbox: {
-  //     navigateFallback: "/",
-  //   },
-  //   devOptions: {
-  //     enabled: true,
-  //     suppressWarnings: true,
-  //     navigateFallbackAllowlist: [/^\/$/],
-  //     type: "module",
-  //   },
-  // },
-  // typescript: {
-  //   typeCheck: true,
-  //   strict: true,
-  // },
+  pwa: {
+    strategies: sw ? 'injectManifest' : 'generateSW',
+    srcDir: sw ? 'service-worker' : undefined,
+    filename: sw ? 'sw.ts' : undefined,
+    registerType: 'autoUpdate',
+    manifest: {
+      name: "UntisPlanner",
+      description: "Intuitive Untis Planner",
+      theme_color: "#ffffff",
+      icons: [
+        {
+          src: "untisplanner-icon-192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "untisplanner-icon-512.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+        {
+          src: "untisplanner-icon-512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: 'any maskable'
+        },
+      ],
+    },
+    workbox: {
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+    },
+    injectManifest: {
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+    },
+    devOptions: {
+      enabled: true,
+      suppressWarnings: true,
+      navigateFallback: '/',
+      navigateFallbackAllowlist: [/^\/$/],
+      type: 'module',
+    },
+  },
+  typescript: {
+    typeCheck: true,
+    strict: true,
+  },
 })
