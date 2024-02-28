@@ -26,7 +26,7 @@ onMounted(() => {
 </script>
 
 <template>
-<!--  <NuxtPwaManifest/>-->
+  <NuxtPwaManifest/>
   <NuxtLoadingIndicator/>
   <NuxtLayout>
     <NuxtPage/>

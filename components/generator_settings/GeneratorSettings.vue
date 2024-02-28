@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useConfigStore} from "~/stores/configStore"
 import type {LegendHoliday} from "~/model/holiday"
-import {DEFAULT_STATE, MAXIMUM_YEAR, MINIMUM_PERIOD, MINIMUM_YEAR} from "~/model/constants"
+import {DEFAULT_STATE, MINIMUM_PERIOD} from "~/model/constants"
 
 const federalStates = ref<string[]>([
   "Vienna",
@@ -22,7 +22,6 @@ const weekdays = ref<string[]>([
   "Thursday",
   "Friday",
 ])
-
 
 const legendItems = ref<LegendHoliday[]>([
   {name: "Autumn Holidays", color: {name: "Teal", value: "#14b8a6"}},
@@ -91,6 +90,7 @@ function resetConfig() {
         </USelectMenu>
       </GeneratorItem>
       <GeneratorItem :label="$t('GeneratorYearLabel')" :badge="$t('BadgeNEW')">
+        <!-- @vue-ignore -->
         <USelectMenu class="sm:w-auto w-full mt-1" v-model="selectedYear" :options="years"
                      :placeholder="$t('GeneratorYearPlaceholder')">
         </USelectMenu>

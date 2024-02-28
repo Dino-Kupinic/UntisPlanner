@@ -68,7 +68,7 @@ function select(row: any) {
 </script>
 
 <template>
-  <div class="flex justify-around mr-3 ml-3">
+  <div class="m-auto flex flex-col w-full sm:w-[520px] md:w-[775px] lg:w-[1034px] sm:h-auto sm:min-h-28 dark:bg-gray-900 border h-auto p-1 sm:rounded-lg border-neutral-300 dark:border-gray-700">
     <UTable
       @select="select"
       v-model="selected"
