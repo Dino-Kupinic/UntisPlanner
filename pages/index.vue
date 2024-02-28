@@ -83,16 +83,19 @@ async function generate() {
   isLoading.value = true
   showTable.value = false
   try {
-    result.value = await calculate()
-    isLoading.value = false
-    showTable.value = true
+    setTimeout(async () => {
+      result.value = await calculate()
+      isLoading.value = false
+      showTable.value = true
+    }, 750)
   } catch (error) {
     console.error("Error in calculate:", error)
   }
 }
 
 const skeletonRows = computed(() => {
-  return result.value.length
+  // TODO: fix
+  return result.value.length || 4
 })
 </script>
 
