@@ -7,14 +7,12 @@ const isLoading = ref<boolean>(false)
 const showTable = ref<boolean>(false)
 
 const attributes = ref<AttributeConfig[]>([])
-const {teachers} = storeToRefs(useTeacherStore())
-const {selectedTeacher, period} = storeToRefs(useConfigStore())
+const {selectedTeacher} = storeToRefs(useConfigStore())
 const result = ref<Teacher[]>([])
 
 async function calculate(): Promise<Teacher[]> {
   return new Promise((resolve) => {
     const output: Teacher[] = []
-
 
     for (const [idx, teacher] of selectedTeacher.value.entries()) {
       const teacherInterrupts = []
@@ -22,15 +20,12 @@ async function calculate(): Promise<Teacher[]> {
       teacherInterrupts.push({name: teacher, interFrom: "", interTo: ""})
 
       const interruptionsFROM: string[] = []
-      const interruptionsTO: string[] = []
 
       const lessonDays = attributes.value.filter((attr: AttributeConfig) => {
         return attr.customData && attr.customData.teacher
       })
 
-      let toRequired = false
       for (let i = 0; i < lessonDays.length; i++) {
-
         const currentAttribute = lessonDays[i]
         const nextAttribute = lessonDays[i + 1]
 
@@ -42,29 +37,22 @@ async function calculate(): Promise<Teacher[]> {
         // @ts-ignore
         const nextDate: Date = nextAttribute.dates[0].start
 
-        // check if nextAttribute is same week, then get monday from next week
         if (currentAttribute.customData.teacher !== nextAttribute.customData.teacher) {
-          toRequired = true
-
           const monday = nextMonday(date)
 
           interruptionsFROM.push(formatDateString(monday))
-
           teacherInterrupts.forEach((teacher) => {
             if (teacher.name === currentAttribute.customData.teacher) {
-              teacher.interFrom += formatDateString(monday)
+              teacher.interFrom += "," + formatDateString(monday)
             }
           })
         }
 
-
         if (currentAttribute.customData.teacher != nextAttribute.customData.teacher) {
-
           let previousSundayDate = previousSunday(nextDate)
-
           teacherInterrupts.forEach((teacher) => {
             if (teacher.name === nextAttribute.customData.teacher) {
-              teacher.interTo += formatDateString(previousSundayDate)
+              teacher.interTo += "," + formatDateString(previousSundayDate)
             }
           })
         }
@@ -74,8 +62,8 @@ async function calculate(): Promise<Teacher[]> {
         output.push({
           id: idx + 1,
           user: teacher.name,
-          from: "," + teacher.interFrom + ",",
-          to: "," + teacher.interTo + ",",
+          from: teacher.interFrom + ",",
+          to: teacher.interTo + ",",
         } as Teacher)
       })
 
