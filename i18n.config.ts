@@ -67,7 +67,7 @@ export default defineI18nConfig(() => ({
       addCustomHolidayDateLabel: "Datum",
       addTeacherGroupTitle: "Eine Lehrer-Gruppe hinzufügen",
       addTeacherGroupErrorTitle: "Ups... etwas ist schief gegangen!",
-      addTeacherGroupErrorBody: "YDu musst mindestens 1 Lehrer-Gruppe haben.",
+      addTeacherGroupErrorBody: "Du musst mindestens 1 Lehrer-Gruppe haben.",
       submitTeacherGroup: "Erstellen",
       addTeacherTitle: "Einen Lehrer hinzufügen",
       addTeacherErrorTitle: "Ups... etwas ist schief gegangen!",
