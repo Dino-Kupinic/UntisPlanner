@@ -44,5 +44,5 @@ const validate = (state: any): FormError[] => {
     </UFormGroup>
     <UButton class="mt-3 w-full sm:w-24 justify-center" type="submit">{{ $t("submitTeacherGroup") }}</UButton>
   </UForm>
-  <TeacherTable class="mt-3"/>
+  <TeacherGroupTable class="mt-3"/>
 </template>
