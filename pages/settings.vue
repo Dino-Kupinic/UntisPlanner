@@ -49,8 +49,13 @@ const gray = computed({
 </script>
 
 <template>
-  <main class="h-full pl-8 pr-8 pb-24 sm:mt-8 mb-32 sm:mb-0">
-    <div class="flex flex-col justify-center items-center pl-8 pr-8 sm:w-[600px] sm:m-auto">
+    <main class="h-full pl-8 pr-8 pb-24 sm:mt-8 mb-32 sm:mb-0">
+      <div class="flex flex-col justify-center items-center pl-8 pr-8 sm:w-[600px] sm:m-auto">
+        <p class="text-xl m-3 sm:justify-start sm:w-full">{{ $t("ImportExport") }}</p>
+        <ExportButton />
+      </div>
+      <hr class="border-gray-200 dark:border-gray-800 my-4 sm:w-[600px] m-auto">
+      <div class="flex flex-col justify-center items-center pl-8 pr-8 sm:w-[600px] sm:m-auto">
       <p class="text-xl m-3 sm:justify-start sm:w-full">{{ $t("language") }}</p>
       <LanguagePicker />
     </div>
