@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import colors from "#tailwind-config/theme/colors"
+import TeacherGroupPicker from "~/components/picker/TeacherGroupPicker.vue"
 
 const appConfig = useAppConfig()
 const colorMode = useColorMode()
@@ -70,6 +71,12 @@ const gray = computed({
     <div class="flex flex-col justify-center items-center">
       <div class="w-full sm:w-[600px] pl-8 pr-8">
         <TeacherPicker />
+      </div>
+    </div>
+    <hr class="border-gray-200 dark:border-gray-800 my-4 sm:w-[600px] m-auto">
+    <div class="flex flex-col justify-center items-center">
+      <div class="w-full sm:w-[600px] pl-8 pr-8">
+        <TeacherGroupPicker />
       </div>
     </div>
     <hr class="border-gray-200 dark:border-gray-800 my-4 sm:w-[600px] m-auto">
